@@ -57,14 +57,12 @@ export default function Home() {
           experiences, and turning complex problems into simple solutions.
         </p>
         <div className="mt-8 flex items-center gap-4">
-          <Button asChild>
-            <Link to="/contact">
-              Get in touch
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
+          <Button render={<Link to="/contact" />}>
+            Get in touch
+            <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
-          <Button variant="outline" asChild>
-            <Link to="/about">About me</Link>
+          <Button variant="outline" render={<Link to="/about" />}>
+            About me
           </Button>
         </div>
         <div className="mt-8 flex items-center gap-4">

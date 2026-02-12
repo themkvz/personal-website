@@ -2,6 +2,7 @@ import { Moon, Sun, Monitor } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
+  DropdownMenuPositioner,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
@@ -28,23 +29,27 @@ export function ThemeToggle() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" aria-label="Toggle theme">
-          {currentIcon}
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        {themes.map(({ value, label, icon }) => (
-          <DropdownMenuItem
-            key={value}
-            onClick={() => setTheme(value)}
-            className={theme === value ? "bg-accent" : ""}
-          >
-            {icon}
-            <span className="ml-2">{label}</span>
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
+      <DropdownMenuTrigger
+        render={
+          <Button variant="ghost" size="icon" aria-label="Toggle theme">
+            {currentIcon}
+          </Button>
+        }
+      />
+      <DropdownMenuPositioner align="end">
+        <DropdownMenuContent>
+          {themes.map(({ value, label, icon }) => (
+            <DropdownMenuItem
+              key={value}
+              onClick={() => setTheme(value)}
+              className={theme === value ? "bg-accent" : ""}
+            >
+              {icon}
+              <span className="ml-2">{label}</span>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenuPositioner>
     </DropdownMenu>
   );
 }
