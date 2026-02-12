@@ -5,3 +5,11 @@
 # React Router
 /.react-router/
 /build/
+
+# Database
+/data/*.db
+/data/*.db-wal
+/data/*.db-shm
+
+# Drizzle
+/drizzle/

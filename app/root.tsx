@@ -9,30 +9,35 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import "@fontsource-variable/inter";
+import "@fontsource-variable/jetbrains-mono";
+import { Header } from "~/components/layout/header";
+import { Footer } from "~/components/layout/footer";
 
-export const links: Route.LinksFunction = () => [
-  { rel: "preconnect", href: "https://fonts.googleapis.com" },
-  {
-    rel: "preconnect",
-    href: "https://fonts.gstatic.com",
-    crossOrigin: "anonymous",
-  },
-  {
-    rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-  },
-];
+// Inline script to prevent FOUC (flash of unstyled content)
+const themeScript = `
+  (function() {
+    var theme = localStorage.getItem('theme') || 'system';
+    var root = document.documentElement;
+    if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      root.classList.add('dark');
+    } else {
+      root.classList.add('light');
+    }
+  })();
+`;
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body>
+      <body className="min-h-screen font-sans antialiased">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -42,7 +47,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Header />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
@@ -62,14 +75,20 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
-      <h1>{message}</h1>
-      <p>{details}</p>
-      {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
-          <code>{stack}</code>
-        </pre>
-      )}
-    </main>
+    <div className="flex min-h-screen flex-col">
+      <Header />
+      <main className="flex flex-1 items-center justify-center px-6">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold tracking-tight">{message}</h1>
+          <p className="mt-4 text-muted-foreground">{details}</p>
+          {stack && (
+            <pre className="mt-6 max-w-2xl overflow-x-auto rounded-lg bg-muted p-4 text-left text-sm">
+              <code>{stack}</code>
+            </pre>
+          )}
+        </div>
+      </main>
+      <Footer />
+    </div>
   );
 }
