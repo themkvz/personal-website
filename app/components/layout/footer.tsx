@@ -23,7 +23,7 @@ export function Footer() {
     <footer className="border-t">
       <div className="mx-auto flex max-w-3xl flex-col items-center gap-4 px-6 py-8 sm:flex-row sm:justify-between">
         <p className="text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Ihor Mukovoz
+          © {new Date().getFullYear()} themkvz
         </p>
         <div className="flex items-center gap-4">
           {socialLinks.map(({ href, label, icon }) => (

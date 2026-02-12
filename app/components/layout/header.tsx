@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Button } from "~/components/ui/button";
 
 const navLinks = [
-  { to: "/", label: "Home" },
+  { to: "/", label: "Introduce" },
   { to: "/about", label: "About" },
   { to: "/bookmarks", label: "Bookmarks" },
   { to: "/contact", label: "Contact" },
@@ -22,7 +22,7 @@ export function Header() {
           to="/"
           className="font-mono text-lg font-semibold tracking-tight"
         >
-          ihor.dev
+          themkvz
         </Link>
 
         {/* Desktop nav */}
