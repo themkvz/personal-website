@@ -1,6 +1,6 @@
+import { resolve } from "node:path";
 import Database from "better-sqlite3";
 import { drizzle } from "drizzle-orm/better-sqlite3";
-import { resolve } from "path";
 import * as schema from "../src/app/db/schema";
 
 const dbPath = resolve(process.cwd(), "data", "sqlite.db");
@@ -11,7 +11,8 @@ const sampleBookmarks = [
   {
     title: "React Router v7 Documentation",
     url: "https://reactrouter.com/",
-    description: "Official docs for React Router v7 — the modern React framework.",
+    description:
+      "Official docs for React Router v7 — the modern React framework.",
   },
   {
     title: "Tailwind CSS v4",
@@ -21,7 +22,8 @@ const sampleBookmarks = [
   {
     title: "shadcn/ui",
     url: "https://ui.shadcn.com/",
-    description: "Beautifully designed components built with Radix UI and Tailwind CSS.",
+    description:
+      "Beautifully designed components built with Radix UI and Tailwind CSS.",
   },
   {
     title: "Drizzle ORM",
@@ -31,12 +33,14 @@ const sampleBookmarks = [
   {
     title: "Zustand",
     url: "https://zustand.docs.pmnd.rs/",
-    description: "A small, fast, and scalable state management solution for React.",
+    description:
+      "A small, fast, and scalable state management solution for React.",
   },
   {
     title: "Bun — JavaScript Runtime",
     url: "https://bun.sh/",
-    description: "Incredibly fast JavaScript runtime, bundler, and package manager.",
+    description:
+      "Incredibly fast JavaScript runtime, bundler, and package manager.",
   },
 ];
 

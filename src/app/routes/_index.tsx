@@ -1,8 +1,8 @@
-import { Badge } from "~/components/ui/badge";
-import { Separator } from "~/components/ui/separator";
 import { ArrowRight, Github, Linkedin } from "lucide-react";
 import { Link } from "react-router";
+import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
+import { Separator } from "~/components/ui/separator";
 
 const skills = [
   "React",

@@ -1,8 +1,8 @@
-import { Link, useLocation } from "react-router";
-import { ThemeToggle } from "./theme-toggle";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { Link, useLocation } from "react-router";
 import { Button } from "~/components/ui/button";
+import { ThemeToggle } from "./theme-toggle";
 
 const navLinks = [
   { to: "/", label: "Introduce" },
@@ -18,10 +18,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-3xl items-center justify-between px-6">
-        <Link
-          to="/"
-          className="font-mono text-lg font-semibold tracking-tight"
-        >
+        <Link to="/" className="font-mono text-lg font-semibold tracking-tight">
           themkvz
         </Link>
 

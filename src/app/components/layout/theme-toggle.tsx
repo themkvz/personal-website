@@ -1,13 +1,13 @@
-import { Moon, Sun, Monitor } from "lucide-react";
+import { Monitor, Moon, Sun } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
-  DropdownMenuPositioner,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuPositioner,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { useThemeStore, type Theme } from "~/store/theme";
+import { type Theme, useThemeStore } from "~/store/theme";
 
 const themes: { value: Theme; label: string; icon: React.ReactNode }[] = [
   { value: "light", label: "Light", icon: <Sun className="h-4 w-4" /> },

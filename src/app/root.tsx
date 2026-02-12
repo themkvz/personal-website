@@ -11,8 +11,8 @@ import type { Route } from "./+types/root";
 import "./app.css";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
-import { Header } from "~/components/layout/header";
 import { Footer } from "~/components/layout/footer";
+import { Header } from "~/components/layout/header";
 
 // Inline script to prevent FOUC (flash of unstyled content)
 const themeScript = `

@@ -1,6 +1,6 @@
+import { Briefcase, GraduationCap, Heart, MapPin } from "lucide-react";
 import { Badge } from "~/components/ui/badge";
 import { Separator } from "~/components/ui/separator";
-import { Briefcase, GraduationCap, Heart, MapPin } from "lucide-react";
 
 const experience = [
   {
@@ -87,14 +87,7 @@ const techStack = {
     "HTML5",
     "CSS3",
   ],
-  Backend: [
-    "Node.js",
-    "Express.js",
-    "Fastify",
-    "PHP",
-    "WordPress",
-    "REST API",
-  ],
+  Backend: ["Node.js", "Express.js", "Fastify", "PHP", "WordPress", "REST API"],
   "Data & Tools": [
     "Prisma",
     "PostgreSQL",

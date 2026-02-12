@@ -1,10 +1,10 @@
+import { AlertCircle, CheckCircle2, Send } from "lucide-react";
 import { Form, useActionData, useNavigation } from "react-router";
+import { z } from "zod/v4";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
-import { z } from "zod/v4";
-import { Send, CheckCircle2, AlertCircle } from "lucide-react";
 import type { Route } from "./+types/contact";
 
 const contactSchema = z.object({
@@ -90,7 +90,12 @@ export default function Contact() {
           <Form method="post" className="mt-10 space-y-6">
             {/* Honeypot — hidden from real users */}
             <div className="absolute left-[-9999px]" aria-hidden="true">
-              <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+              />
             </div>
             <input type="hidden" name="_timestamp" value={Date.now()} />
 

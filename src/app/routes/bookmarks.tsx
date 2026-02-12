@@ -1,9 +1,9 @@
+import { desc, eq, sql } from "drizzle-orm";
+import { ExternalLink, ThumbsUp } from "lucide-react";
 import { useFetcher } from "react-router";
-import { ThumbsUp, ExternalLink } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { db } from "~/db";
 import { bookmarks } from "~/db/schema";
-import { eq, sql, desc } from "drizzle-orm";
 import type { Route } from "./+types/bookmarks";
 
 export function meta() {
@@ -22,9 +22,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   const sort = url.searchParams.get("sort") || "newest";
 
   const orderBy =
-    sort === "popular"
-      ? desc(bookmarks.upvotes)
-      : desc(bookmarks.createdAt);
+    sort === "popular" ? desc(bookmarks.upvotes) : desc(bookmarks.createdAt);
 
   const items = db.select().from(bookmarks).orderBy(orderBy).all();
   return { bookmarks: items, sort };
@@ -113,9 +111,7 @@ function BookmarkCard({
   );
 }
 
-export default function Bookmarks({
-  loaderData,
-}: Route.ComponentProps) {
+export default function Bookmarks({ loaderData }: Route.ComponentProps) {
   const { bookmarks: items, sort } = loaderData;
 
   return (

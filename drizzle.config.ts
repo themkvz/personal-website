@@ -1,5 +1,5 @@
+import { resolve } from "node:path";
 import { defineConfig } from "drizzle-kit";
-import { resolve } from "path";
 
 export default defineConfig({
   schema: "./src/app/db/schema.ts",
