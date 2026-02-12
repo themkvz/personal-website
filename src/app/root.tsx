@@ -1,10 +1,12 @@
 import {
+  data,
   isRouteErrorResponse,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  useRouteLoaderData,
 } from "react-router";
 
 import type { Route } from "./+types/root";
@@ -13,29 +15,32 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import { Footer } from "~/components/layout/footer";
 import { Header } from "~/components/layout/header";
+import { resolveThemeClass, type Theme } from "~/store/theme";
 
-// Inline script to prevent FOUC (flash of unstyled content)
-const themeScript = `
-  (function() {
-    var theme = localStorage.getItem('theme') || 'system';
-    var root = document.documentElement;
-    if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      root.classList.add('dark');
-    } else {
-      root.classList.add('light');
-    }
-  })();
-`;
+function parseThemeCookie(cookieHeader: string | null): Theme {
+  if (!cookieHeader) return "system";
+  const match = cookieHeader.match(/(?:^|;\s*)theme=(\w+)/);
+  return (match?.[1] as Theme) || "system";
+}
+
+export function loader({ request }: Route.LoaderArgs) {
+  const theme = parseThemeCookie(request.headers.get("Cookie"));
+  return data({ theme });
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const loaderData = useRouteLoaderData("root") as { theme: Theme } | undefined;
+  const theme = loaderData?.theme ?? "system";
+  // For "system" theme, server defaults to "light"; client corrects on hydration
+  const themeClass = theme === "system" ? "light" : resolveThemeClass(theme);
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={themeClass} suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="min-h-screen font-sans antialiased">
         {children}
