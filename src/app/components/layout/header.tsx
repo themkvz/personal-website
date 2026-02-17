@@ -1,7 +1,8 @@
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import { Link, useLocation } from "react-router";
-import { Button } from "~/components/ui/button";
+import { Link, NavLink } from "react-router";
+import { Button, buttonVariants } from "~/components/ui/button";
+import { cn } from "~/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
 
 const navLinks = [
@@ -12,12 +13,11 @@ const navLinks = [
 ];
 
 export function Header() {
-  const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-sm">
-      <div className="mx-auto flex h-16 max-w-3xl items-center justify-between px-6">
+    <header className="fixed left-1/2 z-50 w-full max-w-3xl -translate-x-1/2 bg-background/80 backdrop-blur-sm border-b border-border shadow-xs md:border md:rounded-full md:mt-4 md:w-[calc(100%-2rem)]">
+      <div className="flex h-header items-center justify-between px-6">
         <Link to="/" className="font-mono text-lg font-semibold tracking-tight">
           themkvz
         </Link>
@@ -25,17 +25,15 @@ export function Header() {
         {/* Desktop nav */}
         <nav className="hidden items-center gap-1 md:flex">
           {navLinks.map(({ to, label }) => (
-            <Link
+            <NavLink
               key={to}
               to={to}
-              className={`rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground ${
-                location.pathname === to
-                  ? "text-foreground"
-                  : "text-muted-foreground"
-              }`}
+              className={({ isActive }) =>
+                cn(buttonVariants({ variant: "link" }), isActive && "underline")
+              }
             >
               {label}
-            </Link>
+            </NavLink>
           ))}
           <ThemeToggle />
         </nav>
@@ -63,18 +61,18 @@ export function Header() {
         <nav className="border-t px-6 py-4 md:hidden">
           <div className="flex flex-col gap-2">
             {navLinks.map(({ to, label }) => (
-              <Link
+              <NavLink
                 key={to}
                 to={to}
                 onClick={() => setMobileOpen(false)}
-                className={`rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent ${
-                  location.pathname === to
-                    ? "text-foreground"
-                    : "text-muted-foreground"
-                }`}
+                className={({ isActive }) =>
+                  cn(
+                    buttonVariants({ variant: isActive ? "default" : "ghost" }),
+                  )
+                }
               >
                 {label}
-              </Link>
+              </NavLink>
             ))}
           </div>
         </nav>
