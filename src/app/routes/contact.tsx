@@ -1,17 +1,25 @@
-import { AlertCircle, CheckCircle2, Send } from "lucide-react";
-import { Form, useActionData, useNavigation } from "react-router";
-import { z } from "zod/v4";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CheckCircle2, Send } from "lucide-react";
+import { Controller } from "react-hook-form";
+import { useFetcher } from "react-router";
+import { getValidatedFormData, useRemixForm } from "remix-hook-form";
+import type { z } from "zod/v4";
 import { Button } from "~/components/ui/button";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
+import { isSpam } from "~/lib/anti-spam";
+import { contactSchema } from "~/schemas/contact";
 import type { Route } from "./+types/contact";
 
-const contactSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.email("Please enter a valid email address"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
-});
+type ContactFormData = z.infer<typeof contactSchema>;
+
+const resolver = zodResolver(contactSchema);
 
 export function meta() {
   return [
@@ -24,46 +32,44 @@ export function meta() {
 }
 
 export async function action({ request }: Route.ActionArgs) {
-  const formData = await request.formData();
-
-  // Honeypot check
-  const honeypot = formData.get("website");
-  if (honeypot) {
-    // Bot detected — silently succeed
-    return { success: true };
+  if (await isSpam(request)) {
+    return { success: true as const };
   }
 
-  // CSRF timestamp check (reject if form submitted in under 2 seconds)
-  const timestamp = Number(formData.get("_timestamp"));
-  if (Date.now() - timestamp < 2000) {
-    return { success: true };
-  }
+  const {
+    errors,
+    data,
+    receivedValues: defaultValues,
+  } = await getValidatedFormData<ContactFormData>(request, resolver);
 
-  const data = {
-    name: formData.get("name") as string,
-    email: formData.get("email") as string,
-    message: formData.get("message") as string,
-  };
-
-  const result = contactSchema.safeParse(data);
-  if (!result.success) {
-    return {
-      success: false,
-      errors: z.flattenError(result.error).fieldErrors,
-    };
+  if (errors) {
+    return { success: false as const, errors, defaultValues };
   }
 
   // TODO: Send to email/messenger service
-  // For now, just log the submission
-  console.log("Contact form submission:", result.data);
+  console.log("Contact form submission:", data);
 
-  return { success: true };
+  return { success: true as const };
 }
 
 export default function Contact() {
-  const actionData = useActionData<typeof action>();
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
+  const fetcher = useFetcher<typeof action>();
+  const actionData = fetcher.data;
+
+  const {
+    handleSubmit,
+    formState: { isSubmitting, isValid },
+    control,
+  } = useRemixForm<ContactFormData>({
+    mode: "onBlur",
+    resolver,
+    fetcher,
+    defaultValues: {
+      name: actionData?.defaultValues?.name || "",
+      email: actionData?.defaultValues?.email || "",
+      message: actionData?.defaultValues?.message || "",
+    },
+  });
 
   return (
     <div className="mx-auto max-w-3xl px-6">
@@ -87,7 +93,7 @@ export default function Contact() {
             </div>
           </div>
         ) : (
-          <Form method="post" className="mt-10 space-y-6">
+          <fetcher.Form method="post" className="mt-10" onSubmit={handleSubmit}>
             {/* Honeypot — hidden from real users */}
             <div className="absolute left-[-9999px]" aria-hidden="true">
               <input
@@ -99,59 +105,72 @@ export default function Contact() {
             </div>
             <input type="hidden" name="_timestamp" value={Date.now()} />
 
-            <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
+            <FieldGroup>
+              <Controller
                 name="name"
-                placeholder="Your name"
-                required
-                minLength={2}
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid || undefined}>
+                    <FieldLabel htmlFor={field.name}>Name</FieldLabel>
+                    <Input
+                      {...field}
+                      id={field.name}
+                      placeholder="Your name"
+                      aria-invalid={fieldState.invalid}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
               />
-              {actionData?.errors?.name && (
-                <p className="flex items-center gap-1 text-sm text-destructive">
-                  <AlertCircle className="h-3 w-3" />
-                  {actionData.errors.name[0]}
-                </p>
-              )}
-            </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
+              <Controller
                 name="email"
-                type="email"
-                placeholder="your@email.com"
-                required
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid || undefined}>
+                    <FieldLabel htmlFor={field.name}>Email</FieldLabel>
+                    <Input
+                      {...field}
+                      id={field.name}
+                      type="email"
+                      placeholder="your@email.com"
+                      aria-invalid={fieldState.invalid}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
               />
-              {actionData?.errors?.email && (
-                <p className="flex items-center gap-1 text-sm text-destructive">
-                  <AlertCircle className="h-3 w-3" />
-                  {actionData.errors.email[0]}
-                </p>
-              )}
-            </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="message">Message</Label>
-              <Textarea
-                id="message"
+              <Controller
                 name="message"
-                placeholder="Tell me about your project..."
-                rows={5}
-                required
-                minLength={10}
+                control={control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid || undefined}>
+                    <FieldLabel htmlFor={field.name}>Message</FieldLabel>
+                    <Textarea
+                      {...field}
+                      id={field.name}
+                      placeholder="Tell me about your project..."
+                      rows={5}
+                      aria-invalid={fieldState.invalid}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
               />
-              {actionData?.errors?.message && (
-                <p className="flex items-center gap-1 text-sm text-destructive">
-                  <AlertCircle className="h-3 w-3" />
-                  {actionData.errors.message[0]}
-                </p>
-              )}
-            </div>
+            </FieldGroup>
 
-            <Button type="submit" disabled={isSubmitting}>
+            <Button
+              type="submit"
+              disabled={isSubmitting || !isValid}
+              className="mt-7"
+            >
               {isSubmitting ? (
                 "Sending..."
               ) : (
@@ -161,7 +180,7 @@ export default function Contact() {
                 </>
               )}
             </Button>
-          </Form>
+          </fetcher.Form>
         )}
       </section>
     </div>
