@@ -13,3 +13,5 @@
 
 # Drizzle
 /drizzle/
+
+.claude/settings.local.json
