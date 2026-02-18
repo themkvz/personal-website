@@ -1,3 +1,4 @@
+import { NuqsAdapter } from "nuqs/adapters/react-router/v7";
 import {
   data,
   isRouteErrorResponse,
@@ -8,7 +9,6 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from "react-router";
-
 import type { Route } from "./+types/root";
 import "./app.css";
 import "@fontsource-variable/inter";
@@ -53,13 +53,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header />
-      <main className="flex-1 mt-header">
-        <Outlet />
-      </main>
-      <Footer />
-    </div>
+    <NuqsAdapter>
+      <div className="flex min-h-screen flex-col">
+        <Header />
+        <main className="flex-1 mt-header">
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
+    </NuqsAdapter>
   );
 }
 

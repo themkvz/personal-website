@@ -1,10 +1,22 @@
 import { desc, eq, sql } from "drizzle-orm";
 import { ExternalLink, ThumbsUp } from "lucide-react";
+import { parseAsStringEnum, useQueryState } from "nuqs";
 import { useFetcher } from "react-router";
 import { Button } from "~/components/ui/button";
 import { db } from "~/db";
 import { bookmarks } from "~/db/schema";
 import type { Route } from "./+types/bookmarks";
+
+enum SortOption {
+  Newest = "newest",
+  Popular = "popular",
+}
+
+const sortParser = parseAsStringEnum<SortOption>(Object.values(SortOption))
+  .withDefault(SortOption.Newest)
+  .withOptions({
+    clearOnDefault: true,
+  });
 
 export function meta() {
   return [
@@ -19,13 +31,17 @@ export function meta() {
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
-  const sort = url.searchParams.get("sort") || "newest";
+  const sort =
+    (url.searchParams.get("sort") as SortOption) || SortOption.Newest;
 
   const orderBy =
-    sort === "popular" ? desc(bookmarks.upvotes) : desc(bookmarks.createdAt);
+    sort === SortOption.Popular
+      ? desc(bookmarks.upvotes)
+      : desc(bookmarks.createdAt);
 
   const items = db.select().from(bookmarks).orderBy(orderBy).all();
-  return { bookmarks: items, sort };
+
+  return { bookmarks: items };
 }
 
 export async function action({ request }: Route.ActionArgs) {
@@ -112,7 +128,8 @@ function BookmarkCard({
 }
 
 export default function Bookmarks({ loaderData }: Route.ComponentProps) {
-  const { bookmarks: items, sort } = loaderData;
+  const { bookmarks: items } = loaderData;
+  const [sort, setSort] = useQueryState("sort", sortParser);
 
   return (
     <div className="mx-auto max-w-3xl px-6">
@@ -131,26 +148,20 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
 
         {/* Sort controls */}
         <div className="mt-8 flex items-center gap-2">
-          <a
-            href="?sort=newest"
-            className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-              sort === "newest"
-                ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:bg-accent"
-            }`}
-          >
-            Newest
-          </a>
-          <a
-            href="?sort=popular"
-            className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-              sort === "popular"
-                ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:bg-accent"
-            }`}
-          >
-            Popular
-          </a>
+          {Object.values(SortOption).map((option) => (
+            <button
+              key={option}
+              type="button"
+              onClick={() => setSort(option)}
+              className={`rounded-md px-3 py-1.5 text-sm font-medium capitalize transition-colors ${
+                sort === option
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:bg-accent"
+              }`}
+            >
+              {option}
+            </button>
+          ))}
         </div>
 
         {/* Bookmark list */}
