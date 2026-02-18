@@ -13,7 +13,10 @@ import {
 } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
+import { db } from "~/db";
+import { contacts } from "~/db/schema";
 import { isSpam } from "~/lib/anti-spam";
+import { getClientInfo } from "~/lib/client-info";
 import { contactSchema } from "~/schemas/contact";
 import type { Route } from "./+types/contact";
 
@@ -46,8 +49,13 @@ export async function action({ request }: Route.ActionArgs) {
     return { success: false as const, errors, defaultValues };
   }
 
-  // TODO: Send to email/messenger service
-  console.log("Contact form submission:", data);
+  const { ip, userAgent } = getClientInfo(request);
+
+  await db.insert(contacts).values({
+    ...data,
+    ip,
+    userAgent,
+  });
 
   return { success: true as const };
 }

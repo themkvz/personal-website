@@ -16,6 +16,8 @@ export const contacts = sqliteTable("contacts", {
   name: text("name").notNull(),
   email: text("email").notNull(),
   message: text("message").notNull(),
+  ip: text("ip"),
+  userAgent: text("user_agent"),
   createdAt: text("created_at")
     .notNull()
     .$defaultFn(() => new Date().toISOString()),
