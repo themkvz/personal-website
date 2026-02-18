@@ -15,6 +15,7 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import { Footer } from "~/components/layout/footer";
 import { Header } from "~/components/layout/header";
+import { identityMiddleware } from "~/middlewares/identity";
 import { resolveThemeClass, type Theme } from "~/store/theme";
 
 function parseThemeCookie(cookieHeader: string | null): Theme {
@@ -22,6 +23,8 @@ function parseThemeCookie(cookieHeader: string | null): Theme {
   const match = cookieHeader.match(/(?:^|;\s*)theme=(\w+)/);
   return (match?.[1] as Theme) || "system";
 }
+
+export const middleware = [identityMiddleware];
 
 export function loader({ request }: Route.LoaderArgs) {
   const theme = parseThemeCookie(request.headers.get("Cookie"));

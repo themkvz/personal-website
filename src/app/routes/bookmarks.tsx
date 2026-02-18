@@ -1,8 +1,10 @@
-import { desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 import { useQueryState } from "nuqs";
 import { BookmarkCard } from "~/components/bookmarks/bookmark-card";
+import { Button } from "~/components/ui/button";
+import { userContext } from "~/context/user";
 import { db } from "~/db";
-import { bookmarks } from "~/db/schema";
+import { bookmarks, bookmarkVotes } from "~/db/schema";
 import { loadSearchParams, SortOption, sortParser } from "~/schemas/bookmarks";
 import type { Route } from "./+types/bookmarks";
 
@@ -17,7 +19,7 @@ export function meta() {
   ];
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const { sort } = loadSearchParams(request);
 
   const orderBy =
@@ -25,27 +27,56 @@ export async function loader({ request }: Route.LoaderArgs) {
       ? desc(bookmarks.upvotes)
       : desc(bookmarks.createdAt);
 
-  const items = db.select().from(bookmarks).orderBy(orderBy).all();
+  const fingerprint = context.get(userContext).fingerprint;
 
-  return { bookmarks: items };
+  const [items, votes] = await Promise.all([
+    db.select().from(bookmarks).orderBy(orderBy),
+    db
+      .select({ bookmarkId: bookmarkVotes.bookmarkId })
+      .from(bookmarkVotes)
+      .where(eq(bookmarkVotes.fingerprint, fingerprint)),
+  ]);
+
+  return { bookmarks: items, votes };
 }
 
-export async function action({ request }: Route.ActionArgs) {
+export async function action({ request, context }: Route.ActionArgs) {
   const formData = await request.formData();
   const id = Number(formData.get("id"));
 
   if (!id) return { error: "Invalid bookmark ID" };
 
-  db.update(bookmarks)
-    .set({ upvotes: sql`${bookmarks.upvotes} + 1` })
-    .where(eq(bookmarks.id, id))
-    .run();
+  const fingerprint = context.get(userContext).fingerprint;
 
-  return { success: true };
+  const existing = await db
+    .select({ id: bookmarkVotes.id })
+    .from(bookmarkVotes)
+    .where(
+      and(
+        eq(bookmarkVotes.bookmarkId, id),
+        eq(bookmarkVotes.fingerprint, fingerprint),
+      ),
+    );
+
+  if (existing && existing.length > 0) {
+    return { alreadyVoted: true };
+  }
+
+  try {
+    await db.insert(bookmarkVotes).values({ bookmarkId: id, fingerprint });
+    await db
+      .update(bookmarks)
+      .set({ upvotes: sql`${bookmarks.upvotes} + 1` })
+      .where(eq(bookmarks.id, id));
+
+    return { success: true };
+  } catch (_) {
+    return { error: "An error occurred while processing your vote." };
+  }
 }
 
 export default function Bookmarks({ loaderData }: Route.ComponentProps) {
-  const { bookmarks: items } = loaderData;
+  const { bookmarks: items, votes } = loaderData;
   const [sort, setSort] = useQueryState("sort", sortParser);
 
   return (
@@ -66,18 +97,13 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
         {/* Sort controls */}
         <div className="mt-8 flex items-center gap-2">
           {Object.values(SortOption).map((option) => (
-            <button
+            <Button
               key={option}
-              type="button"
               onClick={() => setSort(option)}
-              className={`rounded-md px-3 py-1.5 text-sm font-medium capitalize transition-colors ${
-                sort === option
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:bg-accent"
-              }`}
+              variant={sort === option ? "default" : "outline"}
             >
               {option}
-            </button>
+            </Button>
           ))}
         </div>
 
@@ -89,7 +115,13 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
             </p>
           ) : (
             items.map((bookmark) => (
-              <BookmarkCard key={bookmark.id} bookmark={bookmark} />
+              <BookmarkCard
+                key={bookmark.id}
+                bookmark={bookmark}
+                hasVoted={
+                  votes.find((v) => v.bookmarkId === bookmark.id) !== undefined
+                }
+              />
             ))
           )}
         </div>

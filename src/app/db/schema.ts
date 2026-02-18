@@ -1,4 +1,9 @@
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import {
+  integer,
+  sqliteTable,
+  text,
+  uniqueIndex,
+} from "drizzle-orm/sqlite-core";
 
 export const bookmarks = sqliteTable("bookmarks", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -10,6 +15,24 @@ export const bookmarks = sqliteTable("bookmarks", {
     .notNull()
     .$defaultFn(() => new Date().toISOString()),
 });
+
+export const bookmarkVotes = sqliteTable(
+  "bookmark_votes",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    bookmarkId: integer("bookmark_id").notNull(),
+    fingerprint: text("fingerprint").notNull(),
+    createdAt: text("created_at")
+      .notNull()
+      .$defaultFn(() => new Date().toISOString()),
+  },
+  (table) => [
+    uniqueIndex("bookmark_votes_bookmark_fingerprint_idx").on(
+      table.bookmarkId,
+      table.fingerprint,
+    ),
+  ],
+);
 
 export const contacts = sqliteTable("contacts", {
   id: integer("id").primaryKey({ autoIncrement: true }),

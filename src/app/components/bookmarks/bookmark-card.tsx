@@ -6,11 +6,18 @@ import type { bookmarks } from "~/db/schema";
 
 type Bookmark = InferSelectModel<typeof bookmarks>;
 
-export function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
+export function BookmarkCard({
+  bookmark,
+  hasVoted,
+}: {
+  bookmark: Bookmark;
+  hasVoted: boolean;
+}) {
   const fetcher = useFetcher();
-  const isUpvoting = fetcher.state !== "idle";
-  const optimisticUpvotes =
-    fetcher.state !== "idle" ? bookmark.upvotes + 1 : bookmark.upvotes;
+  const isUpvoting = !hasVoted && fetcher.state !== "idle";
+  const optimisticUpvotes = isUpvoting
+    ? bookmark.upvotes + 1
+    : bookmark.upvotes;
 
   return (
     <div className="group flex items-start gap-4 rounded-lg border bg-card p-4 transition-colors hover:bg-accent/50">
@@ -20,11 +27,11 @@ export function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
           type="submit"
           variant="ghost"
           size="sm"
-          disabled={isUpvoting}
+          disabled={hasVoted || isUpvoting}
           className="flex h-auto flex-col items-center gap-1 px-2 py-2"
         >
           <ThumbsUp
-            className={`h-4 w-4 ${isUpvoting ? "text-primary" : "text-muted-foreground"}`}
+            className={`h-4 w-4 ${hasVoted || isUpvoting ? "text-primary" : "text-muted-foreground"}`}
           />
           <span className="font-mono text-xs">{optimisticUpvotes}</span>
         </Button>
