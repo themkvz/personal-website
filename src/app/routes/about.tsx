@@ -169,11 +169,30 @@ export default function About() {
             compliance with regulatory requirements.
           </p>
 
-          {/*
-          TODO: Add store images with links
-          https://play.google.com/store/apps/details?id=ua.ivolunteer&hl=uk
-          https://apps.apple.com/ua/app/%D1%8F-%D0%B4%D0%BE%D0%B1%D1%80%D0%BE%D0%B2%D0%BE%D0%BB%D0%B5%D1%86%D1%8C/id6739776489
-          */}
+          <div className="mt-4 flex items-center gap-3">
+            <a
+              href="https://apps.apple.com/ua/app/%D1%8F-%D0%B4%D0%BE%D0%B1%D1%80%D0%BE%D0%B2%D0%BE%D0%BB%D0%B5%D1%86%D1%8C/id6739776489"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="/apple-store.svg"
+                alt="Download on the App Store"
+                className="h-10"
+              />
+            </a>
+            <a
+              href="https://play.google.com/store/apps/details?id=ua.ivolunteer&hl=uk"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="/google-store.svg"
+                alt="Get it on Google Play"
+                className="h-10"
+              />
+            </a>
+          </div>
         </div>
       </section>
 
