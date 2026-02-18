@@ -4,9 +4,9 @@ import { Button, buttonVariants } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
 import {
   FOOTER_NAV_LINKS,
+  PROJECT_TECH_STACK,
   PUBLIC_EMAIL,
   SOCIAL_LINKS,
-  TECH_STACK_KEYWORDS,
 } from "~/constants";
 import { cn } from "~/lib/utils";
 
@@ -111,9 +111,9 @@ export function Footer() {
         <div className="py-8">
           <p className="text-xs text-muted-foreground text-center sm:text-left">
             Built with{" "}
-            {TECH_STACK_KEYWORDS.map((tech, i) => (
+            {PROJECT_TECH_STACK.map((tech, i) => (
               <span key={tech}>
-                {i > 0 && (i === TECH_STACK_KEYWORDS.length - 1 ? " & " : ", ")}
+                {i > 0 && (i === PROJECT_TECH_STACK.length - 1 ? " & " : ", ")}
                 <span className="text-foreground/70">{tech}</span>
               </span>
             ))}

@@ -1,106 +1,7 @@
 import { Briefcase, GraduationCap, Heart, MapPin } from "lucide-react";
 import { Badge } from "~/components/ui/badge";
 import { Separator } from "~/components/ui/separator";
-
-const experience = [
-  {
-    role: "Full-Stack Developer",
-    company: "Forex Tester Software",
-    location: "Lviv",
-    period: "June 2024 — Present",
-    description:
-      "Rebuilding the public website and internal dashboard, transitioning legacy systems to a modern technology stack. Enhanced UI/UX, streamlined workflows, and improved scalability.",
-  },
-  {
-    role: "Lead Developer",
-    company: "DevOut Labs (Altum Software)",
-    location: "Lviv",
-    period: "Sep 2022 — Mar 2024",
-    description:
-      "Led development team designing websites and applications. Conducted technical code reviews, allocated tasks, onboarded new teammates. Increased sales through highly integrated systems and extended the team via tech interviews.",
-  },
-  {
-    role: "Full-Stack Developer",
-    company: "Altum Agency (Altum Software)",
-    location: "Lviv",
-    period: "Mar 2022 — Sep 2022",
-    description:
-      "Created WordPress-based sites, performed technical reviews for junior developers, outlined project scope. Increased client base and improved team code quality.",
-  },
-  {
-    role: "Full-Stack Developer",
-    company: "Deosebit Service SRL",
-    location: "Chisinau",
-    period: "Aug 2017 — Jun 2022",
-    description:
-      "Created projects for customers across multiple countries in a small SEO-oriented team. Built WordPress sites, managed VPS servers, and found new market opportunities.",
-  },
-  {
-    role: "Front-End Developer",
-    company: "Freelance",
-    location: "Remote",
-    period: "Jan 2013 — Jan 2019",
-    description:
-      "Starting point in IT. Fully engaged in the entire development process — from client communication to deployment.",
-  },
-];
-
-const notableProjects = [
-  {
-    name: "TrekMovers",
-    url: "https://trekmovers.com/",
-    description: "Forbes list company with custom CRM integration",
-  },
-  {
-    name: "Karcher Regional Shops",
-    description:
-      "E-commerce platform deployed across 8 countries (RS, GE, KZ, BG, AZ, AM, MD, BY)",
-  },
-  {
-    name: "Web3 Validator",
-    url: "https://web3validator.info/",
-    description: "Knowledge base for blockchain",
-  },
-  {
-    name: "AviaSim",
-    url: "https://aviasim.com.ua/",
-    description: "Flight simulator booking platform",
-  },
-  {
-    name: "NSP25",
-    url: "https://nsp25.md/ro/",
-    description: "Multi-vendor platform with subdomain support for co-agents",
-  },
-];
-
-const techStack = {
-  Frontend: [
-    "React",
-    "React Router",
-    "Next.js",
-    "Remix",
-    "Expo",
-    "TypeScript",
-    "JavaScript",
-    "Tailwind CSS",
-    "SASS/SCSS",
-    "HTML5",
-    "CSS3",
-  ],
-  Backend: ["Node.js", "Express.js", "Fastify", "PHP", "WordPress", "REST API"],
-  "Data & Tools": [
-    "Prisma",
-    "PostgreSQL",
-    "MongoDB",
-    "MySQL",
-    "Supabase",
-    "AWS",
-    "Git",
-    "Jest",
-    "PHPUnit",
-  ],
-  Patterns: ["MVC", "MVVM", "PWA", "Headless CMS"],
-};
+import { EXPERIENCE, NOTABLE_PROJECTS, TECH_STACK } from "~/constants";
 
 export function meta() {
   return [
@@ -148,8 +49,9 @@ export default function About() {
           <Briefcase className="h-5 w-5" />
           Experience
         </h2>
+
         <div className="mt-8 space-y-10">
-          {experience.map((job) => (
+          {EXPERIENCE.map((job) => (
             <div key={`${job.company}-${job.period}`}>
               <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
                 <div>
@@ -157,6 +59,16 @@ export default function About() {
                   <p className="text-sm text-muted-foreground">
                     {job.company} · {job.location}
                   </p>
+                  {job.site && (
+                    <a
+                      href={job.site}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      {job.site}
+                    </a>
+                  )}
                 </div>
                 <p className="font-mono text-xs text-muted-foreground">
                   {job.period}
@@ -175,13 +87,28 @@ export default function About() {
       {/* Notable Projects */}
       <section className="py-16">
         <h2 className="text-lg font-semibold tracking-tight">
-          Notable Projects
+          Notable and Public Projects
         </h2>
         <div className="mt-8 space-y-6">
-          {notableProjects.map((project) => (
+          {NOTABLE_PROJECTS.map((project) => (
             <div key={project.name}>
               <div className="flex items-baseline gap-2">
-                <h3 className="font-medium">{project.name}</h3>
+                <h3 className="font-medium">
+                  {/*{project.name}*/}
+
+                  {project.url ? (
+                    <a
+                      href={project.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {project.name}
+                    </a>
+                  ) : (
+                    <>{project.name}</>
+                  )}
+                </h3>
+
                 {project.url && (
                   <a
                     href={project.url}
@@ -189,7 +116,7 @@ export default function About() {
                     rel="noopener noreferrer"
                     className="font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
                   >
-                    ↗
+                    {project.url}
                   </a>
                 )}
               </div>
@@ -207,7 +134,7 @@ export default function About() {
       <section className="py-16">
         <h2 className="text-lg font-semibold tracking-tight">Tech Stack</h2>
         <div className="mt-8 space-y-6">
-          {Object.entries(techStack).map(([category, techs]) => (
+          {Object.entries(TECH_STACK).map(([category, techs]) => (
             <div key={category}>
               <h3 className="text-sm font-medium text-muted-foreground">
                 {category}
@@ -233,7 +160,7 @@ export default function About() {
           Volunteering
         </h2>
         <div className="mt-6">
-          <h3 className="font-medium">Я-Доброволець (I-Volunteer)</h3>
+          <h3 className="font-medium">Я-Доброволець</h3>
           <p className="font-mono text-xs text-muted-foreground">June 2024</p>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
             Developed a cross-platform mobile application (Android & iOS) and
@@ -241,6 +168,12 @@ export default function About() {
             ensure seamless integration with the government register and
             compliance with regulatory requirements.
           </p>
+
+          {/*
+          TODO: Add store images with links
+          https://play.google.com/store/apps/details?id=ua.ivolunteer&hl=uk
+          https://apps.apple.com/ua/app/%D1%8F-%D0%B4%D0%BE%D0%B1%D1%80%D0%BE%D0%B2%D0%BE%D0%BB%D0%B5%D1%86%D1%8C/id6739776489
+          */}
         </div>
       </section>
 
