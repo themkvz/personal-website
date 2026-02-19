@@ -1,35 +1,14 @@
 import { MapPin } from "lucide-react";
 import { Link } from "react-router";
+import { SOCIAL_ICONS } from "~/components/social-icons";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
 import {
   FOOTER_NAV_LINKS,
   PROJECT_TECH_STACK,
-  PUBLIC_EMAIL,
   SOCIAL_LINKS,
 } from "~/constants";
 import { cn } from "~/lib/utils";
-
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Ihor Mukovoz",
-  url: "https://themkvz.com",
-  jobTitle: "Full-Stack Developer & Tech Lead",
-  sameAs: [
-    "https://github.com/themkvz",
-    "https://www.linkedin.com/in/ihor-mukovoz/",
-  ],
-  knowsAbout: [
-    "React",
-    "TypeScript",
-    "Node.js",
-    "Next.js",
-    "PostgreSQL",
-    "Full-Stack Development",
-  ],
-  email: PUBLIC_EMAIL,
-};
 
 export function Footer() {
   return (
@@ -85,22 +64,27 @@ export function Footer() {
           <div>
             <h3 className="text-sm font-semibold">Connect</h3>
             <ul className="mt-3">
-              {SOCIAL_LINKS.map(({ href, label, icon }) => (
-                <li key={label}>
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={cn(
-                      buttonVariants({ variant: "link" }),
-                      "px-0! text-muted-foreground",
-                    )}
-                  >
-                    {icon}
-                    {label}
-                  </a>
-                </li>
-              ))}
+              {SOCIAL_LINKS.map(({ href, label, icon }) => {
+                const IconComponent =
+                  SOCIAL_ICONS[icon as keyof typeof SOCIAL_ICONS];
+
+                return (
+                  <li key={label}>
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={cn(
+                        buttonVariants({ variant: "link" }),
+                        "px-0! text-muted-foreground",
+                      )}
+                    >
+                      {<IconComponent />}
+                      {label}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
@@ -129,18 +113,23 @@ export function Footer() {
           </p>
 
           <div className="flex items-center gap-4">
-            {SOCIAL_LINKS.map(({ href, label, icon }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={buttonVariants({ variant: "ghost", size: "icon" })}
-                aria-label={label}
-              >
-                {icon}
-              </a>
-            ))}
+            {SOCIAL_LINKS.map(({ href, label, icon }) => {
+              const IconComponent =
+                SOCIAL_ICONS[icon as keyof typeof SOCIAL_ICONS];
+
+              return (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={buttonVariants({ variant: "ghost", size: "icon" })}
+                  aria-label={label}
+                >
+                  {<IconComponent />}
+                </a>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -157,12 +146,6 @@ export function Footer() {
           THEMKVZ
         </p>
       </div>
-
-      {/* SEO: JSON-LD structured data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
     </footer>
   );
 }

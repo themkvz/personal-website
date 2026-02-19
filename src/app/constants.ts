@@ -1,4 +1,3 @@
-import { Github, Linkedin, Mail } from "lucide-react";
 import type { SKILL_ICON_KEY } from "~/components/skill-icons";
 
 export const PUBLIC_EMAIL = "ihor@themkvz.com";
@@ -21,17 +20,17 @@ export const SOCIAL_LINKS = [
   {
     href: "https://github.com/themkvz",
     label: "GitHub",
-    icon: <Github className="size-5" />,
+    icon: "github",
   },
   {
     href: "https://www.linkedin.com/in/ihor-mukovoz/",
     label: "LinkedIn",
-    icon: <Linkedin className="size-5" />,
+    icon: "linkedin",
   },
   {
     href: `mailto:${PUBLIC_EMAIL}`,
     label: "Email",
-    icon: <Mail className="size-5" />,
+    icon: "email",
   },
 ];
 
