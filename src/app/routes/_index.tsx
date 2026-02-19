@@ -12,6 +12,12 @@ export function meta() {
       content:
         "Full-Stack Developer & Tech Lead with 8+ years of experience building modern web applications.",
     },
+    { property: "og:title", content: "Ihor Mukovoz — Full-Stack Developer" },
+    {
+      property: "og:description",
+      content:
+        "Full-Stack Developer & Tech Lead with 8+ years of experience building modern web applications.",
+    },
   ];
 }
 

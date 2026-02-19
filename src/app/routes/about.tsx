@@ -11,6 +11,12 @@ export function meta() {
       content:
         "Learn more about Ihor Mukovoz — Full-Stack Developer with 8+ years of experience.",
     },
+    { property: "og:title", content: "About — Ihor Mukovoz" },
+    {
+      property: "og:description",
+      content:
+        "Learn more about Ihor Mukovoz — Full-Stack Developer with 8+ years of experience.",
+    },
   ];
 }
 

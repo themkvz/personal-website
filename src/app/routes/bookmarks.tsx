@@ -16,6 +16,12 @@ export function meta() {
       content:
         "A curated collection of interesting links, tools, and resources.",
     },
+    { property: "og:title", content: "Bookmarks — Ihor Mukovoz" },
+    {
+      property: "og:description",
+      content:
+        "A curated collection of interesting links, tools, and resources.",
+    },
   ];
 }
 

@@ -15,8 +15,38 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import { Footer } from "~/components/layout/footer";
 import { Header } from "~/components/layout/header";
+import { PUBLIC_EMAIL, SOCIAL_LINKS } from "~/constants";
 import { identityMiddleware } from "~/middlewares/identity";
 import { resolveThemeClass, type Theme } from "~/store/theme";
+
+export const links: Route.LinksFunction = () => [
+  { rel: "canonical", href: "https://themkvz.com" },
+  { rel: "icon", href: "/favicon.ico" },
+  { rel: "apple-touch-icon", href: "/apple-store.svg" },
+];
+
+export const meta: Route.MetaFunction = () => {
+  return [
+    { title: "Ihor Mukovoz — Full-Stack Developer" },
+    {
+      name: "description",
+      content:
+        "Full-Stack Developer & Tech Lead with 8+ years of experience building modern web applications.",
+    },
+    { property: "og:type", content: "website" },
+    { property: "og:site_name", content: "Ihor Mukovoz" },
+    { property: "og:url", content: "https://themkvz.com" },
+    {
+      property: "og:image",
+      content: "https://themkvz.com/hero.webp",
+    },
+    { name: "twitter:card", content: "summary_large_image" },
+    {
+      name: "twitter:image",
+      content: "https://themkvz.com/hero.webp",
+    },
+  ];
+};
 
 function parseThemeCookie(cookieHeader: string | null): Theme {
   if (!cookieHeader) return "system";
@@ -37,6 +67,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
   // For "system" theme, server defaults to "light"; client corrects on hydration
   const themeClass = theme === "system" ? "light" : resolveThemeClass(theme);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Ihor Mukovoz",
+    url: "https://themkvz.com",
+    image: "https://themkvz.com/hero.webp",
+    sameAs: SOCIAL_LINKS.map((link) => link.href),
+    jobTitle: "Full-Stack Developer",
+    email: PUBLIC_EMAIL,
+  };
+
   return (
     <html lang="en" className={themeClass} suppressHydrationWarning>
       <head>
@@ -44,6 +85,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body className="min-h-screen font-sans antialiased">
         {children}

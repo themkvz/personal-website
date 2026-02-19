@@ -29,7 +29,14 @@ export function meta() {
     { title: "Contact — Ihor Mukovoz" },
     {
       name: "description",
-      content: "Get in touch with Ihor Mukovoz.",
+      content:
+        "Get in touch with Ihor Mukovoz for project inquiries or collaboration.",
+    },
+    { property: "og:title", content: "Contact — Ihor Mukovoz" },
+    {
+      property: "og:description",
+      content:
+        "Get in touch with Ihor Mukovoz for project inquiries or collaboration.",
     },
   ];
 }
