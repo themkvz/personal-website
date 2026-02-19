@@ -1,3 +1,4 @@
+import { ExperienceTimeline } from "~/components/experience-timeline";
 import { Hero } from "~/components/hero";
 import { Highlights } from "~/components/highlights";
 import { Skills } from "~/components/skills";
@@ -27,6 +28,11 @@ export default function Home() {
 
       {/* Quick highlights */}
       <Highlights />
+
+      <Separator />
+
+      {/* Experience */}
+      <ExperienceTimeline />
     </div>
   );
 }

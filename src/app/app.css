@@ -44,6 +44,7 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+
   --spacing-header: 4rem;
 }
 
@@ -107,5 +108,11 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .container {
+    @apply mx-auto px-4 max-w-7xl;
   }
 }
