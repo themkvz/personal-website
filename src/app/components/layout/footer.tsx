@@ -42,6 +42,7 @@ export function Footer() {
                 <li key={to}>
                   <Button
                     variant="link"
+                    nativeButton={false}
                     render={(props) => (
                       <Link
                         {...props}

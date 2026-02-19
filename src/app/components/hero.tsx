@@ -33,12 +33,16 @@ export function Hero() {
       </div>
 
       <div className="mt-8 flex items-center gap-4">
-        <Button render={<Link to="/contact" />}>
+        <Button render={<Link to="/contact" />} nativeButton={false}>
           Get in touch
           <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
 
-        <Button variant="outline" render={<Link to="/about" />}>
+        <Button
+          variant="outline"
+          render={<Link to="/about" />}
+          nativeButton={false}
+        >
           About
         </Button>
       </div>
