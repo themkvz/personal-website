@@ -4,21 +4,24 @@ import { Controller } from "react-hook-form";
 import { useFetcher } from "react-router";
 import { getValidatedFormData, useRemixForm } from "remix-hook-form";
 import type { z } from "zod/v4";
-import type { Route } from "../../.react-router/types/src/routes";
-import { Button } from "../components/ui/button";
+import { Button } from "~/components/ui/button";
 import {
   Field,
   FieldError,
   FieldGroup,
   FieldLabel,
-} from "../components/ui/field";
-import { Input } from "../components/ui/input";
-import { Textarea } from "../components/ui/textarea";
-import { db } from "../db";
-import { contacts } from "../db/schema";
-import { isSpam } from "../lib/anti-spam";
-import { getClientInfo } from "../lib/client-info";
-import { contactSchema } from "../schemas/contact";
+} from "~/components/ui/field";
+import { Input } from "~/components/ui/input";
+import { Textarea } from "~/components/ui/textarea";
+import { db } from "~/db";
+import { contacts } from "~/db/schema";
+import { isSpam } from "~/lib/anti-spam";
+import { getClientInfo } from "~/lib/client-info";
+import { TRACK_EVENTS } from "~/lib/openpanel/events";
+import { trackEvent } from "~/lib/openpanel/getOpenPanel";
+import { useTrack } from "~/lib/openpanel/useOpenPanel";
+import { contactSchema } from "~/schemas/contact";
+import type { Route } from "./+types/contact";
 
 type ContactFormData = z.infer<typeof contactSchema>;
 
@@ -67,12 +70,19 @@ export async function action({ request }: Route.ActionArgs) {
     userAgent,
   });
 
+  trackEvent(TRACK_EVENTS.CONTACT_SAVED, {
+    ...data,
+    ip,
+    userAgent,
+  });
+
   return { success: true as const };
 }
 
 export default function Contact() {
   const fetcher = useFetcher<typeof action>();
   const actionData = fetcher.data;
+  const track = useTrack();
 
   const {
     handleSubmit,
@@ -188,6 +198,7 @@ export default function Contact() {
               type="submit"
               disabled={isSubmitting || !isValid}
               className="mt-7"
+              onClick={() => track(TRACK_EVENTS.SUBMIT_FORM_CLICKED)}
             >
               {isSubmitting ? (
                 "Sending..."

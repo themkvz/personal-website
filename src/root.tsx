@@ -9,10 +9,13 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from "react-router";
-import type { Route } from "../.react-router/types/src/+types";
 import "./app.css";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
+import { useEffect } from "react";
+import { userContext } from "~/context/user";
+import { useIdentify } from "~/lib/openpanel/useOpenPanel";
+import type { Route } from "./+types/root";
 import { Footer } from "./components/layout/footer";
 import { Header } from "./components/layout/header";
 import { BASE_URL, PUBLIC_EMAIL, SOCIAL_LINKS } from "./constants";
@@ -63,9 +66,12 @@ function parseThemeCookie(cookieHeader: string | null): Theme {
 
 export const middleware = [identityMiddleware];
 
-export function loader({ request }: Route.LoaderArgs) {
+export function loader({ request, context }: Route.LoaderArgs) {
   const theme = parseThemeCookie(request.headers.get("Cookie"));
-  return data({ theme });
+
+  const fingerprint = context.get(userContext).fingerprint;
+
+  return data({ theme, fingerprint });
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -117,7 +123,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
+export default function App({ loaderData }: Route.ComponentProps) {
+  const { fingerprint } = loaderData;
+  const identify = useIdentify();
+
+  useEffect(() => {
+    identify({
+      profileId: fingerprint,
+      properties: {
+        fingerprint,
+      },
+    });
+  }, [fingerprint, identify]);
+
   return (
     <NuqsAdapter>
       <div className="flex min-h-screen flex-col">

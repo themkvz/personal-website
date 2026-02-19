@@ -1,8 +1,12 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
+import { TRACK_EVENTS } from "~/lib/openpanel/events";
+import { useTrack } from "~/lib/openpanel/useOpenPanel";
 import { Button } from "./ui/button";
 
 export function Hero() {
+  const track = useTrack();
+
   return (
     <section
       className="-mt-header px-6 pt-28 pb-60 lg:pt-36 lg:pb-72 text-center flex flex-col items-center bg-cover bg-bottom bg-no-repeat"
@@ -33,7 +37,11 @@ export function Hero() {
       </div>
 
       <div className="mt-8 flex items-center gap-4">
-        <Button render={<Link to="/contact" />} nativeButton={false}>
+        <Button
+          render={<Link to="/contact" />}
+          nativeButton={false}
+          onClick={() => track(TRACK_EVENTS.HERO_GET_IN)}
+        >
           Get in touch
           <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
@@ -42,6 +50,7 @@ export function Hero() {
           variant="outline"
           render={<Link to="/about" />}
           nativeButton={false}
+          onClick={() => track(TRACK_EVENTS.HERO_ABOUT_CLICKED)}
         >
           About
         </Button>
