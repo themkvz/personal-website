@@ -226,8 +226,8 @@ export function DecryptedText({
             revealedIndices.has(index) || !isScrambling || !isHovering;
 
           return (
-            // biome-ignore lint/suspicious/noArrayIndexKey: all fine is here since text is static and won't change
             <span
+              // biome-ignore lint/suspicious/noArrayIndexKey: all fine here
               key={index}
               className={isRevealedOrDone ? className : encryptedClassName}
             >
