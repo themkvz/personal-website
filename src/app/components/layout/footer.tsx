@@ -24,13 +24,15 @@ export function Footer() {
             >
               themkvz
             </Link>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              Full-Stack Developer & Tech Lead with 8+ years of experience
-              building modern web applications.
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+              Senior Full-Stack & Front-End Developer. Architecting scalable
+              solutions with <strong>React</strong>, <strong>TypeScript</strong>
+              , and <strong>Node.js</strong>. Leveraging AI to accelerate
+              delivery and ensure top-tier code quality.
             </p>
-            <div className="mt-4 flex items-center gap-1 text-sm text-muted-foreground">
-              <MapPin className="h-3.5 w-3.5" />
-              <span>Ukraine</span>
+            <div className="mt-6 flex items-center gap-2 text-sm font-medium text-muted-foreground">
+              <MapPin className="h-4 w-4" />
+              <span>Lviv, Ukraine</span>
             </div>
           </div>
 
