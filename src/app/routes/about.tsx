@@ -5,17 +5,20 @@ import { EXPERIENCE, NOTABLE_PROJECTS, TECH_STACK } from "~/constants";
 
 export function meta() {
   return [
-    { title: "About — Ihor Mukovoz" },
+    { title: "About Ihor M. — Experience & Tech Stack" },
     {
       name: "description",
       content:
-        "Learn more about Ihor Mukovoz — Full-Stack Developer with 8+ years of experience.",
+        "8+ years of experience in software engineering. Specialized in building modern web platforms using React, Next.js, and Node.js. Based in Lviv, open to global opportunities.",
     },
-    { property: "og:title", content: "About — Ihor Mukovoz" },
+    {
+      property: "og:title",
+      content: "About Ihor M. — Experience & Tech Stack",
+    },
     {
       property: "og:description",
       content:
-        "Learn more about Ihor Mukovoz — Full-Stack Developer with 8+ years of experience.",
+        "8+ years of experience in software engineering. Specialized in building modern web platforms using React, Next.js, and Node.js.",
     },
   ];
 }
@@ -109,7 +112,7 @@ export default function About() {
                       {project.name}
                     </a>
                   ) : (
-                    <>{project.name}</>
+                    <span>{project.name}</span>
                   )}
                 </h3>
               </div>

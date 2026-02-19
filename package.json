@@ -1,5 +1,9 @@
 {
   "name": "themkvz",
+  "version": "1.0.0",
+  "description": "Personal website",
+  "author": "Ihor M.",
+  "homepage": "https://themkvz.com",
   "private": true,
   "type": "module",
   "scripts": {

@@ -1,7 +1,6 @@
-import type { LoaderFunctionArgs } from "react-router";
 import { BASE_URL } from "~/constants";
 
-export function loader({ request }: LoaderFunctionArgs) {
+export function loader() {
   const baseUrl = BASE_URL;
   const routes = ["", "/about", "/contact", "/bookmarks"];
 

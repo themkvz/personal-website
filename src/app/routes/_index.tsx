@@ -6,17 +6,20 @@ import { Separator } from "~/components/ui/separator";
 
 export function meta() {
   return [
-    { title: "Ihor Mukovoz — Full-Stack Developer" },
+    { title: "Ihor M. — Senior Full-Stack & Front-End Developer" },
     {
       name: "description",
       content:
-        "Full-Stack Developer & Tech Lead with 8+ years of experience building modern web applications.",
+        "Expert Full-Stack Developer specializing in React, TypeScript, and high-performance web applications. Delivering scalable front-end solutions and robust back-end architecture.",
     },
-    { property: "og:title", content: "Ihor Mukovoz — Full-Stack Developer" },
+    {
+      property: "og:title",
+      content: "Ihor M. — Senior Full-Stack & Front-End Developer",
+    },
     {
       property: "og:description",
       content:
-        "Full-Stack Developer & Tech Lead with 8+ years of experience building modern web applications.",
+        "Expert Full-Stack Developer specializing in React, TypeScript, and high-performance web applications. Delivering scalable front-end solutions and robust back-end architecture.",
     },
   ];
 }

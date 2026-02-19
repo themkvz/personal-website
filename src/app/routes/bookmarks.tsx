@@ -10,17 +10,20 @@ import type { Route } from "./+types/bookmarks";
 
 export function meta() {
   return [
-    { title: "Bookmarks — Ihor Mukovoz" },
+    { title: "Dev Bookmarks & Resources — Curated by Ihor M." },
     {
       name: "description",
       content:
-        "A curated collection of interesting links, tools, and resources.",
+        "A curated collection of essential tools, libraries, and articles for full-stack developers. Discover resources for React, system design, and productivity.",
     },
-    { property: "og:title", content: "Bookmarks — Ihor Mukovoz" },
+    {
+      property: "og:title",
+      content: "Dev Bookmarks & Resources — Curated by Ihor M.",
+    },
     {
       property: "og:description",
       content:
-        "A curated collection of interesting links, tools, and resources.",
+        "A curated collection of essential tools, libraries, and articles for full-stack developers.",
     },
   ];
 }

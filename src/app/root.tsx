@@ -27,24 +27,31 @@ export const links: Route.LinksFunction = () => [
 
 export const meta: Route.MetaFunction = () => {
   return [
-    { title: "Ihor Mukovoz — Full-Stack Developer" },
+    { title: "Ihor M. — Full-Stack Developer" },
     {
       name: "description",
       content:
-        "Full-Stack Developer & Tech Lead with 8+ years of experience building modern web applications.",
+        "Senior Full-Stack Developer specializing in React, Node.js, and modern web architecture. Building high-performance applications with a focus on UX and scalability.",
     },
     { property: "og:type", content: "website" },
-    { property: "og:site_name", content: "Ihor Mukovoz" },
+    { property: "og:site_name", content: "Ihor M." },
     { property: "og:url", content: BASE_URL },
     {
       property: "og:image",
       content: `${BASE_URL}/hero.webp`,
     },
     { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:creator", content: "@themkvz" },
     {
       name: "twitter:image",
       content: `${BASE_URL}/hero.webp`,
     },
+    {
+      name: "keywords",
+      content:
+        "Full-Stack Developer, Front-End Engineer, React, TypeScript, Node.js, Web Architecture",
+    },
+    { name: "author", content: "Ihor M." },
   ];
 };
 
@@ -70,12 +77,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: "Ihor Mukovoz",
+    name: "Ihor M.",
     url: BASE_URL,
     image: `${BASE_URL}/hero.webp`,
     sameAs: SOCIAL_LINKS.map((link) => link.href),
-    jobTitle: "Full-Stack Developer",
+    jobTitle: "Senior Full-Stack Developer",
     email: PUBLIC_EMAIL,
+    worksFor: {
+      "@type": "Organization",
+      name: "Forex Tester Software",
+    },
+    knowsAbout: [
+      "Web Development",
+      "React",
+      "TypeScript",
+      "Node.js",
+      "Full-Stack Engineering",
+    ],
   };
 
   return (

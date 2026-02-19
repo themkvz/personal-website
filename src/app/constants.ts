@@ -1,7 +1,8 @@
 import type { SKILL_ICON_KEY } from "~/components/skill-icons";
 
-export const PUBLIC_EMAIL = "ihor@themkvz.com";
 export const BASE_URL = "https://themkvz.com";
+
+export const PUBLIC_EMAIL = "ihor@themkvz.com";
 
 export const FOOTER_NAV_LINKS = [
   { to: "/", label: "Introduce" },

@@ -26,17 +26,20 @@ const resolver = zodResolver(contactSchema);
 
 export function meta() {
   return [
-    { title: "Contact — Ihor Mukovoz" },
+    { title: "Contact Ihor M. — Hire a Full-Stack Developer" },
     {
       name: "description",
       content:
-        "Get in touch with Ihor Mukovoz for project inquiries or collaboration.",
+        "Ready to build your next project? Get in touch for front-end consulting, full-stack development, or technical leadership inquiries.",
     },
-    { property: "og:title", content: "Contact — Ihor Mukovoz" },
+    {
+      property: "og:title",
+      content: "Contact Ihor M. — Hire a Full-Stack Developer",
+    },
     {
       property: "og:description",
       content:
-        "Get in touch with Ihor Mukovoz for project inquiries or collaboration.",
+        "Ready to build your next project? Get in touch for front-end consulting, full-stack development, or technical leadership inquiries.",
     },
   ];
 }
