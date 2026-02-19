@@ -64,7 +64,7 @@ export default function About() {
                       href={job.site}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+                      className="font-mono text-xs text-muted-foreground transition-colors underline-offset-4 hover:text-foreground hover:underline"
                     >
                       {job.site}
                     </a>
@@ -108,21 +108,21 @@ export default function About() {
                     <>{project.name}</>
                   )}
                 </h3>
-
-                {project.url && (
-                  <a
-                    href={project.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    {project.url}
-                  </a>
-                )}
               </div>
               <p className="mt-1 text-sm text-muted-foreground">
                 {project.description}
               </p>
+
+              {project.url && (
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-xs text-muted-foreground transition-colors underline-offset-4 hover:text-foreground hover:underline"
+                >
+                  {project.url}
+                </a>
+              )}
             </div>
           ))}
         </div>

@@ -35,12 +35,15 @@ export const SOCIAL_LINKS = [
 ];
 
 export const PROJECT_TECH_STACK = [
-  "React",
   "TypeScript",
-  "Node.js",
-  "Next.js",
-  "PostgreSQL",
-  "AWS",
+  "Bun",
+  "React",
+  "React Router",
+  "Drizzle ORM",
+  "SQLite",
+  "Nuqs",
+  "Shadcn UI",
+  "Tailwind CSS",
 ];
 
 export const EXPERIENCE = [

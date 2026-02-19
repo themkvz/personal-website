@@ -43,7 +43,7 @@ export function BookmarkCard({
             href={bookmark.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-medium transition-colors hover:text-primary"
+            className="font-medium transition-colors hover:text-primary hover:underline"
           >
             {bookmark.title}
           </a>
