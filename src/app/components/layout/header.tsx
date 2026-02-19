@@ -1,6 +1,7 @@
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink } from "react-router";
+import { DecryptedText } from "~/components/decrypted-text";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { HEADER_NAV_LINKS } from "~/constants";
 import { cn } from "~/lib/utils";
@@ -13,7 +14,8 @@ export function Header() {
     <header className="fixed left-1/2 z-50 w-full max-w-3xl -translate-x-1/2 bg-background/80 backdrop-blur-sm border-b border-border shadow-xs md:border md:rounded-full md:mt-4 md:w-[calc(100%-2rem)]">
       <div className="flex h-header items-center justify-between px-6">
         <Link to="/" className="font-mono text-lg font-semibold tracking-tight">
-          themkvz
+          <DecryptedText text="themkvz" animateOn="both" />
+          {/*themkvz*/}
         </Link>
 
         {/* Desktop nav */}

@@ -36,6 +36,7 @@
     "drizzle-orm": "^0.45.1",
     "isbot": "^5.1.31",
     "lucide-react": "^0.563.0",
+    "motion": "^12.23.12",
     "nuqs": "^2.8.8",
     "radix-ui": "^1.4.3",
     "react": "^19.2.4",
