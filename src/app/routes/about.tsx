@@ -100,8 +100,6 @@ export default function About() {
             <div key={project.name}>
               <div className="flex items-baseline gap-2">
                 <h3 className="font-medium">
-                  {/*{project.name}*/}
-
                   {project.url ? (
                     <a
                       href={project.url}
