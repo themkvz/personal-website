@@ -36,19 +36,19 @@ Full-stack personal website built with **React Router 7** in framework mode (SSR
 
 ### Key Directories
 
-- `src/app/` — Main application directory (set via `react-router.config.ts`)
-- `src/app/routes/` — File-based route modules (loaders, actions, components)
-- `src/app/components/ui/` — shadcn/ui components
-- `src/app/components/layout/` — Header, footer, theme toggle
-- `src/app/db/` — Drizzle schema and DB initialization
-- `src/app/store/` — Zustand stores
-- `src/app/schemas/` — Zod validation schemas (shared between client and server)
-- `src/app/lib/anti-spam.ts` — Anti-spam helper (honeypot + CSRF timestamp)
-- `src/app/constants.tsx` — Navigation links, social links, tech stack data
+- `src/` — Main application directory (set via `react-router.config.ts`)
+- `src/routes/` — File-based route modules (loaders, actions, components)
+- `src/components/ui/` — shadcn/ui components
+- `src/components/layout/` — Header, footer, theme toggle
+- `src/db/` — Drizzle schema and DB initialization
+- `src/store/` — Zustand stores
+- `src/schemas/` — Zod validation schemas (shared between client and server)
+- `src/lib/anti-spam.ts` — Anti-spam helper (honeypot + CSRF timestamp)
+- `src/constants.tsx` — Navigation links, social links, tech stack data
 
 ### Path Alias
 
-`~/*` maps to `./src/app/*` (configured in tsconfig.json).
+`~/*` maps to `./src/*` (configured in tsconfig.json).
 
 ### Data Flow
 
@@ -60,13 +60,13 @@ Forms use **React Hook Form** integrated with React Router via `remix-hook-form`
 
 - **Client:** `useRemixForm` hook with `zodResolver` for client-side validation. Uses `Controller` + shadcn `Field`/`FieldLabel`/`FieldError`/`FieldGroup` components for rendering. Submit via `useFetcher` (passed into `useRemixForm({ fetcher })`).
 - **Server:** `getValidatedFormData(request, resolver)` in the action validates and extracts typed data using the same Zod schema.
-- **Schemas:** Defined in `src/app/schemas/` and shared between client and server.
+- **Schemas:** Defined in `src/schemas/` and shared between client and server.
 - **Anti-spam:** `isSpam(request)` from `~/lib/anti-spam` checks a honeypot field (`website`) and a CSRF timestamp (`_timestamp`, rejects submissions under 2 seconds). Called at the top of form actions before validation. The corresponding hidden inputs are rendered in the form markup.
 
 ### Theme System
 
-Three modes (light/dark/system) persisted in cookies, read server-side in `root.tsx` loader, managed client-side via Zustand store in `src/app/store/theme.ts`.
+Three modes (light/dark/system) persisted in cookies, read server-side in `root.tsx` loader, managed client-side via Zustand store in `src/store/theme.ts`.
 
 ### Database Schema
 
-Two tables in `src/app/db/schema.ts`: `bookmarks` (title, url, description, upvotes) and `contacts` (name, email, message). Both have auto-increment IDs and ISO timestamp `createdAt`.
+Two tables in `src/db/schema.ts`: `bookmarks` (title, url, description, upvotes) and `contacts` (name, email, message). Both have auto-increment IDs and ISO timestamp `createdAt`.
