@@ -1,4 +1,10 @@
 .react-router
 build
 node_modules
+data
 README.md
+.git
+.gitignore
+.husky
+Dockerfile
+.dockerignore

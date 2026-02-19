@@ -1,4 +1,3 @@
-import { resolve } from "node:path";
 import { defineConfig } from "drizzle-kit";
 
 export default defineConfig({
@@ -6,6 +5,6 @@ export default defineConfig({
   out: "./drizzle",
   dialect: "sqlite",
   dbCredentials: {
-    url: resolve(process.cwd(), "data", "sqlite.db"),
+    url: "data/sqlite.db",
   },
 });

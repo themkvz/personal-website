@@ -1,11 +1,11 @@
-import { resolve } from "node:path";
-import Database from "better-sqlite3";
-import { drizzle } from "drizzle-orm/better-sqlite3";
+import { createClient } from "@libsql/client";
+import { drizzle } from "drizzle-orm/libsql";
 import * as schema from "../src/db/schema";
 
-const dbPath = resolve(process.cwd(), "data", "sqlite.db");
-const sqlite = new Database(dbPath);
-const db = drizzle(sqlite, { schema });
+const client = createClient({
+  url: "file:data/sqlite.db",
+});
+const db = drizzle(client, { schema });
 
 const sampleBookmarks = [
   {
@@ -47,7 +47,7 @@ const sampleBookmarks = [
 console.log("Seeding bookmarks...");
 
 for (const bookmark of sampleBookmarks) {
-  db.insert(schema.bookmarks).values(bookmark).run();
+  db.insert(schema.bookmarks).values(bookmark).onConflictDoNothing().run();
 }
 
 console.log(`Seeded ${sampleBookmarks.length} bookmarks.`);

@@ -140,7 +140,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
     <NuqsAdapter>
       <div className="flex min-h-screen flex-col">
         <Header />
-        <main className="flex-1 mt-header">
+        <main className="flex-1P mt-header">
           <Outlet />
         </main>
         <Footer />
@@ -168,7 +168,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex flex-1 items-center justify-center px-6">
+      <main className="flex flex-1 items-center justify-center px-6 mt-header py-header">
         <div className="text-center">
           <h1 className="text-4xl font-bold tracking-tight">{message}</h1>
           <p className="mt-4 text-muted-foreground">{details}</p>

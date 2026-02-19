@@ -1,12 +1,12 @@
 import { and, desc, eq, sql } from "drizzle-orm";
 import { useQueryState } from "nuqs";
-import type { Route } from "../../.react-router/types/src/routes";
 import { BookmarkCard } from "../components/bookmarks/bookmark-card";
 import { Button } from "../components/ui/button";
 import { userContext } from "../context/user";
 import { db } from "../db";
 import { bookmarks, bookmarkVotes } from "../db/schema";
 import { loadSearchParams, SortOption, sortParser } from "../schemas/bookmarks";
+import type { Route } from "./+types/bookmarks";
 
 export function meta() {
   return [
@@ -88,6 +88,8 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
   const { bookmarks: items, votes } = loaderData;
   const [sort, setSort] = useQueryState("sort", sortParser);
 
+  const empty = items.length === 0;
+
   return (
     <div className="mx-auto max-w-3xl px-6">
       <section className="py-16 sm:py-20">
@@ -104,21 +106,23 @@ export default function Bookmarks({ loaderData }: Route.ComponentProps) {
         </div>
 
         {/* Sort controls */}
-        <div className="mt-8 flex items-center gap-2">
-          {Object.values(SortOption).map((option) => (
-            <Button
-              key={option}
-              onClick={() => setSort(option)}
-              variant={sort === option ? "default" : "outline"}
-            >
-              {option}
-            </Button>
-          ))}
-        </div>
+        {!empty && (
+          <div className="mt-8 flex items-center gap-2">
+            {Object.values(SortOption).map((option) => (
+              <Button
+                key={option}
+                onClick={() => setSort(option)}
+                variant={sort === option ? "default" : "outline"}
+              >
+                {option}
+              </Button>
+            ))}
+          </div>
+        )}
 
         {/* Bookmark list */}
         <div className="mt-6 space-y-3">
-          {items.length === 0 ? (
+          {empty ? (
             <p className="py-12 text-center text-muted-foreground">
               No bookmarks yet.
             </p>
