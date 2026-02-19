@@ -1,3 +1,4 @@
+import { SectionHeading } from "~/components/section-heading";
 import { SKILL_ICONS } from "~/components/skill-icons";
 import { SpotlightCard } from "~/components/spotlight-card";
 import { SKILLS } from "~/constants";
@@ -5,9 +6,7 @@ import { SKILLS } from "~/constants";
 export function Skills() {
   return (
     <section className="py-16 container mx-auto px-4">
-      <h2 className="text-lg font-semibold tracking-tight">
-        Technologies & Tools
-      </h2>
+      <SectionHeading>Technologies & Tools</SectionHeading>
 
       <div className="mt-6 grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {SKILLS.map((skill) => {

@@ -1,10 +1,11 @@
 import { CountUp } from "~/components/count-up";
+import { SectionHeading } from "~/components/section-heading";
 import { HIGHLIGHTS } from "~/constants";
 
 export function Highlights() {
   return (
     <section className="py-16 container mx-auto px-4">
-      <h2 className="text-lg font-semibold tracking-tight">Highlights</h2>
+      <SectionHeading>Highlights</SectionHeading>
 
       <div className="mt-6 grid gap-6 grid-cols-2 lg:grid-cols-4">
         {HIGHLIGHTS.map((highlight, index) => (
