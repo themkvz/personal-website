@@ -110,7 +110,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col items-center gap-3 py-8 sm:flex-row sm:justify-between">
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} Ihor Mukovoz. All rights reserved.
+            &copy; {new Date().getFullYear()} Ihor M. All rights reserved.
           </p>
 
           <div className="flex items-center gap-4">
