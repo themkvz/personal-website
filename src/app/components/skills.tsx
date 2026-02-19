@@ -17,7 +17,7 @@ export function Skills() {
             <SpotlightCard
               key={skill.name}
               className="relative overflow-hidden p-6 aspect-square flex items-center"
-              spotlightColor="rgba(0, 229, 255, 0.2)"
+              spotlightColor={skill.spotlightColor}
             >
               {Icon && (
                 <Icon className="absolute -bottom-4 -right-4 size-2/4 text-muted-foreground/50 opacity-15" />

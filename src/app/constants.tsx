@@ -126,6 +126,7 @@ export type SKILL = {
   name: string;
   description: string;
   icon?: SKILL_ICON_KEY;
+  spotlightColor: `rgba(${number}, ${number}, ${number}, ${number})`;
 };
 
 export const SKILLS: SKILL[] = [
@@ -133,67 +134,85 @@ export const SKILLS: SKILL[] = [
     name: "React",
     description: "UI library for building interactive interfaces",
     icon: "react",
+    spotlightColor: "rgba(97, 218, 251, 0.45)",
   },
   {
     name: "TypeScript",
     description: "Typed JavaScript for scalable applications",
     icon: "typescript",
+    spotlightColor: "rgba(49, 120, 198, 0.45)",
   },
   {
     name: "Next.js",
     description: "Full-stack React framework with SSR & SSG",
     icon: "nextjs",
+    spotlightColor: "rgba(200, 200, 200, 0.45)",
   },
   {
     name: "React Router",
     description: "Declarative routing for React apps",
     icon: "reactrouter",
+    spotlightColor: "rgba(249, 56, 56, 0.45)",
   },
   {
     name: "Node.js",
     description: "Server-side JavaScript runtime",
     icon: "nodejs",
+    spotlightColor: "rgba(87, 159, 67, 0.45)",
   },
   {
     name: "Bun",
     description: "Fast JavaScript runtime with built-in tools",
     icon: "bun",
+    spotlightColor: "rgba(251, 240, 223, 0.45)",
   },
   {
     name: "Claude",
     description: "AI assistant for code generation and problem-solving",
     icon: "claude",
+    spotlightColor: "rgba(217, 149, 87, 0.45)",
   },
   {
     name: "GitHub Copilot",
     description: "AI-powered code completion and suggestions",
     icon: "copilot",
+    spotlightColor: "rgba(200, 200, 200, 0.45)",
   },
   {
     name: "Drizzle ORM",
     description: "Type-safe ORM for SQL databases",
     icon: "drizzle",
+    spotlightColor: "rgba(194, 242, 86, 0.45)",
   },
   {
     name: "PHP",
     description: "Server-side scripting language for web development",
     icon: "php",
+    spotlightColor: "rgba(119, 123, 180, 0.45)",
   },
   {
     name: "Tailwind CSS",
     description: "Utility-first CSS framework",
     icon: "tailwindcss",
+    spotlightColor: "rgba(56, 189, 248, 0.45)",
   },
-  { name: "Prisma", description: "Type-safe ORM for Node.js", icon: "prisma" },
+  {
+    name: "Prisma",
+    description: "Type-safe ORM for Node.js",
+    icon: "prisma",
+    spotlightColor: "rgba(45, 58, 75, 0.45)",
+  },
   {
     name: "Docker",
     description: "Containerization for consistent deployments",
     icon: "docker",
+    spotlightColor: "rgba(29, 99, 237, 0.45)",
   },
   {
     name: "Git",
     description: "Version control and collaboration",
     icon: "git",
+    spotlightColor: "rgba(240, 80, 51, 0.45)",
   },
 ];
 
