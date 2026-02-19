@@ -10,22 +10,27 @@ export function Hero() {
         backgroundImage: "url('/hero.webp')",
       }}
     >
-      <p className="font-mono text-sm text-gray-50">Hi there 👋</p>
+      <p className="font-mono text-sm text-gray-50 uppercase">
+        Architecting High-Performance Solutions
+      </p>
 
-      <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl text-white">
+      <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-6xl text-white">
         Ihor Mukovoz
       </h1>
 
-      <p className="mt-2 text-xl text-gray-50">
-        Full-Stack Developer & Tech Lead
+      <p className="mt-2 text-xl text-gray-100">
+        Full-Stack & Frond-End Engineer
       </p>
 
-      <p className="mt-6 max-w-xl leading-relaxed text-gray-50">
-        Developer with 8+ years of experience building modern web applications.
-        Specializing in React, TypeScript, and Node.js ecosystems. Passionate
-        about clean architecture, great user experiences, and turning complex
-        problems into simple solutions.
-      </p>
+      <div className="mt-6 max-w-2xl text-center space-y-4 text-gray-100">
+        <p className="text-lg leading-relaxed">
+          Specializing in <strong>React</strong>, <strong>TypeScript</strong>,
+          and scalable <strong>Node.js</strong> architectures. I leverage AI
+          tools to amplify productivity and code quality—using them as powerful
+          instruments to deliver robust, high-performance web applications
+          faster.
+        </p>
+      </div>
 
       <div className="mt-8 flex items-center gap-4">
         <Button render={<Link to="/contact" />}>
@@ -34,7 +39,7 @@ export function Hero() {
         </Button>
 
         <Button variant="outline" render={<Link to="/about" />}>
-          About me
+          About
         </Button>
       </div>
     </section>
