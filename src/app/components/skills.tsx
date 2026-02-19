@@ -1,18 +1,39 @@
-import { Badge } from "~/components/ui/badge";
+import SpotlightCard from "~/components/SpotlightCard";
+import { SKILL_ICONS } from "~/components/skill-icons";
 import { SKILLS } from "~/constants";
 
 export function Skills() {
   return (
-    <section className="py-16">
+    <section className="py-16 container mx-auto px-4">
       <h2 className="text-lg font-semibold tracking-tight">
-        Skills & Technologies
+        Technologies & Tools
       </h2>
-      <div className="mt-6 flex flex-wrap gap-2">
-        {SKILLS.map((skill) => (
-          <Badge key={skill} variant="secondary">
-            {skill}
-          </Badge>
-        ))}
+
+      <div className="mt-6 grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        {SKILLS.map((skill) => {
+          const Icon = SKILL_ICONS[skill.icon as keyof typeof SKILL_ICONS];
+
+          return (
+            <SpotlightCard
+              key={skill.name}
+              className="relative overflow-hidden p-6 aspect-square flex items-center"
+              spotlightColor="rgba(0, 229, 255, 0.2)"
+            >
+              {Icon && (
+                <Icon className="absolute -bottom-4 -right-4 size-2/4 text-muted-foreground/50 opacity-15" />
+              )}
+
+              <div className="relative z-10 space-y-2 overflow-hidden">
+                <h3 className="font-semibold text-2xl truncate">
+                  {skill.name}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {skill.description}
+                </p>
+              </div>
+            </SpotlightCard>
+          );
+        })}
       </div>
     </section>
   );

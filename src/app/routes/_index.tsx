@@ -16,7 +16,7 @@ export function meta() {
 
 export default function Home() {
   return (
-    <div className="mx-auto max-w-3xl px-6">
+    <div className="">
       {/* Hero */}
       <Hero />
 

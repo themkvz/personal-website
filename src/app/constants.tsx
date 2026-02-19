@@ -1,4 +1,5 @@
 import { Github, Linkedin, Mail } from "lucide-react";
+import type { SKILL_ICON_KEY } from "~/components/skill-icons";
 
 export const PUBLIC_EMAIL = "ihor@themkvz.com";
 
@@ -121,27 +122,79 @@ export const NOTABLE_PROJECTS = [
   },
 ];
 
-export const SKILLS = [
-  "React",
-  "TypeScript",
-  "Next.js",
-  "React Router",
-  "Node.js",
-  "Express.js",
-  "Fastify",
-  "Zustand",
-  "Prisma",
-  "PostgreSQL",
-  "MongoDB",
-  "MySQL",
-  "Tailwind CSS",
-  "PHP",
-  "WordPress",
-  "REST API",
-  "PWA",
-  "AWS",
-  "Expo",
-  "Git",
+export type SKILL = {
+  name: string;
+  description: string;
+  icon?: SKILL_ICON_KEY;
+};
+
+export const SKILLS: SKILL[] = [
+  {
+    name: "React",
+    description: "UI library for building interactive interfaces",
+    icon: "react",
+  },
+  {
+    name: "TypeScript",
+    description: "Typed JavaScript for scalable applications",
+    icon: "typescript",
+  },
+  {
+    name: "Next.js",
+    description: "Full-stack React framework with SSR & SSG",
+    icon: "nextjs",
+  },
+  {
+    name: "React Router",
+    description: "Declarative routing for React apps",
+    icon: "reactrouter",
+  },
+  {
+    name: "Node.js",
+    description: "Server-side JavaScript runtime",
+    icon: "nodejs",
+  },
+  {
+    name: "Bun",
+    description: "Fast JavaScript runtime with built-in tools",
+    icon: "bun",
+  },
+  {
+    name: "Claude",
+    description: "AI assistant for code generation and problem-solving",
+    icon: "claude",
+  },
+  {
+    name: "GitHub Copilot",
+    description: "AI-powered code completion and suggestions",
+    icon: "copilot",
+  },
+  {
+    name: "Drizzle ORM",
+    description: "Type-safe ORM for SQL databases",
+    icon: "drizzle",
+  },
+  {
+    name: "PHP",
+    description: "Server-side scripting language for web development",
+    icon: "php",
+  },
+  {
+    name: "Tailwind CSS",
+    description: "Utility-first CSS framework",
+    icon: "tailwindcss",
+  },
+  { name: "Prisma", description: "Type-safe ORM for Node.js", icon: "prisma" },
+  {
+    name: "Docker",
+    description: "Containerization for consistent deployments",
+    icon: "docker",
+  },
+  {
+    name: "Git",
+    description: "Version control and collaboration",
+    icon: "git",
+  },
 ];
 
 export const TECH_STACK = {
