@@ -1,5 +1,5 @@
-import SpotlightCard from "~/components/SpotlightCard";
 import { SKILL_ICONS } from "~/components/skill-icons";
+import { SpotlightCard } from "~/components/spotlight-card";
 import { SKILLS } from "~/constants";
 
 export function Skills() {

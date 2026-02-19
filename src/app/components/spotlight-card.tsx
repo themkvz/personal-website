@@ -11,7 +11,7 @@ interface SpotlightCardProps extends React.PropsWithChildren {
   spotlightColor?: `rgba(${number}, ${number}, ${number}, ${number})`;
 }
 
-const SpotlightCard: React.FC<SpotlightCardProps> = ({
+export const SpotlightCard: React.FC<SpotlightCardProps> = ({
   children,
   className = "",
   spotlightColor = "rgba(255, 255, 255, 0.25)",
@@ -47,7 +47,7 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
   };
 
   return (
-    // biome-ignore lint/a11y/noStaticElementInteractions: <explanation>
+    // biome-ignore lint/a11y/noStaticElementInteractions: all fine here since we handle focus/blur for accessibility
     <div
       ref={divRef}
       onMouseMove={handleMouseMove}
@@ -68,5 +68,3 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
     </div>
   );
 };
-
-export default SpotlightCard;
