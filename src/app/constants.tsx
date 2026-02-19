@@ -122,6 +122,27 @@ export const NOTABLE_PROJECTS = [
   },
 ];
 
+export const HIGHLIGHTS = [
+  {
+    to: 20,
+    after: "+",
+    label: "Projects delivered",
+  },
+  {
+    to: 14,
+    after: "+",
+    label: "Technologies in stack",
+  },
+  {
+    to: 4,
+    label: "Companies worked with",
+  },
+  {
+    to: 3,
+    label: "Team members mentored",
+  },
+];
+
 export type SKILL = {
   name: string;
   description: string;
