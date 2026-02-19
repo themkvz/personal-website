@@ -121,6 +121,29 @@ export const NOTABLE_PROJECTS = [
   },
 ];
 
+export const SKILLS = [
+  "React",
+  "TypeScript",
+  "Next.js",
+  "React Router",
+  "Node.js",
+  "Express.js",
+  "Fastify",
+  "Zustand",
+  "Prisma",
+  "PostgreSQL",
+  "MongoDB",
+  "MySQL",
+  "Tailwind CSS",
+  "PHP",
+  "WordPress",
+  "REST API",
+  "PWA",
+  "AWS",
+  "Expo",
+  "Git",
+];
+
 export const TECH_STACK = {
   Frontend: [
     "React",
