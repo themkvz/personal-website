@@ -1,7 +1,8 @@
 import type { LoaderFunctionArgs } from "react-router";
+import { BASE_URL } from "~/constants";
 
 export function loader({ request }: LoaderFunctionArgs) {
-  const baseUrl = "https://themkvz.com";
+  const baseUrl = BASE_URL;
   const routes = ["", "/about", "/contact", "/bookmarks"];
 
   const content = `<?xml version="1.0" encoding="UTF-8"?>
