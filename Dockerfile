@@ -4,13 +4,13 @@ FROM oven/bun:1 AS base
 FROM base AS deps
 WORKDIR /app
 COPY bun.lock package.json ./
-RUN bun install --frozen-lockfile
+RUN bun install --frozen-lockfile --ignore-scripts
 
 # Install production dependencies only
 FROM base AS prod-deps
 WORKDIR /app
 COPY bun.lock package.json ./
-RUN bun install --frozen-lockfile --production
+RUN bun install --frozen-lockfile --production --ignore-scripts
 
 # Build the application
 FROM base AS build
