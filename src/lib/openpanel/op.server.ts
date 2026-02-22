@@ -1,7 +1,8 @@
 import { OpenPanel } from "@openpanel/sdk";
+import { env } from "~/env.server";
 
 export const op = new OpenPanel({
-  clientId: "83f95501-bc16-4714-a6d0-4952ac3e711a",
-  clientSecret: "sec_23dd54414ffaa443dc6a",
-  apiUrl: "https://openpanel-api.srv.mkvz.work",
+  clientId: env.VITE_OP_CLIENT_ID,
+  clientSecret: env.OP_CLIENT_SECRET,
+  apiUrl: env.VITE_OP_API_URL,
 });

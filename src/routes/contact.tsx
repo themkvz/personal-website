@@ -4,6 +4,7 @@ import { Controller } from "react-hook-form";
 import { useFetcher } from "react-router";
 import { getValidatedFormData, useRemixForm } from "remix-hook-form";
 import type { z } from "zod/v4";
+import { sendContactEmail } from "~/components/emails/contact";
 import { Button } from "~/components/ui/button";
 import {
   Field,
@@ -64,17 +65,14 @@ export async function action({ request }: Route.ActionArgs) {
 
   const { ip, userAgent } = getClientInfo(request);
 
-  await db.insert(contacts).values({
+  const contactData = {
     ...data,
     ip,
     userAgent,
-  });
-
-  trackEvent(TRACK_EVENTS.CONTACT_SAVED, {
-    ...data,
-    ip,
-    userAgent,
-  });
+  };
+  await db.insert(contacts).values(contactData);
+  trackEvent(TRACK_EVENTS.CONTACT_SAVED, contactData);
+  sendContactEmail(contactData);
 
   return { success: true as const };
 }

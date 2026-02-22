@@ -1,8 +1,8 @@
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink } from "react-router";
-import { HEADER_NAV_LINKS } from "../../constants";
-import { cn } from "../../lib/utils";
+import { HEADER_NAV_LINKS } from "~/constants";
+import { cn } from "~/lib/utils";
 import { DecryptedText } from "../decrypted-text";
 import { Button, buttonVariants } from "../ui/button";
 import { ThemeToggle } from "./theme-toggle";
@@ -15,7 +15,6 @@ export function Header() {
       <div className="flex h-header items-center justify-between px-6">
         <Link to="/" className="font-mono text-lg font-semibold tracking-tight">
           <DecryptedText text="themkvz" animateOn="both" />
-          {/*themkvz*/}
         </Link>
 
         {/* Desktop nav */}

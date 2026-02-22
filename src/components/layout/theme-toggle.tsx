@@ -1,5 +1,5 @@
 import { Monitor, Moon, Sun } from "lucide-react";
-import { type Theme, useThemeStore } from "../../store/theme";
+import { type Theme, useThemeStore } from "~/store/theme";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
