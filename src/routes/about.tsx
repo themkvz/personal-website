@@ -1,7 +1,7 @@
 import { Briefcase, GraduationCap, Heart, MapPin } from "lucide-react";
 import { Badge } from "../components/ui/badge";
 import { Separator } from "../components/ui/separator";
-import { EXPERIENCE, NOTABLE_PROJECTS, TECH_STACK } from "../constants";
+import { Experience, Skills } from "../constants";
 
 export function meta() {
   return [
@@ -60,7 +60,7 @@ export default function About() {
         </h2>
 
         <div className="mt-8 space-y-10">
-          {EXPERIENCE.map((job) => (
+          {Experience.jobs.map((job) => (
             <div key={`${job.company}-${job.period}`}>
               <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
                 <div>
@@ -99,7 +99,7 @@ export default function About() {
           Notable and Public Projects
         </h2>
         <div className="mt-8 space-y-6">
-          {NOTABLE_PROJECTS.map((project) => (
+          {Experience.projects.map((project) => (
             <div key={project.name}>
               <div className="flex items-baseline gap-2">
                 <h3 className="font-medium">
@@ -141,7 +141,7 @@ export default function About() {
       <section className="py-16">
         <h2 className="text-lg font-semibold tracking-tight">Tech Stack</h2>
         <div className="mt-8 space-y-6">
-          {Object.entries(TECH_STACK).map(([category, techs]) => (
+          {Object.entries(Skills.techStack).map(([category, techs]) => (
             <div key={category}>
               <h3 className="text-sm font-medium text-muted-foreground">
                 {category}

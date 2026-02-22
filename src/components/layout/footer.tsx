@@ -1,10 +1,6 @@
 import { MapPin } from "lucide-react";
 import { Link } from "react-router";
-import {
-  FOOTER_NAV_LINKS,
-  PROJECT_TECH_STACK,
-  SOCIAL_LINKS,
-} from "../../constants";
+import { Nav } from "../../constants";
 import { cn } from "../../lib/utils";
 import { SOCIAL_ICONS } from "../social-icons";
 import { Button, buttonVariants } from "../ui/button";
@@ -40,7 +36,7 @@ export function Footer() {
           <nav aria-label="Footer navigation">
             <h3 className="text-sm font-semibold">Pages</h3>
             <ul className="mt-3">
-              {FOOTER_NAV_LINKS.map(({ to, label }) => (
+              {Nav.links.map(({ to, label }) => (
                 <li key={to}>
                   <Button
                     variant="link"
@@ -67,7 +63,7 @@ export function Footer() {
           <div>
             <h3 className="text-sm font-semibold">Connect</h3>
             <ul className="mt-3">
-              {SOCIAL_LINKS.map(({ href, label, icon }) => {
+              {Nav.social.map(({ href, label, icon }) => {
                 const IconComponent =
                   SOCIAL_ICONS[icon as keyof typeof SOCIAL_ICONS];
 
@@ -98,9 +94,9 @@ export function Footer() {
         <div className="py-8">
           <p className="text-xs text-muted-foreground text-center sm:text-left">
             Built with{" "}
-            {PROJECT_TECH_STACK.map((tech, i) => (
+            {Nav.projectStack.map((tech, i) => (
               <span key={tech}>
-                {i > 0 && (i === PROJECT_TECH_STACK.length - 1 ? " & " : ", ")}
+                {i > 0 && (i === Nav.projectStack.length - 1 ? " & " : ", ")}
                 <span className="text-foreground/70">{tech}</span>
               </span>
             ))}
@@ -116,7 +112,7 @@ export function Footer() {
           </p>
 
           <div className="flex items-center gap-4">
-            {SOCIAL_LINKS.map(({ href, label, icon }) => {
+            {Nav.social.map(({ href, label, icon }) => {
               const IconComponent =
                 SOCIAL_ICONS[icon as keyof typeof SOCIAL_ICONS];
 

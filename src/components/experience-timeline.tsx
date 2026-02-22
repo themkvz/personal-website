@@ -1,5 +1,5 @@
 import { Briefcase, CheckCircleIcon } from "lucide-react";
-import { EXPERIENCE } from "../constants";
+import { Experience } from "../constants";
 import { SectionHeading } from "./section-heading";
 
 export function ExperienceTimeline() {
@@ -8,10 +8,10 @@ export function ExperienceTimeline() {
       <SectionHeading>Experience</SectionHeading>
 
       <div className="relative mt-8 ml-3 border-l border-foreground/10 pl-8">
-        {EXPERIENCE.map((job, index) => (
+        {Experience.jobs.map((job, index) => (
           <div
             key={`${job.company}-${job.period}`}
-            className={`relative ${index < EXPERIENCE.length - 1 ? "pb-10" : ""}`}
+            className={`relative ${index < Experience.jobs.length - 1 ? "pb-10" : ""}`}
           >
             {/* Timeline dot */}
             <div className="absolute -left-[calc(2rem+12px)] flex size-6 items-center justify-center rounded-full border border-foreground/10 bg-background">

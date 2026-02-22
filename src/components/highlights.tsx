@@ -1,4 +1,4 @@
-import { HIGHLIGHTS } from "../constants";
+import { Skills } from "../constants";
 import { CountUp } from "./count-up";
 import { SectionHeading } from "./section-heading";
 
@@ -8,7 +8,7 @@ export function Highlights() {
       <SectionHeading>Highlights</SectionHeading>
 
       <div className="mt-6 grid gap-6 grid-cols-2 lg:grid-cols-4">
-        {HIGHLIGHTS.map((highlight, index) => (
+        {Skills.highlights.map((highlight, index) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: static list
           <div key={index}>
             <CountUp

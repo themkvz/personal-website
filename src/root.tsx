@@ -18,12 +18,12 @@ import { useIdentify } from "~/lib/openpanel/useOpenPanel";
 import type { Route } from "./+types/root";
 import { Footer } from "./components/layout/footer";
 import { Header } from "./components/layout/header";
-import { BASE_URL, PUBLIC_EMAIL, SOCIAL_LINKS } from "./constants";
+import { Nav, Site } from "./constants";
 import { identityMiddleware } from "./middlewares/identity";
 import { resolveThemeClass, type Theme } from "./store/theme";
 
 export const links: Route.LinksFunction = () => [
-  { rel: "canonical", href: BASE_URL },
+  { rel: "canonical", href: Site.baseUrl },
   { rel: "icon", href: "/favicon.ico" },
   { rel: "apple-touch-icon", href: "/apple-store.svg" },
 ];
@@ -38,16 +38,16 @@ export const meta: Route.MetaFunction = () => {
     },
     { property: "og:type", content: "website" },
     { property: "og:site_name", content: "Ihor M." },
-    { property: "og:url", content: BASE_URL },
+    { property: "og:url", content: Site.baseUrl },
     {
       property: "og:image",
-      content: `${BASE_URL}/hero.webp`,
+      content: `${Site.baseUrl}/hero.webp`,
     },
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:creator", content: "@themkvz" },
     {
       name: "twitter:image",
-      content: `${BASE_URL}/hero.webp`,
+      content: `${Site.baseUrl}/hero.webp`,
     },
     {
       name: "keywords",
@@ -84,11 +84,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
     "@context": "https://schema.org",
     "@type": "Person",
     name: "Ihor M.",
-    url: BASE_URL,
-    image: `${BASE_URL}/hero.webp`,
-    sameAs: SOCIAL_LINKS.map((link) => link.href),
+    url: Site.baseUrl,
+    image: `${Site.baseUrl}/hero.webp`,
+    sameAs: Nav.social.map((link) => link.href),
     jobTitle: "Senior Full-Stack Developer",
-    email: PUBLIC_EMAIL,
+    email: Site.publicEmail,
     worksFor: {
       "@type": "Organization",
       name: "Forex Tester Software",

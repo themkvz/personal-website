@@ -1,7 +1,7 @@
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink } from "react-router";
-import { HEADER_NAV_LINKS } from "~/constants";
+import { Nav } from "~/constants";
 import { cn } from "~/lib/utils";
 import { DecryptedText } from "../decrypted-text";
 import { Button, buttonVariants } from "../ui/button";
@@ -19,7 +19,7 @@ export function Header() {
 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-1 md:flex">
-          {HEADER_NAV_LINKS.map(({ to, label }) => (
+          {Nav.links.map(({ to, label }) => (
             <NavLink
               key={to}
               to={to}
@@ -55,7 +55,7 @@ export function Header() {
       {mobileOpen && (
         <nav className="border-t px-6 py-4 md:hidden">
           <div className="flex flex-col gap-2">
-            {HEADER_NAV_LINKS.map(({ to, label }) => (
+            {Nav.links.map(({ to, label }) => (
               <NavLink
                 key={to}
                 to={to}

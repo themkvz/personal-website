@@ -1,4 +1,4 @@
-import { SKILLS } from "../constants";
+import { Skills as SkillsData } from "../constants";
 import { SectionHeading } from "./section-heading";
 import { SKILL_ICONS } from "./skill-icons";
 import { SpotlightCard } from "./spotlight-card";
@@ -9,7 +9,7 @@ export function Skills() {
       <SectionHeading>Technologies & Tools</SectionHeading>
 
       <div className="mt-6 grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-        {SKILLS.map((skill) => {
+        {SkillsData.items.map((skill) => {
           const Icon = SKILL_ICONS[skill.icon as keyof typeof SKILL_ICONS];
 
           return (

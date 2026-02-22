@@ -1,7 +1,7 @@
-import { BASE_URL } from "../constants";
+import { Site } from "../constants";
 
 export function loader() {
-  const baseUrl = BASE_URL;
+  const baseUrl = Site.baseUrl;
   const routes = ["", "/about", "/contact", "/bookmarks"];
 
   const content = `<?xml version="1.0" encoding="UTF-8"?>
