@@ -1,47 +1,82 @@
+import type { NewBookmark } from "~/types";
 import { db } from "../src/db";
 import * as schema from "../src/db/schema";
 
-const sampleBookmarks = [
+const initialBookmarks: NewBookmark[] = [
   {
-    title: "React Router v7 Documentation",
-    url: "https://reactrouter.com/",
+    id: 1,
+    title: "How To Review Code",
+    url: "https://endler.dev/2025/how-to-review-code",
     description:
-      "Official docs for React Router v7 — the modern React framework.",
+      "A guide on how to effectively review code and provide constructive feedback.",
   },
   {
-    title: "Tailwind CSS v4",
-    url: "https://tailwindcss.com/",
-    description: "A utility-first CSS framework for rapid UI development.",
-  },
-  {
-    title: "shadcn/ui",
-    url: "https://ui.shadcn.com/",
+    id: 2,
+    title: "Repeat Yourself",
+    url: "https://endler.dev/2025/repeat-yourself",
     description:
-      "Beautifully designed components built with Radix UI and Tailwind CSS.",
+      "An article discussing the importance of avoiding code duplication and promoting reusability.",
   },
   {
-    title: "Drizzle ORM",
-    url: "https://orm.drizzle.team/",
-    description: "TypeScript ORM that is lightweight and performant.",
+    id: 3,
+    title: "React Bits",
+    url: "https://www.reactbits.dev",
+    description: "A collection of useful React patterns and techniques.",
   },
   {
-    title: "Zustand",
-    url: "https://zustand.docs.pmnd.rs/",
+    id: 4,
+    title: "nuqs",
+    url: "https://nuqs.dev",
     description:
-      "A small, fast, and scalable state management solution for React.",
+      "A platform for sharing and discovering quality software development resources.",
   },
   {
-    title: "Bun — JavaScript Runtime",
-    url: "https://bun.sh/",
+    id: 5,
+    title: "Use Action Routes in React Router",
+    url: "https://sergiodxa.com/tutorials/use-action-routes-in-react-router",
     description:
-      "Incredibly fast JavaScript runtime, bundler, and package manager.",
+      "Learn how to use action routes in React Router to handle form submissions and other actions.",
+  },
+  {
+    id: 6,
+    url: "https://www.magicpattern.design",
+    title: "Magic Pattern",
+    description:
+      "A tool for generating beautiful SVG patterns for your web projects.",
+  },
+  {
+    id: 7,
+    url: "https://github.com/blackboardsh/electrobun",
+    title: "Electrobun",
+    description:
+      "A fast and efficient JavaScript bundler for modern web development.",
+  },
+  {
+    id: 8,
+    url: "https://github.com/knadh/oat",
+    title: "Oat",
+    description: "A simple and efficient static site generator built with Go.",
+  },
+  {
+    id: 9,
+    url: "https://fulghum.io/self-hosting",
+    title: "Self-Hosting Guide",
+    description:
+      "A comprehensive guide to self-hosting your own applications and services.",
+  },
+  {
+    id: 10,
+    url: "https://mlsysbook.ai/book/",
+    title: "Machine Learning Systems Book",
+    description:
+      "An open-source book covering the design and implementation of machine learning systems.",
   },
 ];
 
 console.log("Seeding bookmarks...");
 
-for (const bookmark of sampleBookmarks) {
+for (const bookmark of initialBookmarks) {
   db.insert(schema.bookmarks).values(bookmark).onConflictDoNothing().run();
 }
 
-console.log(`Seeded ${sampleBookmarks.length} bookmarks.`);
+console.log(`Seeded ${initialBookmarks.length} bookmarks.`);

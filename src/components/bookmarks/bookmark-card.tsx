@@ -1,10 +1,7 @@
-import type { InferSelectModel } from "drizzle-orm";
 import { ExternalLink, ThumbsUp } from "lucide-react";
 import { useFetcher } from "react-router";
-import type { bookmarks } from "../../db/schema";
+import type { Bookmark } from "~/types";
 import { Button } from "../ui/button";
-
-type Bookmark = InferSelectModel<typeof bookmarks>;
 
 export function BookmarkCard({
   bookmark,
@@ -18,6 +15,9 @@ export function BookmarkCard({
   const optimisticUpvotes = isUpvoting
     ? bookmark.upvotes + 1
     : bookmark.upvotes;
+
+  const url = new URL(bookmark.url);
+  url.searchParams.set("ref", "themkvz.com");
 
   return (
     <div className="group flex items-start gap-4 rounded-lg border bg-card p-4 transition-colors hover:bg-accent/50">
@@ -40,7 +40,7 @@ export function BookmarkCard({
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
           <a
-            href={bookmark.url}
+            href={url.toString()}
             target="_blank"
             rel="noopener noreferrer"
             className="font-medium transition-colors hover:text-primary hover:underline"
@@ -63,7 +63,7 @@ export function BookmarkCard({
             })}
           </span>
           <span className="font-mono text-xs text-muted-foreground">
-            {new URL(bookmark.url).hostname}
+            {url.hostname}
           </span>
         </div>
       </div>
