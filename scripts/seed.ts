@@ -1,11 +1,5 @@
-import { createClient } from "@libsql/client";
-import { drizzle } from "drizzle-orm/libsql";
+import { db } from "../src/db";
 import * as schema from "../src/db/schema";
-
-const client = createClient({
-  url: "file:data/sqlite.db",
-});
-const db = drizzle(client, { schema });
 
 const sampleBookmarks = [
   {

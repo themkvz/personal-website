@@ -5,4 +5,8 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
+  ssr: {
+    // bun:sqlite is a Bun built-in — leave it for the runtime, don't bundle it
+    external: ["bun:sqlite"],
+  },
 });
