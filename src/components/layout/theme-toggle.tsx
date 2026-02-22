@@ -1,5 +1,6 @@
 import { Monitor, Moon, Sun } from "lucide-react";
-import { type Theme, useThemeStore } from "~/store/theme";
+import type { Theme } from "~/lib/theme";
+import { useThemeStore } from "~/store/theme";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -9,42 +10,35 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
-const themes: { value: Theme; label: string; icon: React.ReactNode }[] = [
-  { value: "light", label: "Light", icon: <Sun className="h-4 w-4" /> },
-  { value: "dark", label: "Dark", icon: <Moon className="h-4 w-4" /> },
-  { value: "system", label: "System", icon: <Monitor className="h-4 w-4" /> },
+const options: { value: Theme; label: string; icon: React.ElementType }[] = [
+  { value: "light", label: "Light", icon: Sun },
+  { value: "dark", label: "Dark", icon: Moon },
+  { value: "system", label: "System", icon: Monitor },
 ];
 
 export function ThemeToggle() {
   const { theme, setTheme } = useThemeStore();
-
-  const currentIcon =
-    theme === "dark" ? (
-      <Moon className="h-5 w-5" />
-    ) : theme === "light" ? (
-      <Sun className="h-5 w-5" />
-    ) : (
-      <Monitor className="h-5 w-5" />
-    );
+  const CurrentIcon =
+    theme === "dark" ? Moon : theme === "light" ? Sun : Monitor;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
           <Button variant="ghost" size="icon" aria-label="Toggle theme">
-            {currentIcon}
+            <CurrentIcon className="h-5 w-5" />
           </Button>
         }
       />
       <DropdownMenuPositioner align="end">
         <DropdownMenuContent>
-          {themes.map(({ value, label, icon }) => (
+          {options.map(({ value, label, icon: Icon }) => (
             <DropdownMenuItem
               key={value}
               onClick={() => setTheme(value)}
               className={theme === value ? "bg-accent" : ""}
             >
-              {icon}
+              <Icon className="h-4 w-4" />
               <span className="ml-2">{label}</span>
             </DropdownMenuItem>
           ))}

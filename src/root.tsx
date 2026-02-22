@@ -7,20 +7,38 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useRouteLoaderData,
 } from "react-router";
 import "./app.css";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { userContext } from "~/context/user";
 import { useIdentify } from "~/lib/openpanel/useOpenPanel";
+import { getStoredTheme, resolveTheme } from "~/lib/theme";
+import { useThemeStore } from "~/store/theme";
 import type { Route } from "./+types/root";
 import { Footer } from "./components/layout/footer";
 import { Header } from "./components/layout/header";
 import { Nav, Site } from "./constants";
 import { identityMiddleware } from "./middlewares/identity";
-import { resolveThemeClass, type Theme } from "./store/theme";
+
+// Runs synchronously before React hydrates to prevent theme flash.
+// Reads localStorage and applies the correct class to <html> immediately.
+const themeInitScript = `
+(function () {
+  try {
+    var theme = localStorage.getItem("theme") || "system";
+    var resolved =
+      theme === "system"
+        ? window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light"
+        : theme;
+    document.documentElement.classList.remove("light", "dark");
+    document.documentElement.classList.add(resolved);
+  } catch (_) {}
+})();
+`.trim();
 
 export const links: Route.LinksFunction = () => [
   { rel: "canonical", href: Site.baseUrl },
@@ -58,27 +76,21 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-function parseThemeCookie(cookieHeader: string | null): Theme {
-  if (!cookieHeader) return "system";
-  const match = cookieHeader.match(/(?:^|;\s*)theme=(\w+)/);
-  return (match?.[1] as Theme) || "system";
-}
-
 export const middleware = [identityMiddleware];
 
-export function loader({ request, context }: Route.LoaderArgs) {
-  const theme = parseThemeCookie(request.headers.get("Cookie"));
-
+export function loader({ context }: Route.LoaderArgs) {
   const fingerprint = context.get(userContext).fingerprint;
-
-  return data({ theme, fingerprint });
+  return data({ fingerprint });
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const loaderData = useRouteLoaderData("root") as { theme: Theme } | undefined;
-  const theme = loaderData?.theme ?? "system";
-  // For "system" theme, server defaults to "light"; client corrects on hydration
-  const themeClass = theme === "system" ? "light" : resolveThemeClass(theme);
+  const { theme, setTheme } = useThemeStore();
+
+  // Sync store from localStorage after hydration — runs before browser paint,
+  // so the correct icon and class are applied without a visible flash.
+  useLayoutEffect(() => {
+    setTheme(getStoredTheme());
+  }, [setTheme]);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -103,10 +115,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <html lang="en" className={themeClass} suppressHydrationWarning>
+    <html lang="en" className={resolveTheme(theme)} suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {/* Anti-flicker: must be first script, before any stylesheet or React */}
+        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: sets correct theme class before paint */}
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <Meta />
         <Links />
         <script
