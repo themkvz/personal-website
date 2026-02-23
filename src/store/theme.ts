@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { applyTheme, getStoredTheme, type Theme } from "~/lib/theme";
+import { applyTheme, type Theme } from "~/lib/theme";
 
 interface ThemeState {
   theme: Theme;

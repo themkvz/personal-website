@@ -120,7 +120,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {/* Anti-flicker: must be first script, before any stylesheet or React */}
-        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: sets correct theme class before paint */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <Meta />
         <Links />
