@@ -24,7 +24,11 @@ export function Header() {
               key={to}
               to={to}
               className={({ isActive }) =>
-                cn(buttonVariants({ variant: "link" }), isActive && "underline")
+                cn(
+                  buttonVariants({ variant: "link" }),
+                  isActive && "underline",
+                  "text-foreground hover:text-primary",
+                )
               }
             >
               {label}

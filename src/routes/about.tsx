@@ -73,7 +73,7 @@ export default function About() {
                       href={job.site}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-xs text-muted-foreground transition-colors underline-offset-4 hover:text-foreground hover:underline"
+                      className="font-mono text-xs text-muted-foreground transition-colors underline-offset-4 hover:text-primary hover:underline"
                     >
                       {job.site}
                     </a>

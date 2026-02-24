@@ -40,7 +40,7 @@ export default function CatchAll() {
       container.appendChild(renderer.domElement);
 
       // ─── Helpers ─────────────────────────────────────────────────────────
-      const dark = () => isDark;
+      const dark = () => isDark();
       const fgColor = () => (dark() ? 0xffffff : 0x0a0a0a);
       const fgOpacity = (base: number) => (dark() ? base : base * 0.6);
 
@@ -197,7 +197,11 @@ export default function CatchAll() {
           The page you're looking for doesn't exist or has been moved.
         </p>
 
-        <Button variant={"outline"} render={<Link to="/" />}>
+        <Button
+          nativeButton={false}
+          variant={"outline"}
+          render={<Link to="/" />}
+        >
           Go back home
         </Button>
       </div>
