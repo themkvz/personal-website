@@ -121,7 +121,7 @@ export default function Contact() {
         ) : (
           <fetcher.Form method="post" className="mt-10" onSubmit={handleSubmit}>
             {/* Honeypot — hidden from real users */}
-            <div className="absolute left-[-9999px]" aria-hidden="true">
+            <div className="absolute -left-2499.75" aria-hidden="true">
               <input
                 type="text"
                 name="website"
