@@ -12,7 +12,7 @@ import {
 import { env } from "~/env.server";
 import { sendEmail } from "~/lib/mail";
 
-export interface ContactEmailProps {
+interface ContactEmailProps {
   name: string;
   email: string;
   message: string;

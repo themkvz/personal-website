@@ -1,6 +1,6 @@
 import { createContext } from "react-router";
 
-export type UserData = {
+type UserData = {
   fingerprint: string;
 };
 

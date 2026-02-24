@@ -10,6 +10,7 @@
         "@fontsource-variable/jetbrains-mono": "^5.2.8",
         "@hookform/resolvers": "^5.2.2",
         "@icons-pack/react-simple-icons": "^13.11.2",
+        "@openpanel/sdk": "^1.0.4",
         "@openpanel/web": "^1.0.7",
         "@react-email/components": "^1.0.8",
         "@react-router/fs-routes": "^7.13.0",
