@@ -7,4 +7,5 @@ export const op = new OpenPanel({
   trackOutgoingLinks: true,
   trackAttributes: true,
   apiUrl: envPublic.VITE_OP_API_URL,
+  waitForProfile: true,
 });
