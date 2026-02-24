@@ -1,18 +1,23 @@
 import type { OpenPanel } from "@openpanel/web";
 import { useCallback } from "react";
-import { op } from "~/lib/openpanel/op.client";
 
 type TrackFn = OpenPanel["track"];
 type IdentifyFn = OpenPanel["identify"];
 
 export function useTrack() {
-  return useCallback<TrackFn>((name, properties) => {
-    return op.track(name, properties);
+  return useCallback<TrackFn>(async (name, properties) => {
+    return import("~/lib/openpanel/op.client").then(({ op }) => {
+      console.log("start tracking", name, properties);
+
+      op.track(name, properties);
+    });
   }, []);
 }
 
 export function useIdentify() {
-  return useCallback<IdentifyFn>((payload) => {
-    return op.identify(payload);
+  return useCallback<IdentifyFn>(async (payload) => {
+    return import("~/lib/openpanel/op.client").then(({ op }) => {
+      op.identify(payload);
+    });
   }, []);
 }

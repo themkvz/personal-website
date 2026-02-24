@@ -1,5 +1,7 @@
 import { ExternalLink, ThumbsUp } from "lucide-react";
 import { useFetcher } from "react-router";
+import { TRACK_EVENTS } from "~/lib/openpanel/events";
+import { useTrack } from "~/lib/openpanel/useOpenPanel";
 import type { Bookmark } from "~/types";
 import { Button } from "../ui/button";
 
@@ -10,6 +12,7 @@ export function BookmarkCard({
   bookmark: Bookmark;
   hasVoted: boolean;
 }) {
+  const track = useTrack();
   const fetcher = useFetcher();
   const isUpvoting = !hasVoted && fetcher.state !== "idle";
   const optimisticUpvotes = isUpvoting
@@ -29,6 +32,9 @@ export function BookmarkCard({
           size="sm"
           disabled={hasVoted || isUpvoting}
           className="flex h-auto flex-col items-center gap-1 px-2 py-2"
+          onClick={() =>
+            track(TRACK_EVENTS.BOOKMARK_UPVOTE, { bookmark: bookmark.title })
+          }
         >
           <ThumbsUp
             className={`h-4 w-4 ${hasVoted || isUpvoting ? "text-primary" : "text-muted-foreground"}`}

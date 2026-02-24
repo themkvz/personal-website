@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2, Send } from "lucide-react";
+import { useCallback } from "react";
 import { Controller } from "react-hook-form";
 import { useFetcher } from "react-router";
 import { getValidatedFormData, useRemixForm } from "remix-hook-form";
@@ -21,6 +22,7 @@ import { getClientInfo } from "~/lib/client-info";
 import { TRACK_EVENTS } from "~/lib/openpanel/events";
 import { trackEvent } from "~/lib/openpanel/getOpenPanel";
 import { useTrack } from "~/lib/openpanel/useOpenPanel";
+import { cn } from "~/lib/utils";
 import { contactSchema } from "~/schemas/contact";
 import type { Route } from "./+types/contact";
 
@@ -81,6 +83,15 @@ export default function Contact() {
   const fetcher = useFetcher<typeof action>();
   const actionData = fetcher.data;
   const track = useTrack();
+  const trackBlurredField = useCallback(
+    (fieldName: string, fieldValue: string) => {
+      track(TRACK_EVENTS.CONTACT_FIELD_BLURRED, {
+        fieldName,
+        fieldValue,
+      });
+    },
+    [track],
+  );
 
   const {
     handleSubmit,
@@ -140,6 +151,10 @@ export default function Contact() {
                     <FieldLabel htmlFor={field.name}>Name</FieldLabel>
                     <Input
                       {...field}
+                      onBlur={(e) => {
+                        trackBlurredField(field.name, e.currentTarget.value);
+                        field.onBlur();
+                      }}
                       id={field.name}
                       placeholder="Your name"
                       aria-invalid={fieldState.invalid}
@@ -159,6 +174,11 @@ export default function Contact() {
                     <FieldLabel htmlFor={field.name}>Email</FieldLabel>
                     <Input
                       {...field}
+                      onBlur={(e) => {
+                        trackBlurredField(field.name, e.currentTarget.value);
+
+                        field.onBlur();
+                      }}
                       id={field.name}
                       type="email"
                       placeholder="your@email.com"
@@ -179,6 +199,10 @@ export default function Contact() {
                     <FieldLabel htmlFor={field.name}>Message</FieldLabel>
                     <Textarea
                       {...field}
+                      onBlur={(e) => {
+                        trackBlurredField(field.name, e.currentTarget.value);
+                        field.onBlur();
+                      }}
                       id={field.name}
                       placeholder="Tell me about your project..."
                       rows={5}
@@ -194,8 +218,10 @@ export default function Contact() {
 
             <Button
               type="submit"
-              disabled={isSubmitting || !isValid}
-              className="mt-7"
+              className={cn(
+                "mt-7",
+                (isSubmitting || !isValid) && "cursor-not-allowed opacity-50",
+              )}
               onClick={() => track(TRACK_EVENTS.SUBMIT_FORM_CLICKED)}
             >
               {isSubmitting ? (

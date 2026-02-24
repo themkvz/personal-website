@@ -2,6 +2,7 @@ import { MapPin } from "lucide-react";
 import { Link } from "react-router";
 import { Nav } from "../../constants";
 import { cn } from "../../lib/utils";
+import { DecryptedText } from "../decrypted-text";
 import { SOCIAL_ICONS } from "../social-icons";
 import { Button, buttonVariants } from "../ui/button";
 import { Separator } from "../ui/separator";
@@ -16,9 +17,9 @@ export function Footer() {
           <div className="sm:col-span-1">
             <Link
               to="/"
-              className="font-mono text-lg font-semibold tracking-tight"
+              className="font-mono text-xl font-semibold tracking-tight"
             >
-              themkvz
+              <DecryptedText text="themkvz" />
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
               Senior Full-Stack & Front-End Developer. Architecting scalable
