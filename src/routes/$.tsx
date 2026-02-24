@@ -208,3 +208,14 @@ export default function CatchAll() {
     </div>
   );
 }
+
+export function meta() {
+  return [
+    { title: "404: Page Not Found — Ihor M." },
+    {
+      name: "description",
+      content:
+        "The page you are looking for is not available. Visit the homepage to explore Ihor M.'s portfolio, projects, and contact details.",
+    },
+  ];
+}
