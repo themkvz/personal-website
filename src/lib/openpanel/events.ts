@@ -5,4 +5,5 @@ export const TRACK_EVENTS = {
   CONTACT_SAVED: "Contact Saved",
   CONTACT_FIELD_BLURRED: "Contact Field Blurred",
   BOOKMARK_UPVOTE: "Bookmark Upvote",
+  NOT_FOUND_CLICKED_BACK: "Clicked Back from Not Found",
 };

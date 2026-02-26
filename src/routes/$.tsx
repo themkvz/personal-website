@@ -2,6 +2,8 @@ import { useEffect, useRef } from "react";
 import { Link } from "react-router";
 import { DecryptedText } from "~/components/decrypted-text";
 import { Button } from "~/components/ui/button";
+import { TRACK_EVENTS } from "~/lib/openpanel/events";
+import { useTrack } from "~/lib/openpanel/useOpenPanel";
 
 function isDark() {
   return document.documentElement.classList.contains("dark");
@@ -9,6 +11,7 @@ function isDark() {
 
 export default function CatchAll() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const track = useTrack();
 
   useEffect(() => {
     const container = containerRef.current;
@@ -200,6 +203,7 @@ export default function CatchAll() {
         <Button
           nativeButton={false}
           variant={"outline"}
+          onClick={() => track(TRACK_EVENTS.NOT_FOUND_CLICKED_BACK)}
           render={<Link to="/" />}
         >
           Go back home
@@ -218,4 +222,8 @@ export function meta() {
         "The page you are looking for is not available. Visit the homepage to explore Ihor M.'s portfolio, projects, and contact details.",
     },
   ];
+}
+
+export function action() {
+  return null;
 }
