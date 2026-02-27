@@ -16,6 +16,7 @@ Keep changes minimal, match existing patterns, and prefer clarity.
 - `bun run dev`              Start dev server (http://localhost:5173)
 - `bun run build`            Production build
 - `bun start`                Run production server from build output
+- `bun run doctor`           React Doctor diagnostics for codebase health
 
 ### Typecheck / Lint / Format
 - `bun run typecheck`        React Router typegen + TypeScript
@@ -32,6 +33,7 @@ Keep changes minimal, match existing patterns, and prefer clarity.
 - No test runner is configured in `package.json`.
 - There is no single-test command available yet.
 - If you add tests, document a per-test command here.
+- Example to add later: `bun run test -- <pattern>` (adjust to runner).
 
 ### Hooks
 - Husky + lint-staged runs `biome check --fix` on staged files.
@@ -43,48 +45,57 @@ Keep changes minimal, match existing patterns, and prefer clarity.
 - Prefer path alias `~/` for app code (configured in `tsconfig.json`).
 - Group third-party imports first, then local imports.
 - Biome organizes imports automatically; avoid manual reordering.
+- Avoid default exports in shared utilities unless required by framework.
 
 ### Formatting
 - 2-space indent, double quotes, trailing commas where Biome applies.
 - Let Biome handle formatting; do not hand-style code blocks.
 - Keep JSX and Tailwind class strings readable; wrap long lists.
+- Keep files stable; avoid reformatting unrelated sections.
 
 ### Types
 - TypeScript `strict: true` is on; no `any` unless justified.
 - Use `zod` schemas in `src/schemas/` for form data.
 - Prefer `z.infer<typeof schema>` for form payload types.
 - Keep server and client types in `src/types.ts` when shared.
+- Prefer type-safe helpers over casting; avoid `as` unless needed.
 
 ### Naming
 - Components: `PascalCase` (files use kebab-case, e.g. `experience-timeline.tsx`).
 - Hooks: `useX` naming.
 - Functions: `camelCase`; constants in `UPPER_SNAKE` only when truly constant.
 - Route modules live in `src/routes/` and use `export function loader/action`.
+- Favor descriptive booleans (`isLoading`, `hasError`) over negations.
 
 ### React Router (Framework Mode)
 - Use loaders for data and actions for mutations.
 - Use `Route.ComponentProps` and `Route.LoaderArgs` for typing.
 - `root.tsx` owns app layout, meta, and error boundary.
+- Keep route modules focused; move shared UI to `src/components/`.
 
 ### Forms
 - Use `useRemixForm` with `zodResolver`.
 - Validate on server with `getValidatedFormData` and return typed data.
 - Include anti-spam inputs (`website`, `_timestamp`) for public forms.
+- Keep client and server validation messages aligned.
 
 ### Error Handling
 - Fail early in actions/loaders; return typed `{ error }` or `{ success }`.
 - Use `try/catch` around DB writes and return a user-friendly message.
 - In dev, error boundaries may show stack traces (`import.meta.env.DEV`).
+- Avoid throwing raw errors to the client; sanitize messages.
 
 ### Data Layer (Drizzle)
 - Schema lives in `src/db/schema.ts`.
 - Prefer `db.select().from(table)` and `db.insert().values()`.
 - Use `sql``...`` for raw updates when needed.
+- Keep migrations and schema updates scoped to the feature.
 
 ### Styling
 - Tailwind utility classes with `cn` from `src/lib/utils.ts`.
 - Components in `src/components/ui/` follow shadcn/ui style patterns.
 - Avoid inline styles; keep CSS in `src/app.css` when necessary.
+- Prefer composition over large class strings when readable.
 
 ### Files and Structure
 - `src/routes/`         Route modules, loaders, actions, and pages
@@ -92,22 +103,26 @@ Keep changes minimal, match existing patterns, and prefer clarity.
 - `src/schemas/`        Zod schemas shared by server/client
 - `src/lib/`            Utilities, analytics, anti-spam, mail
 - `src/db/`             DB schema and client
+- `scripts/`            Local utilities (e.g., seed scripts)
 
 ## Tooling Rules
 
 ### Biome
 - Enforces double quotes and 2-space indent.
 - Unused imports are warnings; remove unused code when touched.
+- Run `bun run lint:fix` before committing when possible.
 
 ### TypeScript
 - `verbatimModuleSyntax` is enabled; keep import/export syntax precise.
 - `moduleResolution: bundler`; use ESM imports (`type: module`).
+- Prefer `satisfies` for config objects when useful.
 
 ## Environment
 
 ### Server env vars (see `src/env.server.ts`)
 - SMTP settings and OpenPanel credentials are required in production.
 - Do not commit secrets; keep `.env` out of git.
+- Use local `.env` or `.env.local` for development only.
 
 ## Agent Behavior (Local Rules)
 
@@ -115,6 +130,7 @@ Keep changes minimal, match existing patterns, and prefer clarity.
 - For non-trivial work, plan before changes and verify results.
 - Prefer minimal, elegant fixes; avoid hacky patches.
 - Run relevant checks and show evidence when possible.
+- Keep changes tightly scoped to the request.
 
 ## Cursor / Copilot Rules
 
@@ -126,3 +142,4 @@ Keep changes minimal, match existing patterns, and prefer clarity.
 - If you add tests, also update this file with per-test commands.
 - Keep changes scoped; avoid reformatting untouched files.
 - When modifying public forms, keep anti-spam inputs intact.
+- When adding new deps, update `package.json` scripts if needed.

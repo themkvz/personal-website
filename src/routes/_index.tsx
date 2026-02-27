@@ -1,3 +1,4 @@
+import { IdentityCard } from "~/components/identity-card";
 import { ExperienceTimeline } from "../components/experience-timeline";
 import { Hero } from "../components/hero";
 import { Highlights } from "../components/highlights";
@@ -29,6 +30,8 @@ export default function Home() {
     <div className="">
       {/* Hero */}
       <Hero />
+
+      <IdentityCard />
 
       {/* Skills */}
       <Skills />
