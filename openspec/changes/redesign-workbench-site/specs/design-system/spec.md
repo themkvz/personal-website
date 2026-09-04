@@ -22,8 +22,12 @@ The system SHALL expose the design's semantic tokens as the single source of col
 The system SHALL provide exactly the ten designed type roles — `display-xl`, `display-lg`, `title-1`, `title-2`, `title-3`, `body`, `body-sm`, `meta`, `label`, `code` — each with a fixed family, size, weight, line height, and letter spacing. Display, meta, label, and code roles use the monospace family; title and body roles use the body family.
 
 #### Scenario: Heading elements map to roles
-- **WHEN** an `h1`, `h2`, `h3`, or `h4` is rendered in page content
-- **THEN** it carries the corresponding role (`display-xl`, `title-1`, `title-2`, `title-3`) without per-page overrides
+- **WHEN** an `h1`, `h2`, `h3`, or `h4` is rendered in page content without an explicit role class
+- **THEN** it carries the corresponding default role (`display-xl`, `title-1`, `title-2`, `title-3`)
+
+#### Scenario: Role class overrides the element default
+- **WHEN** an element carries an explicit role class (for example the Home `h1` as `title-1`, or an artifact `h1` as `display-lg`)
+- **THEN** the role class wins over the element default
 
 #### Scenario: Display scales down on small screens
 - **WHEN** the viewport is below the small breakpoint
@@ -43,7 +47,7 @@ Page content SHALL be laid out within a centred container capped at the design's
 
 ### Requirement: Three theme modes
 
-The system SHALL support `light`, `dark`, and `system` theme modes. The chosen mode SHALL persist across visits and SHALL be applied before first paint so no flash of the wrong theme occurs.
+The system SHALL support `light`, `dark`, and `system` theme modes. The chosen mode SHALL persist across visits in browser `localStorage` and SHALL be applied before first paint by an inline script so no flash of the wrong theme occurs.
 
 #### Scenario: Mode persists
 - **WHEN** a visitor selects `dark` and returns in a later session
@@ -88,3 +92,11 @@ Interactive elements SHALL be reachable and operable by keyboard, SHALL show a v
 #### Scenario: Contrast in both modes
 - **WHEN** text or a control is measured against its background in light and in dark mode
 - **THEN** the contrast ratio meets WCAG AA for its size
+
+#### Scenario: Reduced motion respected
+- **WHEN** the visitor's system reports `prefers-reduced-motion: reduce`
+- **THEN** decorative motion (the decrypted-text effect and any hover animation) is skipped and the final state renders immediately
+
+#### Scenario: Meaning not carried by colour alone
+- **WHEN** a lane is indicated anywhere
+- **THEN** its hue is accompanied by a visible text label
