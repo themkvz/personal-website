@@ -4,10 +4,10 @@ This file guides agentic coding assistants working in this repo.
 Keep changes minimal, match existing patterns, and prefer clarity.
 
 ## Project Snapshot
-- App: Personal website, React Router 7 framework mode (SSR)
+- App: Personal workbench site, React Router 7 framework mode (SSR)
 - Runtime: Bun, TypeScript (strict), React 19
-- Styling: Tailwind CSS 4, shadcn/ui patterns on Base UI
-- DB: SQLite via Drizzle ORM
+- Styling: Tailwind CSS 4, shadcn/ui patterns on Base UI, tokens in `DESIGN.md`
+- Content: MDX files under `content/`, no database or CMS
 - Lint/format: Biome (2-space indent, double quotes)
 
 ## Commands
@@ -24,10 +24,9 @@ Keep changes minimal, match existing patterns, and prefer clarity.
 - `bun run lint:fix`         Biome auto-fix
 - `bun run format`           Biome format only
 
-### Database
-- `bun run db:push`          Push Drizzle schema to SQLite
-- `bun run db:seed`          Seed DB
-- `bun run db:studio`        Open Drizzle Studio
+### Content
+- Add, edit, or delete a file under `content/{workbench,experience,tools}/` and rebuild — no other step is required.
+- Frontmatter is validated by `valibot` (`src/content/schema.ts`); a malformed file fails the build.
 
 ### Tests
 - No test runner is configured in `package.json`.
@@ -55,55 +54,50 @@ Keep changes minimal, match existing patterns, and prefer clarity.
 
 ### Types
 - TypeScript `strict: true` is on; no `any` unless justified.
-- Use `zod` schemas in `src/schemas/` for form data.
-- Prefer `z.infer<typeof schema>` for form payload types.
-- Keep server and client types in `src/types.ts` when shared.
+- Use `valibot` schemas in `src/content/schema.ts` for content frontmatter, and in `src/env.server.ts`/`src/env.client.ts` for env vars.
+- Prefer `v.InferOutput<typeof schema>` for content payload types.
 - Prefer type-safe helpers over casting; avoid `as` unless needed.
 
 ### Naming
-- Components: `PascalCase` (files use kebab-case, e.g. `experience-timeline.tsx`).
+- Components: `PascalCase` (files use kebab-case, e.g. `artifact-card.tsx`).
 - Hooks: `useX` naming.
 - Functions: `camelCase`; constants in `UPPER_SNAKE` only when truly constant.
-- Route modules live in `src/routes/` and use `export function loader/action`.
+- Route modules live in `src/routes/` and use `export function loader`.
 - Favor descriptive booleans (`isLoading`, `hasError`) over negations.
 
 ### React Router (Framework Mode)
-- Use loaders for data and actions for mutations.
+- Use loaders for data; there are no actions since the site has no forms.
 - Use `Route.ComponentProps` and `Route.LoaderArgs` for typing.
-- `root.tsx` owns app layout, meta, and error boundary.
+- `root.tsx` owns app layout, error boundary, and the theme-init script; per-route `meta` (via `src/lib/meta.ts`) owns metadata.
 - Keep route modules focused; move shared UI to `src/components/`.
 
-### Forms
-- Use `useRemixForm` with `zodResolver`.
-- Validate on server with `getValidatedFormData` and return typed data.
-- Include anti-spam inputs (`website`, `_timestamp`) for public forms.
-- Keep client and server validation messages aligned.
-
 ### Error Handling
-- Fail early in actions/loaders; return typed `{ error }` or `{ success }`.
-- Use `try/catch` around DB writes and return a user-friendly message.
-- In dev, error boundaries may show stack traces (`import.meta.env.DEV`).
+- Fail early in loaders; throw `data(null, { status: 404 })` for a genuine miss.
+- In dev, the root error boundary may show stack traces (`import.meta.env.DEV`).
 - Avoid throwing raw errors to the client; sanitize messages.
 
-### Data Layer (Drizzle)
-- Schema lives in `src/db/schema.ts`.
-- Prefer `db.select().from(table)` and `db.insert().values()`.
-- Use `sql``...`` for raw updates when needed.
-- Keep migrations and schema updates scoped to the feature.
+### Content Layer
+- Frontmatter schemas live in `src/content/schema.ts`; the derived index lives in `src/content/index.ts`.
+- Never read `content/` files directly in a component — pages import from `~/content` and pass data down.
+- No component below `layout/` may import from `~/content` or React Router's data hooks.
 
 ### Styling
 - Tailwind utility classes with `cn` from `src/lib/utils.ts`.
-- Components in `src/components/ui/` follow shadcn/ui style patterns.
+- Design tokens and type roles are documented in `DESIGN.md`; add a token there in the same commit it's added to `src/app.css`.
+- Components in `src/components/ui/` follow shadcn/ui style patterns; edit them only to retheme.
 - Avoid inline styles; keep CSS in `src/app.css` when necessary.
 - Prefer composition over large class strings when readable.
 
 ### Files and Structure
-- `src/routes/`         Route modules, loaders, actions, and pages
-- `src/components/`     Shared UI and layout
-- `src/schemas/`        Zod schemas shared by server/client
-- `src/lib/`            Utilities, analytics, anti-spam, mail
-- `src/db/`             DB schema and client
-- `scripts/`            Local utilities (e.g., seed scripts)
+- `src/routes/`             Route modules, loaders, and pages
+- `src/components/ui/`      Vendored shadcn/Base UI primitives
+- `src/components/atoms/`   Base design-system components
+- `src/components/composites/` Multi-part components
+- `src/components/layout/`  Site chrome and page scaffolding
+- `src/components/identity/` Retained `IdentityCard`, `DecryptedText`
+- `src/content/`            Content schemas and the derived index
+- `content/`                MDX content files
+- `src/lib/`                Utilities, analytics, meta helpers
 
 ## Tooling Rules
 
@@ -120,7 +114,7 @@ Keep changes minimal, match existing patterns, and prefer clarity.
 ## Environment
 
 ### Server env vars (see `src/env.server.ts`)
-- SMTP settings and OpenPanel credentials are required in production.
+- `NODE_ENV`, `OP_CLIENT_SECRET`, `VITE_OP_CLIENT_ID`, `VITE_OP_API_URL` (OpenPanel credentials) are required.
 - Do not commit secrets; keep `.env` out of git.
 - Use local `.env` or `.env.local` for development only.
 
@@ -141,5 +135,5 @@ Keep changes minimal, match existing patterns, and prefer clarity.
 
 - If you add tests, also update this file with per-test commands.
 - Keep changes scoped; avoid reformatting untouched files.
-- When modifying public forms, keep anti-spam inputs intact.
+- When adding a token, type role, or component, update `DESIGN.md` in the same commit.
 - When adding new deps, update `package.json` scripts if needed.

@@ -1,0 +1,27 @@
+---
+title: Cross-platform product workflows
+lane: building
+summary: Notes from a cross-platform application and its React-based administration interface.
+publishedAt: 2025-08-20
+topics:
+  - react
+  - cross-platform
+  - product
+---
+
+Running a product across desktop, mobile, and a web-based administration
+panel means the same domain logic has to behave identically in three very
+different runtimes.
+
+## Shared foundations
+
+The workflows that actually stayed maintainable were the ones where the
+domain logic lived in one place and each platform's UI layer was a thin
+adapter over it, not a reimplementation.
+
+## Open threads
+
+- How much of the validation logic can move into a shared package versus
+  staying duplicated for platform-specific UX reasons.
+- Where the administration interface's data-fetching patterns diverge from
+  the consumer app's, and whether that divergence is justified.

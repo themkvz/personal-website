@@ -65,25 +65,23 @@ bun run typecheck    # TypeScript type checking
 bun run lint         # Check with Biome linter
 bun run lint:fix     # Auto-fix lint issues
 bun run format       # Format with Biome
-bun run db:push      # Push Drizzle schema changes to SQLite
-bun run db:seed      # Seed database
-bun run db:studio    # Open Drizzle Studio
+bun run doctor       # React Doctor diagnostics
 ```
 
 Pre-commit hook (Husky + lint-staged) runs Biome on staged files automatically.
 
 ## Architecture
 
-Full-stack personal website built with **React Router 7** in framework mode (SSR enabled), **React 19**, and **TypeScript**.
+A personal workbench — notes, decisions, investigations, references, and small tools — built with **React Router 7** in framework mode (SSR enabled), **React 19**, and **TypeScript**. See `DESIGN.md` for the design system (tokens, type scale, layout, component inventory).
 
 ### Stack
 
 - **Routing:** React Router 7 with file-based routes (`@react-router/fs-routes`)
-- **Styling:** Tailwind CSS 4 with oklch color variables for light/dark/system themes
-- **Components:** shadcn/ui pattern built on Base UI primitives
-- **Forms:** React Hook Form + `remix-hook-form` + shadcn Field components + Zod validation
-- **Database:** SQLite via Drizzle ORM (`data/sqlite.db`)
-- **State:** Zustand for client-side theme state, cookies for persistence
+- **Styling:** Tailwind CSS 4, tokens defined in `src/app.css` and documented in `DESIGN.md`
+- **Components:** shadcn/ui pattern built on Base UI primitives, layered under `src/components/`
+- **Content:** MDX files under `content/`, no database or CMS — see Content Layer below
+- **Validation:** `valibot` for content frontmatter and env vars
+- **State:** Zustand for client-side theme state, `localStorage` for persistence
 - **Linter/Formatter:** Biome (double quotes, 2-space indent)
 - **Icons:** Lucide React
 
@@ -91,35 +89,30 @@ Full-stack personal website built with **React Router 7** in framework mode (SSR
 
 - `src/` — Main application directory (set via `react-router.config.ts`)
 - `src/routes/` — File-based route modules (loaders, actions, components)
-- `src/components/ui/` — shadcn/ui components
-- `src/components/layout/` — Header, footer, theme toggle
-- `src/db/` — Drizzle schema and DB initialization
+- `src/components/ui/` — Vendored shadcn/Base UI primitives (retheme only)
+- `src/components/atoms/` — Base design-system components (`Rule`, `Tag`, `Link`, …)
+- `src/components/composites/` — Multi-part components (`ArtifactCard`, `StateFilter`, …)
+- `src/components/layout/` — Site chrome: `Nav`, `Footer`, `Container`, `Section`, `Prose`, `NotFound`
+- `src/components/identity/` — Retained `IdentityCard`, `DecryptedText`
+- `src/content/` — Content schemas (`schema.ts`) and the derived index (`index.ts`)
+- `content/` — MDX content files (`workbench/`, `experience/`, `tools/`)
 - `src/store/` — Zustand stores
-- `src/schemas/` — Zod validation schemas (shared between client and server)
-- `src/lib/anti-spam.ts` — Anti-spam helper (honeypot + CSRF timestamp)
-- `src/constants.tsx` — Navigation links, social links, tech stack data
+- `src/constants.ts` — Navigation, social links, and design-bound page copy
+
+Dependency direction between component layers is one-way: `layout → composites → atoms → ui → lib`.
 
 ### Path Alias
 
 `~/*` maps to `./src/*` (configured in tsconfig.json).
 
+### Content Layer
+
+All time-varying site content — workbench artifacts, the experience timeline, tool cards — is authored as MDX files in `content/`, each with typed YAML frontmatter validated by `valibot` (`src/content/schema.ts`) at module load. `src/content/index.ts` derives a single index per collection from `import.meta.glob`; adding, editing, or deleting a file is the only publishing step. Artifacts marked `draft: true` are indexed only in development. See `content-model` in `openspec/specs/` (once archived) or `openspec/changes/redesign-workbench-site/specs/content-model/spec.md` for the full contract.
+
 ### Data Flow
 
-Route modules use React Router's **loaders** (server-side data fetching) and **actions** (form mutations). The root loader reads theme from cookies. The bookmarks page demonstrates the full loader/action pattern with optimistic UI via `useFetcher`.
-
-### Forms
-
-Forms use **React Hook Form** integrated with React Router via `remix-hook-form`:
-
-- **Client:** `useRemixForm` hook with `zodResolver` for client-side validation. Uses `Controller` + shadcn `Field`/`FieldLabel`/`FieldError`/`FieldGroup` components for rendering. Submit via `useFetcher` (passed into `useRemixForm({ fetcher })`).
-- **Server:** `getValidatedFormData(request, resolver)` in the action validates and extracts typed data using the same Zod schema.
-- **Schemas:** Defined in `src/schemas/` and shared between client and server.
-- **Anti-spam:** `isSpam(request)` from `~/lib/anti-spam` checks a honeypot field (`website`) and a CSRF timestamp (`_timestamp`, rejects submissions under 2 seconds). Called at the top of form actions before validation. The corresponding hidden inputs are rendered in the form markup.
+Route modules use React Router's **loaders** for data; there are no mutating actions since the site has no forms. Content comes from the modules in `src/content/`, imported directly — not fetched.
 
 ### Theme System
 
-Three modes (light/dark/system) persisted in cookies, read server-side in `root.tsx` loader, managed client-side via Zustand store in `src/store/theme.ts`.
-
-### Database Schema
-
-Two tables in `src/db/schema.ts`: `bookmarks` (title, url, description, upvotes) and `contacts` (name, email, message). Both have auto-increment IDs and ISO timestamp `createdAt`.
+Three modes (light/dark/system) persisted in `localStorage`, applied before first paint by an inline script in `root.tsx`, managed client-side via the Zustand store in `src/store/theme.ts`.

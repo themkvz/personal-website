@@ -1,12 +1,19 @@
+import mdx from "@mdx-js/rollup";
 import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
+import remarkFrontmatter from "remark-frontmatter";
+import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
-  ssr: {
-    // bun:sqlite is a Bun built-in — leave it for the runtime, don't bundle it
-    external: ["bun:sqlite"],
-  },
+  plugins: [
+    {
+      enforce: "pre",
+      ...mdx({ remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter] }),
+    },
+    tailwindcss(),
+    reactRouter(),
+    tsconfigPaths(),
+  ],
 });

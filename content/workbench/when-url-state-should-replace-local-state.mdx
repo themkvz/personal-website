@@ -1,0 +1,27 @@
+---
+title: When URL state should replace local state
+lane: deciding
+summary: A decision record for choosing durable, shareable state over hidden interface state.
+publishedAt: 2025-07-18
+topics:
+  - state-management
+  - urls
+---
+
+Local component state is invisible: it disappears on refresh, can't be
+shared as a link, and can't be bookmarked. For a lot of interface state,
+that invisibility is the wrong default.
+
+## The rule adopted
+
+If a piece of state changes what the user sees enough that they'd want to
+share, bookmark, or reload the page and land in the same place, it belongs
+in the URL. Everything else — a hover state, an in-progress form field
+before submission — stays local.
+
+## Consequence
+
+A filter, an active tab, an open lane on the Workbench index — all of these
+became search params instead of `useState`. The trade-off is a small amount
+of extra plumbing (usually solved by `nuqs`) in exchange for links that
+actually work when shared.

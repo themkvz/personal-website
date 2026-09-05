@@ -1,0 +1,27 @@
+---
+title: Browser performance debugging
+lane: investigating
+summary: Questions and references for finding bottlenecks before choosing an optimization.
+publishedAt: 2025-08-05
+topics:
+  - performance
+  - devtools
+---
+
+Before reaching for `useMemo`, a virtualization library, or a rewrite in a
+"faster" pattern, the actual bottleneck needs to be located — not guessed at.
+
+## Questions worth asking first
+
+- Is the cost in rendering, layout, or paint? The Performance panel's flame
+  chart usually answers this in under a minute.
+- Is the component re-rendering more often than it needs to, or is each
+  render itself expensive?
+- Is the bottleneck actually in JavaScript, or is it network waterfall time
+  being misattributed to "slow React"?
+
+## References
+
+Chrome DevTools' Performance panel and the React DevTools Profiler cover
+almost every case. Reaching for a synthetic benchmark before profiling the
+real page is a common way to optimize the wrong thing.

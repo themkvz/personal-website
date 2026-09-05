@@ -6,12 +6,4 @@
 /.react-router/
 /build/
 
-# Database
-/data/*.db
-/data/*.db-wal
-/data/*.db-shm
-
-# Drizzle
-/drizzle/
-
 .claude/settings.local.json

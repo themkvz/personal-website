@@ -97,7 +97,7 @@ Composition rules, applied to every new component:
 
 `IdentityCard` and `DecryptedText` move to `identity/` and are restyled onto the new tokens (mono display role, `--foreground` / `--muted-foreground`, the lane-free neutral ramp). Their behaviour, props, and animation are untouched — this is a retheme, not a rewrite, with one addition: `DecryptedText` is decorative motion and is wrapped so it renders its final text immediately under `prefers-reduced-motion: reduce`. `IdentityCard` lands in Home's profile panel, where the design already calls for the name-plus-contact block.
 
-`StateFilter` renders its lanes as real anchors (`<a href="?lane=building">` and an unfiltered `All`), with `aria-current` on the active one, so the filtered view works without JavaScript; `nuqs` reads the param and drives the client-side transition on top of that.
+`StateFilter` renders its lanes as real anchors (`<a href="?lane=building">` and an unfiltered `All`), with `aria-current` on the active one, so the filtered view works without JavaScript. The route loader reads and validates the param, so the filtered index is server-rendered. `nuqs` is installed and its adapter is mounted in `root.tsx`, but the filter does not yet read through it.
 
 Keep `lucide-react`. The design system frame specifies Tabler but annotates the canvas preview as Lucide with the same outlined style at the same 24px grid and 1.5–2px stroke; Lucide is already installed and the visual difference at 16/20px is not material. Revisit only if a specific glyph is missing.
 
@@ -109,7 +109,7 @@ Keep `lucide-react`. The design system frame specifies Tabler but annotates the 
 
 ### Routing
 
-Flat file routes under `src/routes/`: `_index.tsx` (Home), `workbench._index.tsx`, `workbench.$slug.tsx`, `tools._index.tsx`, `about.tsx`, `$.tsx` (404), `sitemap[.]xml.ts`, `feed[.]xml.ts`, and two redirect resource routes, `contact.tsx` (`redirect("/about", 301)`) and `bookmarks.tsx` (`redirect("/workbench", 301)`), each a loader with no component. `robots.txt` stays the static file already in `public/`; a route for it would be shadowed by the static asset anyway. The lane filter on Workbench is a `?lane=` search param read through the already-installed `nuqs`, validated against the lane picklist (an unknown value behaves as unfiltered), with the unfiltered URL as canonical.
+Flat file routes under `src/routes/`: `_index.tsx` (Home), `workbench._index.tsx`, `workbench.$slug.tsx`, `tools._index.tsx`, `about.tsx`, `$.tsx` (404), `sitemap[.]xml.ts`, `feed[.]xml.ts`, and two redirect resource routes, `contact.tsx` (`redirect("/about", 301)`) and `bookmarks.tsx` (`redirect("/workbench", 301)`), each a loader with no component. `robots.txt` stays the static file already in `public/`; a route for it would be shadowed by the static asset anyway. The lane filter on Workbench is a `?lane=` search param read in the `workbench._index` loader, validated against the lane picklist (an unknown value behaves as unfiltered), with the unfiltered URL as canonical. `nuqs` is retained for planned client-side search-param work.
 
 ### One not-found view, two entry points
 

@@ -1,78 +1,57 @@
-# Welcome to React Router!
+# themkvz.com
 
-A modern, production-ready template for building full-stack React applications using React Router.
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+A personal workbench — a durable, editorial record of notes, decisions, investigations, references, and small tools. Built with **React Router 7** in framework mode (SSR), **React 19**, and **TypeScript**.
 
 ## Features
 
 - 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
+- 📝 MDX content layer — no database, no CMS
+- 🎨 A token-driven design system (`DESIGN.md`)
 - 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+- 🎉 Tailwind CSS 4
 
 ## Getting Started
 
 ### Installation
 
-Install the dependencies:
-
 ```bash
-npm install
+bun install
 ```
 
 ### Development
 
-Start the development server with HMR:
-
 ```bash
-npm run dev
+bun run dev
 ```
 
 Your application will be available at `http://localhost:5173`.
 
+### Adding content
+
+Site content — workbench artifacts, the experience timeline, and tool cards — lives as MDX files under `content/`. Add, edit, or delete a file there and rebuild; no other step is required. See `src/content/schema.ts` for the required frontmatter per collection.
+
 ## Building for Production
 
-Create a production build:
-
 ```bash
-npm run build
+bun run build
 ```
 
 ## Deployment
 
 ### Docker Deployment
 
-To build and run using Docker:
-
 ```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
+docker build -t themkvz .
+docker run -p 3000:3000 --env-file .env themkvz
 ```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
 
 ### DIY Deployment
 
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
+The built-in app server is production-ready. Deploy the output of `bun run build`:
 
 ```
 ├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
+├── bun.lock
 ├── build/
 │   ├── client/    # Static assets
 │   └── server/    # Server-side code
@@ -80,7 +59,7 @@ Make sure to deploy the output of `npm run build`
 
 ## Styling
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+Tailwind CSS 4, configured from the token set documented in `DESIGN.md`.
 
 ---
 

@@ -1,0 +1,35 @@
+---
+title: Modernizing an existing frontend without stopping product work
+lane: building
+kind: FIELD NOTE / FRONTEND
+summary: A practical record of improving long-lived interfaces while product delivery continues.
+publishedAt: 2025-09-03
+topics:
+  - react
+  - migration
+  - frontend-architecture
+featured: true
+---
+
+The frontend had grown over several years under continuous product pressure.
+Rewriting it outright was never an option — the business needed shipped
+features every sprint, not a multi-month pause for a rebuild.
+
+## The approach
+
+Instead of a rewrite, the migration moved boundary by boundary: a route, a
+shared component, a piece of state at a time. Each boundary was modernized,
+tested against the existing behaviour, and shipped, so the application never
+left a working state for more than a day.
+
+## What made it work
+
+- **Strangler-fig routing** — new and old code served side by side behind the
+  same router, swapped one route at a time.
+- **Shared design tokens** — introduced early, so old and new UI could sit
+  next to each other without looking like two different products.
+- **State boundaries made explicit** — global state was audited and narrowed
+  before any component migrated, which removed most of the surprises.
+
+The result: a fully modernized frontend with no dedicated "migration
+sprint," and no regression the product team noticed as a release event.

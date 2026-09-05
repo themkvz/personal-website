@@ -23,13 +23,8 @@ RUN bun run build
 FROM base
 WORKDIR /app
 COPY --from=prod-deps /app/node_modules ./node_modules
-COPY --from=deps /app/node_modules/drizzle-kit ./node_modules/drizzle-kit
 COPY --from=build /app/build ./build
-COPY package.json drizzle.config.ts docker-entrypoint.sh ./
-COPY src/db ./src/db
-COPY scripts ./scripts
-
-VOLUME /app/data
+COPY package.json docker-entrypoint.sh ./
 
 EXPOSE 3000
 

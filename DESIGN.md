@@ -6,7 +6,7 @@ This document is the **code-side** source of truth: tokens, type roles, layout, 
 
 Adding a token, a type role, or a component means updating this file in the same commit. A value that lives only in a component is a bug.
 
-> **Status:** the system is specified and the redesign is planned in `openspec/changes/redesign-workbench-site/`. Sections marked _(planned)_ describe code that this change introduces.
+> **Status:** the redesign in `openspec/changes/redesign-workbench-site/` has landed. This document describes the shipped system.
 
 ---
 
@@ -104,14 +104,22 @@ Two families, both from Google Fonts, both already self-hosted via `@fontsource-
 - `--font-display` / `--font-mono` — **JetBrains Mono**
 - `--font-body` — **Inter**
 
-### 3.1 The ten roles
+### 3.1 The twelve roles
 
-Ten roles, no more. Every piece of text on the site is exactly one of them.
+Twelve roles, no more. Every piece of text on the site is exactly one of them.
+
+The two mono display roles (`t-display-md`, `t-display-sm`) exist because
+`design/design-2.pen` sets card and panel headings in JetBrains Mono, not Inter
+— the profile panel name, the practice summary heading, the contact heading and
+the 404 headline are all mono. They are roles rather than ad-hoc metrics so the
+scale stays closed.
 
 | Role | Family | Size | Weight | Line height | Tracking | Used for |
 |---|---|---|---|---|---|---|
-| `t-display-xl` | JB Mono | 64 | 700 | 1.05 | — | Page display statement |
-| `t-display-lg` | JB Mono | 44 | 700 | 1.10 | — | Secondary display, small-viewport step |
+| `t-display-xl` | JB Mono | 64 | 700 | 1.05 | `-1.5` | Page display statement |
+| `t-display-lg` | JB Mono | 44 | 700 | 1.10 | `-1.2` | Secondary display, small-viewport step |
+| `t-display-md` | JB Mono | 36 | 700 | 1.15 | `-0.5` | Panel and band headings |
+| `t-display-sm` | JB Mono | 24 | 700 | 1.25 | — | Card headings, timeline names |
 | `t-title-1` | Inter | 32 | 600 | 1.20 | — | Section titles |
 | `t-title-2` | Inter | 24 | 600 | 1.30 | — | Subsection titles |
 | `t-title-3` | Inter | 20 | 600 | 1.35 | — | Artifact and card titles |
@@ -143,22 +151,22 @@ Below the `sm` breakpoint, display roles step down to **40px**. Nothing else in 
 
 ## 4. Space
 
-Ten steps, registered as number variables. There is **no 2px step** — `1px` is reserved for hairlines.
+Ten steps. Tailwind's default spacing scale (`--spacing: 0.25rem` per unit) already lands on every one of these pixel values at a *different* class number, so they are not re-registered as separate tokens — they are used as the matching standard Tailwind class. There is **no 2px step** — `1px` is reserved for hairlines.
 
-| Token | px | Used for |
-|---|---|---|
-| `s-1` | 4 | Inline gaps, dot-to-text |
-| `s-2` | 8 | Tag and chip padding |
-| `s-3` | 12 | List row gaps |
-| `s-4` | 16 | Control padding-Y, small stacks |
-| `s-5` | 24 | Component stacks, artifact gaps |
-| `s-6` | 32 | Block groups, card padding |
-| `s-7` | 48 | Section internal rhythm |
-| `s-8` | 64 | Page section padding |
-| `s-9` | 96 | Full-bleed content gaps |
-| `s-10` | 128 | Masthead and cover padding |
+| Design step | px | Tailwind class | Used for |
+|---|---|---|---|
+| `s-1` | 4 | `1` | Inline gaps, dot-to-text |
+| `s-2` | 8 | `2` | Tag and chip padding |
+| `s-3` | 12 | `3` | List row gaps |
+| `s-4` | 16 | `4` | Control padding-Y, small stacks |
+| `s-5` | 24 | `6` | Component stacks, artifact gaps |
+| `s-6` | 32 | `8` | Block groups, card padding |
+| `s-7` | 48 | `12` | Section internal rhythm |
+| `s-8` | 64 | `16` | Page section padding |
+| `s-9` | 96 | `24` | Full-bleed content gaps |
+| `s-10` | 128 | `32` | Masthead and cover padding |
 
-Gaps come from `s-2`, `s-3`, `s-5`, `s-6`. Nothing in between.
+Gaps come from `s-2`/`s-3`/`s-5`/`s-6` (Tailwind `gap-2`/`gap-3`/`gap-6`/`gap-8`). Nothing in between.
 
 ---
 
@@ -166,7 +174,7 @@ Gaps come from `s-2`, `s-3`, `s-5`, `s-6`. Nothing in between.
 
 ### 5.1 Radius
 
-Base is `--radius: 6px`; Tailwind's steps derive from it (`sm` −2, `md` 0, `lg` +2, `xl` +4).
+Each step is registered directly as a pixel value in `@theme` — there is no calculated base.
 
 | Token | px | Used for |
 |---|---|---|
@@ -232,7 +240,7 @@ This system is load-bearing and predates the redesign. Retheme it; do not rewrit
 
 ---
 
-## 8. Components _(planned)_
+## 8. Components
 
 ### 8.1 Layers
 
@@ -257,34 +265,37 @@ Nothing below `layout` imports from `~/content` or from React Router's data hook
 
 ### 8.2 Inventory
 
+**`ui/` primitives** — vendored shadcn/Base UI, rethemed onto the semantic tokens above with no other code change: `Button` (`default`, `destructive`, `outline`, `secondary`, `ghost`, `link` · focus, disabled), `Input`, `Separator`, `DropdownMenu`, `Field` (+ its `Label` dependency).
+
 **Atoms** (10)
 
 | Component | Variants / states |
 |---|---|
-| `Button` | `primary`, `secondary`, `ghost`, `accent`, `destructive` · focus, disabled |
-| `Link` | `foreground`, `accent` · focus |
-| `Tag` | one per work state · dot + label |
-| `Input` | default, focus, error, disabled |
-| `SearchTrigger` | ⌘K affordance — **inert in the current build** |
-| `Overline` | `t-label`, muted |
-| `MetaStamp` | `t-meta`, muted |
-| `CodeChip` | `t-code`, `r-xs` |
-| `Rule` | 1px hairline separator |
+| `Rule` | 1px hairline separator (`<hr>`) |
 | `Surface` | border-first container — floating UI only |
+| `Overline` | `t-label`, muted |
+| `MetaStamp` | `t-meta`, muted, renders `<time>` |
+| `Tag` | one per work state · dot + label, `cva` lane variants |
+| `CodeChip` | `t-code`, `r-xs` |
+| `Kbd` | keyboard-key glyph |
+| `Link` | renders an `<a>`, or a router `<Link>` when given a `to` prop |
+| `IconButton` | bordered square icon control |
+| `SearchTrigger` | ⌘K affordance — **inert in the current build** |
 
-**Composites** (7)
+**Composites** (6)
 
 | Component | Notes |
 |---|---|
-| `ArtifactCard` | Lane tag + title + summary + topics + action |
-| `LogEntry` | Date + lane + line — the living stream |
-| `ToolCard` | Name + description; forthcoming state is non-navigating |
-| `SectionHeader` | Overline + title + optional action |
+| `SectionHeader` | Overline + optional count + title + rule, as `.Root`/`.Top`/`.Eyebrow`/`.Count`/`.Title`/`.Rule` |
+| `ArtifactCard` | `.Root`/`.Top`/`.Lane`/`.Title`/`.Summary`/`.Topics`/`.Action` |
+| `ToolCard` | `.Root`/`.Category`/`.Title`/`.Description`/`.Meta`/`.Action`; forthcoming state is non-navigating |
+| `StateFilter` | Lane filter as real `?lane=` anchors, `aria-current` on the active one, optional `onSelect` for client-side transitions |
+| `Breadcrumb` | `.Crumb`/`.Sep`/`.Current` trail parts |
 | `LaneGuide` | The four-lane explainer block |
-| `StateFilter` | Lane filter control, URL-backed |
-| `Breadcrumb` | Deep-page trail |
 
-**Retained** — `IdentityCard` and `DecryptedText` move to `identity/` and are rethemed onto these tokens. Their behaviour, props, refs, and animation are untouched.
+`LogEntry` is designed in `design/design-2.pen` but **not built** — it lands with the Log feed, out of scope for this change.
+
+**Retained** — `IdentityCard` and `DecryptedText` moved to `identity/` and were rethemed onto these tokens. Their behaviour, props, refs, and animation are untouched; `DecryptedText` additionally short-circuits to its final text under `prefers-reduced-motion: reduce`.
 
 ### 8.3 Composition rules
 
@@ -292,7 +303,7 @@ Nothing below `layout` imports from `~/content` or from React Router's data hook
 - **Compose, don't configure.** A composite with more than one slot ships as namespaced parts (`ArtifactCard.Root`, `.Lane`, `.Title`, `.Summary`, `.Topics`, `.Action`), not a props object describing its contents. Pages assemble parts.
 - **Universal by default.** Every component accepts `className` and spreads its remaining props onto its root element, merged with `cn()`. No component reads route data, loader data, or the content index.
 - **Variants via `class-variance-authority`**, enumerated from the design's own states — never booleans that can combine into undesigned states.
-- **Polymorphism through Base UI's `render` prop** when an atom must become an anchor or a `Link`. Do not duplicate an atom per element type.
+- **Polymorphism through a minimal prop switch** where an atom must become an anchor or a router `Link` — the `Link` atom renders `<a>` unless given a `to` prop, in which case it renders react-router's `Link`. Do not duplicate an atom per element type.
 - **Twice means extract.** Markup or logic appearing in a second place moves out on that second occurrence: shared markup to the layer below, shared logic to `src/lib/`. Date formatting, lane→token mapping, and slug→href construction are helpers from the start.
 - **No raw values.** No hex literal, no arbitrary `px` outside the space scale, no font metric restated. If a value is needed and no token covers it, add the token here first.
 

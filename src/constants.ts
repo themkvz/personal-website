@@ -1,7 +1,3 @@
-import type { SKILL_ICON_KEY } from "./components/skill-icons";
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 type NavLink = {
   to: string;
   label: string;
@@ -10,52 +6,39 @@ type NavLink = {
 type SocialLink = {
   href: string;
   label: string;
-  icon: string;
+  icon: "github" | "linkedin" | "email";
 };
 
-type Job = {
-  role: string;
-  company: string;
-  location: string;
-  period: string;
-  description: string;
-  site?: string;
-};
-
-type Project = {
-  name: string;
-  description: string;
-  url?: string;
-};
-
-type Skill = {
-  name: string;
-  description: string;
-  icon?: SKILL_ICON_KEY;
-  spotlightColor: `rgba(${number}, ${number}, ${number}, ${number})`;
-};
-
-type Highlight = {
-  to: number;
-  after?: string;
+type PracticeColumn = {
   label: string;
+  title: string;
+  description: string;
+  topics: readonly string[];
 };
-
-// ─── Site ─────────────────────────────────────────────────────────────────────
 
 export const Site = {
+  name: "THEMKVZ",
+  ownerName: "Ihor Mukovoz",
   baseUrl: "https://themkvz.com",
   publicEmail: "ihor@themkvz.com",
+  resumeHref: "/resume.pdf",
 } as const;
-
-// ─── Navigation ───────────────────────────────────────────────────────────────
 
 export const Nav = {
   links: [
-    { to: "/", label: "Introduce" },
+    { to: "/", label: "Index" },
+    { to: "/tools", label: "Tools" },
+    { to: "/workbench", label: "Workbench" },
     { to: "/about", label: "About" },
-    { to: "/bookmarks", label: "Bookmarks" },
-    { to: "/contact", label: "Contact" },
+  ] satisfies NavLink[],
+
+  // The footer reads workbench-first; the design orders it deliberately
+  // differently from the primary nav.
+  footerLinks: [
+    { to: "/", label: "Index" },
+    { to: "/workbench", label: "Workbench" },
+    { to: "/tools", label: "Tools" },
+    { to: "/about", label: "About" },
   ] satisfies NavLink[],
 
   social: [
@@ -75,229 +58,156 @@ export const Nav = {
       icon: "email",
     },
   ] satisfies SocialLink[],
-
-  projectStack: [
-    "TypeScript",
-    "Bun",
-    "React",
-    "React Router",
-    "Drizzle ORM",
-    "SQLite",
-    "Nuqs",
-    "Shadcn UI",
-    "Tailwind CSS",
-  ] as const,
 } as const;
 
-// ─── Experience ───────────────────────────────────────────────────────────────
+export const Home = {
+  eyebrow: "IHOR MUKOVOZ — FRONT-END DEVELOPER · LEAD DEVELOPER",
+  displayStatement: "Software, systems,\nexperiments.",
+  introduction:
+    "I build web software and keep the useful parts of the process here: technical notes, decisions, experiments, and small tools.",
+  professionalContext:
+    "My work spans TypeScript, React, cross-platform products, frontend architecture, and the careful modernization of long-lived systems.",
+  primaryCta: "Explore the workbench",
+  secondaryCta: "About Ihor →",
 
-export const Experience = {
-  jobs: [
-    {
-      role: "Full-Stack Developer",
-      company: "Forex Tester Software",
-      location: "Lviv",
-      period: "June 2024 — Present",
-      description:
-        "Rebuilding the public website and internal dashboard, transitioning legacy systems to a modern technology stack. Enhanced UI/UX, streamlined workflows, and improved scalability.",
-      site: "https://forextester.com",
-    },
-    {
-      role: "Lead Developer",
-      company: "DevOut Labs (Altum Software)",
-      location: "Lviv",
-      period: "Sep 2022 — Mar 2024",
-      description:
-        "Led development team designing websites and applications. Conducted technical code reviews, allocated tasks, onboarded new teammates. Increased sales through highly integrated systems and extended the team via tech interviews.",
-      site: "https://devoutlabs.com",
-    },
-    {
-      role: "Full-Stack Developer",
-      company: "Altum Agency (Altum Software)",
-      location: "Lviv",
-      period: "Mar 2022 — Sep 2022",
-      description:
-        "Created WordPress-based sites, performed technical reviews for junior developers, outlined project scope. Increased client base and improved team code quality.",
-      site: "https://altumsoftware.io",
-    },
-    {
-      role: "Full-Stack Developer",
-      company: "Deosebit Service SRL",
-      location: "Chisinau",
-      period: "Aug 2017 — Jun 2022",
-      description:
-        "Created projects for customers across multiple countries in a small SEO-oriented team. Built WordPress sites, managed VPS servers, and found new market opportunities.",
-      site: "https://dits.md",
-    },
-    {
-      role: "Front-End Developer",
-      company: "Freelance",
-      location: "Remote",
-      period: "Jan 2013 — Jan 2019",
-      description:
-        "Starting point in IT. Fully engaged in the entire development process — from client communication to deployment.",
-    },
-  ] satisfies Job[],
+  profileLabel: "PROFILE / LVIV, UKRAINE",
+  profileSummary:
+    "Frontend developer and technical lead working across web and cross-platform product systems.",
+  facts: [
+    { label: "EXPERIENCE", value: "9+ years" },
+    { label: "PRIMARY WORK", value: "TypeScript · React" },
+    { label: "SCOPE", value: "Architecture · Products" },
+  ],
+  profileTopics: ["WEB APPS", "CROSS-PLATFORM", "SYSTEMS"],
 
-  projects: [
-    {
-      name: "TrekMovers",
-      url: "https://trekmovers.com/",
-      description: "Forbes list company with custom CRM integration",
-    },
-    {
-      name: "Karcher Regional Shops",
-      description:
-        "E-commerce platform deployed across 8 countries (RS, GE, KZ, BG, AZ, AM, MD, BY)",
-    },
-    {
-      name: "Web3 Validator",
-      url: "https://web3validator.info/",
-      description: "Knowledge base for blockchain",
-    },
-    {
-      name: "AviaSim",
-      url: "https://aviasim.com.ua/",
-      description: "Flight simulator booking platform",
-    },
-    {
-      name: "NSP25",
-      url: "https://nsp25.md/ro/",
-      description: "Multi-vendor platform with subdomain support for co-agents",
-    },
-  ] satisfies Project[],
+  workbenchEyebrow: "WORKBENCH",
+  workbenchHeading: "Useful notes from real software work.",
+  workbenchLead:
+    "Read the implementation notes, open questions, decisions, and references that remain useful beyond a single project.",
+  workbenchHint: "Four ways into the work: build, investigate, decide, keep.",
+  workbenchCta: "Browse all notes",
+  readFeatured: "Read the note →",
+
+  toolsEyebrow: "TOOLS",
+  toolsHeading: "Small utilities for specific problems.",
+  toolsBlurb:
+    "Useful immediately, focused on one task, and designed to work without an account.",
+  toolsCta: "Browse all tools →",
 } as const;
 
-// ─── Skills ───────────────────────────────────────────────────────────────────
+export const About = {
+  eyebrow: "ABOUT / IHOR MUKOVOZ",
+  title: "Frontend work,\nmade durable.",
+  lead: "I’m a frontend developer and technical lead based in Lviv, Ukraine. I build web and cross-platform products, and help their foundations remain understandable as they grow.",
+  detail:
+    "My daily work is mostly TypeScript and React, with a focus on frontend architecture, legacy modernization, product development, and technical leadership.",
+  resumeCta: "Résumé / CV",
+  emailCta: "Email Ihor →",
 
-export const Skills = {
-  items: [
-    {
-      name: "React",
-      description: "UI library for building interactive interfaces",
-      icon: "react",
-      spotlightColor: "rgba(97, 218, 251, 0.45)",
-    },
-    {
-      name: "TypeScript",
-      description: "Typed JavaScript for scalable applications",
-      icon: "typescript",
-      spotlightColor: "rgba(49, 120, 198, 0.45)",
-    },
-    {
-      name: "Next.js",
-      description: "Full-stack React framework with SSR & SSG",
-      icon: "nextjs",
-      spotlightColor: "rgba(200, 200, 200, 0.45)",
-    },
-    {
-      name: "React Router",
-      description: "Declarative routing for React apps",
-      icon: "reactrouter",
-      spotlightColor: "rgba(249, 56, 56, 0.45)",
-    },
-    {
-      name: "Node.js",
-      description: "Server-side JavaScript runtime",
-      icon: "nodejs",
-      spotlightColor: "rgba(87, 159, 67, 0.45)",
-    },
-    {
-      name: "Bun",
-      description: "Fast JavaScript runtime with built-in tools",
-      icon: "bun",
-      spotlightColor: "rgba(251, 240, 223, 0.45)",
-    },
-    {
-      name: "Claude",
-      description: "AI assistant for code generation and problem-solving",
-      icon: "claude",
-      spotlightColor: "rgba(217, 149, 87, 0.45)",
-    },
-    {
-      name: "GitHub Copilot",
-      description: "AI-powered code completion and suggestions",
-      icon: "copilot",
-      spotlightColor: "rgba(200, 200, 200, 0.45)",
-    },
-    {
-      name: "Drizzle ORM",
-      description: "Type-safe ORM for SQL databases",
-      icon: "drizzle",
-      spotlightColor: "rgba(194, 242, 86, 0.45)",
-    },
-    {
-      name: "PHP",
-      description: "Server-side scripting language for web development",
-      icon: "php",
-      spotlightColor: "rgba(119, 123, 180, 0.45)",
-    },
-    {
-      name: "Tailwind CSS",
-      description: "Utility-first CSS framework",
-      icon: "tailwindcss",
-      spotlightColor: "rgba(56, 189, 248, 0.45)",
-    },
-    {
-      name: "Prisma",
-      description: "Type-safe ORM for Node.js",
-      icon: "prisma",
-      spotlightColor: "rgba(45, 58, 75, 0.45)",
-    },
-    {
-      name: "Docker",
-      description: "Containerization for consistent deployments",
-      icon: "docker",
-      spotlightColor: "rgba(29, 99, 237, 0.45)",
-    },
-    {
-      name: "Git",
-      description: "Version control and collaboration",
-      icon: "git",
-      spotlightColor: "rgba(240, 80, 51, 0.45)",
-    },
-  ] satisfies Skill[],
+  practiceLabel: "PRACTICE / 9+ YEARS",
+  practiceHeading: "I work where interface decisions become system decisions.",
+  practiceCopy:
+    "That usually means shaping shared foundations, making state explicit, modernizing incrementally, and keeping delivery moving while the architecture improves.",
+  practicePoints: [
+    { label: "Product systems", icon: "layers" },
+    { label: "Incremental modernization", icon: "branch" },
+    { label: "Legible decisions", icon: "note" },
+  ],
+  practiceTopics: ["TYPESCRIPT", "REACT", "ARCHITECTURE"],
 
-  techStack: {
-    Frontend: [
-      "React",
-      "React Router",
-      "Next.js",
-      "Remix",
-      "Expo",
-      "TypeScript",
-      "JavaScript",
-      "Tailwind CSS",
-      "SASS/SCSS",
-      "HTML5",
-      "CSS3",
-    ],
-    Backend: [
-      "Node.js",
-      "Express.js",
-      "Fastify",
-      "PHP",
-      "WordPress",
-      "REST API",
-    ],
-    "Data & Tools": [
-      "Prisma",
-      "PostgreSQL",
-      "MongoDB",
-      "MySQL",
-      "Supabase",
-      "AWS",
-      "Git",
-      "Jest",
-      "PHPUnit",
-    ],
-    Patterns: ["MVC", "MVVM", "PWA", "Headless CMS"],
-  } as const,
+  practiceSectionEyebrow: "WORKING PRACTICE",
+  practiceSectionTitle: "Where frontend work becomes system work.",
+  practiceIntroduction:
+    "My role usually sits between implementation, product delivery, and the technical foundations that let teams keep changing software safely.",
+  practiceColumns: [
+    {
+      label: "ARCHITECTURE",
+      title: "Frontend architecture",
+      description:
+        "Structures application UI, state, and shared foundations for React-based products.",
+      topics: ["STATE", "SYSTEMS"],
+    },
+    {
+      label: "MODERNIZATION",
+      title: "Legacy modernization",
+      description:
+        "Improves long-lived frontend systems incrementally while product development continues.",
+      topics: ["LEGACY", "DELIVERY"],
+    },
+    {
+      label: "LEADERSHIP",
+      title: "Technical leadership",
+      description:
+        "Supports delivery through technical direction, review, coordination, and clear engineering decisions.",
+      topics: ["DIRECTION", "REVIEW"],
+    },
+  ] satisfies PracticeColumn[],
 
-  highlights: [
-    { to: 20, after: "+", label: "Projects delivered" },
-    { to: 14, after: "+", label: "Technologies in stack" },
-    { to: 4, label: "Companies worked with" },
-    { to: 3, label: "Team members mentored" },
-  ] satisfies Highlight[],
+  experienceEyebrow: "EXPERIENCE",
+  experienceTitle: "Selected professional timeline.",
+  experienceCopy:
+    "A concise view of the roles behind the work. The full employment history remains available in the résumé.",
+  experienceCta: "Open full résumé →",
+
+  contactEyebrow: "CONTACT / ELSEWHERE",
+  contactTitle: "Work, questions, or a useful reference?",
+  contactCopy:
+    "I use this site to keep technical notes, experiments, and small tools outside my daily product work. If something here connects with your work, feel free to get in touch.",
+  contactEmailCta: "Email Ihor",
+  contactResumeCta: "Résumé / CV →",
+  elsewhereLabel: "ELSEWHERE / PUBLIC",
+  elsewhere: [
+    {
+      label: "GitHub",
+      description: "Code and public repositories",
+      href: "https://github.com/themkvz",
+      icon: "github",
+    },
+    {
+      label: "LinkedIn",
+      description: "Professional background",
+      href: "https://www.linkedin.com/in/ihor-mukovoz/",
+      icon: "linkedin",
+    },
+    {
+      label: "Workbench",
+      description: "Notes, decisions, and references",
+      to: "/workbench",
+      icon: "workbench",
+    },
+  ],
+} as const;
+
+export const Workbench = {
+  eyebrow: "WORKBENCH / NOTES FROM PRACTICE",
+  title: "Notes from\nbuilding software.",
+  lead: "Implementation notes, open questions, technical decisions, and references that remain useful beyond one project.",
+  latestCta: "Open latest note →",
+  guideLabel: "HOW TO READ",
+
+  indexEyebrow: "ARTIFACT INDEX",
+  indexTitle: "All notes, one index.",
+  indexCopy:
+    "Each entry is filed by intent, so the useful part is visible before you open it.",
+} as const;
+
+export const Tools = {
+  eyebrow: "TOOLS",
+  title: "Small utilities.",
+  lede: "Focused browser tools for recurring technical work: inspect and rebuild URLs, convert timestamps, and clean pasted text.",
+  collectionEyebrow: "AVAILABLE TOOLS",
+  collectionTitle: "Pick a task.",
+  valueText: "Local-first where practical · no account · keyboard friendly",
+  openCta: "Open tool →",
+  runtimeLabel: "LOCAL",
+  forthcomingLabel: "FORTHCOMING",
+} as const;
+
+export const NotFound = {
+  overline: "HTTP / REQUEST NOT FOUND",
+  status: "ROUTE / UNAVAILABLE",
+  title: "This route ends here.\nThe useful parts don’t.",
+  explanation:
+    "The address may have changed or the page may have moved. Search the notes, return to the index, or choose a useful destination below.",
+  returnCta: "Return to index",
 } as const;

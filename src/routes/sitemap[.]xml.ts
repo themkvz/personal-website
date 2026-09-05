@@ -1,22 +1,29 @@
-import { Site } from "../constants";
+import { Site } from "~/constants";
+import { artifacts } from "~/content";
+import { artifactHref } from "~/lib/workbench-href";
+
+const STATIC_ROUTES = ["/", "/tools", "/workbench", "/about"];
 
 export function loader() {
-  const baseUrl = Site.baseUrl;
-  const routes = ["", "/about", "/contact", "/bookmarks"];
+  const staticUrls = STATIC_ROUTES.map(
+    (route) => `
+  <url>
+    <loc>${Site.baseUrl}${route}</loc>
+  </url>`,
+  ).join("");
+
+  const artifactUrls = artifacts
+    .map(
+      (artifact) => `
+  <url>
+    <loc>${Site.baseUrl}${artifactHref(artifact.slug)}</loc>
+    <lastmod>${artifact.updatedAt ?? artifact.publishedAt}</lastmod>
+  </url>`,
+    )
+    .join("");
 
   const content = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  ${routes
-    .map((route) => {
-      return `
-  <url>
-    <loc>${baseUrl}${route}</loc>
-    <lastmod>${new Date().toISOString()}</lastmod>
-    <changefreq>${route === "" ? "daily" : "weekly"}</changefreq>
-    <priority>${route === "" ? "1.0" : "0.8"}</priority>
-  </url>`;
-    })
-    .join("")}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${artifactUrls}
 </urlset>
 `;
 
@@ -24,8 +31,6 @@ export function loader() {
     status: 200,
     headers: {
       "Content-Type": "application/xml",
-      "xml-version": "1.0",
-      encoding: "UTF-8",
     },
   });
 }
