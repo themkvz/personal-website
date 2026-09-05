@@ -7,3 +7,13 @@ README.md
 .husky
 Dockerfile
 .dockerignore
+.env
+.env.*
+openspec
+design
+.claude
+.github
+.agents
+.gemini
+.idea
+.DS_Store
