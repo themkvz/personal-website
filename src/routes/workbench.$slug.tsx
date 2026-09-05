@@ -33,7 +33,7 @@ export const meta: Route.MetaFunction = ({ loaderData }) => {
     return pageMeta({
       title: "Not found — Workbench",
       description: "This artifact could not be found.",
-      path: "/workbench",
+      noIndex: true,
     });
   }
 

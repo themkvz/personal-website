@@ -23,7 +23,7 @@ export function Nav() {
               end={to === "/"}
               className={({ isActive }) =>
                 cn(
-                  "font-mono text-[11px] tracking-[1.2px]",
+                  "t-label",
                   isActive
                     ? "text-foreground"
                     : "text-muted-foreground hover:text-foreground",

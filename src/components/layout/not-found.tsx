@@ -1,4 +1,5 @@
 import { Button } from "~/components/atoms/button";
+import { Link } from "~/components/atoms/link";
 import { Overline } from "~/components/atoms/overline";
 import { SearchTrigger } from "~/components/atoms/search-trigger";
 import { Container } from "~/components/layout/container";
@@ -33,6 +34,9 @@ export function NotFound() {
           </p>
           <div className="flex flex-wrap items-center gap-4">
             <Button to="/">{NotFoundCopy.returnCta}</Button>
+            <Link to="/workbench" tone="accent">
+              {NotFoundCopy.workbenchCta}
+            </Link>
             <SearchTrigger />
           </div>
         </div>

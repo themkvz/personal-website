@@ -22,7 +22,7 @@ export function StateFilter({
         href="/workbench"
         aria-current={active ? undefined : "true"}
         className={cn(
-          "rounded-xs px-2.5 py-1.5 font-mono text-[11px] font-bold tracking-[0.8px]",
+          "rounded-xs px-2.5 py-1.5 t-label",
           active ? "text-muted-foreground" : "text-foreground",
         )}
       >
@@ -43,9 +43,7 @@ export function StateFilter({
           {active === lane && (
             <span className="size-1.5 rounded-full bg-current" />
           )}
-          <span className="font-mono text-[11px] font-bold tracking-[0.8px]">
-            {LANE_LABELS[lane]}
-          </span>
+          <span className="t-label">{LANE_LABELS[lane]}</span>
         </a>
       ))}
     </div>

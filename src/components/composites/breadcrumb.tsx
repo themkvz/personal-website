@@ -29,10 +29,7 @@ function Crumb({ className, ...props }: React.ComponentProps<typeof Link>) {
 
 function Sep() {
   return (
-    <span
-      aria-hidden="true"
-      className="font-mono text-[11px] text-muted-foreground"
-    >
+    <span aria-hidden="true" className="t-label text-muted-foreground">
       /
     </span>
   );

@@ -22,9 +22,7 @@ export function LaneMarker({
       className={cn("flex items-center gap-3", LANE_CLASS[lane], className)}
     >
       <span aria-hidden="true" className="size-2 shrink-0 bg-current" />
-      <span className="font-mono text-[11px] font-bold tracking-[1px]">
-        {LANE_LABELS[lane]}
-      </span>
+      <span className="t-label">{LANE_LABELS[lane]}</span>
     </span>
   );
 }

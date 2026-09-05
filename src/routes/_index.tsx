@@ -56,7 +56,6 @@ export default function HomeRoute() {
           "@type": "Person",
           name: Site.ownerName,
           url: Site.baseUrl,
-          email: Site.publicEmail,
         }}
       />
 
@@ -64,9 +63,9 @@ export default function HomeRoute() {
         <Container className="flex flex-col gap-24 lg:flex-row lg:items-start lg:justify-between">
           <div className="flex max-w-[780px] flex-col gap-8">
             <Overline>{Home.eyebrow}</Overline>
-            <h1 className="t-display-xl whitespace-pre-line">
+            <p className="t-display-xl whitespace-pre-line">
               {Home.displayStatement}
-            </h1>
+            </p>
             <div className="flex max-w-[700px] flex-col gap-4">
               <p className="t-body text-[18px] text-foreground">
                 {Home.introduction}
@@ -86,7 +85,9 @@ export default function HomeRoute() {
           <Surface className="w-full gap-6 p-8 lg:w-[420px] lg:shrink-0">
             <div className="flex flex-col gap-3">
               <Overline>{Home.profileLabel}</Overline>
-              <p className="t-display-sm text-foreground">{Site.ownerName}</p>
+              <h1 className="t-display-sm text-foreground">
+                {Site.ownerName}, {Home.profileRole}
+              </h1>
               <p className="t-body-sm text-[15px] text-muted-foreground">
                 {Home.profileSummary}
               </p>
@@ -100,7 +101,7 @@ export default function HomeRoute() {
                   key={fact.label}
                   className="flex items-center justify-between gap-4"
                 >
-                  <dt className="font-mono text-[11px] tracking-[1px] text-muted-foreground">
+                  <dt className="t-label text-muted-foreground">
                     {fact.label}
                   </dt>
                   <dd className="font-body text-sm font-semibold text-foreground">

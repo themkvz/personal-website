@@ -28,9 +28,7 @@ export function Tag({
   return (
     <span className={cn(tagVariants({ lane }), className)} {...props}>
       <span className="size-1.5 shrink-0 rounded-full bg-current" />
-      <span className="font-mono text-[11px] font-bold tracking-[1.2px]">
-        {children}
-      </span>
+      <span className="t-label">{children}</span>
     </span>
   );
 }

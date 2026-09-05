@@ -12,8 +12,10 @@ import "./app.css";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import { useEffect, useLayoutEffect } from "react";
+import { Button } from "~/components/atoms/button";
+import { Link } from "~/components/atoms/link";
 import { NotFound } from "~/components/layout/not-found";
-import { Site } from "~/constants";
+import { NotFound as NotFoundCopy, Site } from "~/constants";
 import { userContext } from "~/context/user";
 import { useIdentify } from "~/lib/openpanel/useOpenPanel";
 import { getStoredTheme, resolveTheme } from "~/lib/theme";
@@ -143,6 +145,12 @@ function ErrorPage({ error }: { error: unknown }) {
     <div className="mx-auto flex max-w-2xl flex-col items-center gap-6 px-6 py-24 text-center">
       <p className="t-display-xl text-muted-foreground">{status}</p>
       <p className="t-body text-muted-foreground">{details}</p>
+      <div className="flex flex-wrap items-center justify-center gap-4">
+        <Button to="/">{NotFoundCopy.returnCta}</Button>
+        <Link to="/workbench" tone="accent">
+          {NotFoundCopy.workbenchCta}
+        </Link>
+      </div>
       {stack && (
         <pre className="w-full overflow-x-auto rounded-md border border-border bg-muted p-4 text-left text-sm">
           <code>{stack}</code>

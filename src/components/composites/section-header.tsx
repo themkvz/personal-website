@@ -25,7 +25,7 @@ function Eyebrow({
 function Count({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
-      className={cn("font-mono text-[11px] text-muted-foreground", className)}
+      className={cn("t-label text-muted-foreground", className)}
       {...props}
     />
   );

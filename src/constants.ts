@@ -71,6 +71,7 @@ export const Home = {
   secondaryCta: "About Ihor →",
 
   profileLabel: "PROFILE / LVIV, UKRAINE",
+  profileRole: "software engineer",
   profileSummary:
     "Frontend developer and technical lead working across web and cross-platform product systems.",
   facts: [
@@ -210,4 +211,5 @@ export const NotFound = {
   explanation:
     "The address may have changed or the page may have moved. Search the notes, return to the index, or choose a useful destination below.",
   returnCta: "Return to index",
+  workbenchCta: "Browse the workbench",
 } as const;
