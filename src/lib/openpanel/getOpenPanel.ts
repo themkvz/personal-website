@@ -5,9 +5,9 @@ export async function trackEvent(name: string, properties?: TrackProperties) {
   return op.track(name, properties);
 }
 
-export async function identifyUser(id: string, payload: IdentifyPayload) {
-  return op.identify({
-    profileId: id,
-    properties: payload.properties,
-  });
+export async function identifyUser(
+  id: string,
+  properties?: IdentifyPayload["properties"],
+) {
+  return op.identify({ profileId: id, properties });
 }

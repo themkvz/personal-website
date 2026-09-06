@@ -9,9 +9,7 @@ export const identityMiddleware: Route.MiddlewareFunction = async ({
 }) => {
   const fingerprint = await getFingerprint(request);
 
-  void identifyUser(fingerprint, {
-    fingerprint,
-  });
+  void identifyUser(fingerprint);
 
   context.set(userContext, {
     fingerprint,
