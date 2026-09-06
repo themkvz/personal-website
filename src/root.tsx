@@ -95,9 +95,6 @@ export default function App({ loaderData }: Route.ComponentProps) {
   useEffect(() => {
     identify({
       profileId: fingerprint,
-      properties: {
-        fingerprint,
-      },
     });
   }, [fingerprint, identify]);
 
