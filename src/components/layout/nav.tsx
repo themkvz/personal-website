@@ -1,5 +1,6 @@
 import { NavLink } from "react-router";
 import { Container } from "~/components/layout/container";
+import { MobileNav } from "~/components/layout/mobile-nav";
 import { ThemeToggle } from "~/components/layout/theme-toggle";
 import { Nav as NavData, Site } from "~/constants";
 import { cn } from "~/lib/utils";
@@ -16,7 +17,10 @@ export function Nav() {
           </span>
         </NavLink>
 
-        <nav aria-label="Primary" className="flex flex-wrap items-center gap-6">
+        <nav
+          aria-label="Primary"
+          className="mr-6 ml-auto hidden flex-wrap items-center gap-6 md:flex"
+        >
           {NavData.links.map(({ to, label }) => (
             <NavLink
               key={to}
@@ -34,8 +38,14 @@ export function Nav() {
               {label}
             </NavLink>
           ))}
-          <ThemeToggle />
         </nav>
+
+        <div className="flex items-center gap-1">
+          <ThemeToggle />
+          <div className="md:hidden">
+            <MobileNav />
+          </div>
+        </div>
       </Container>
     </header>
   );
