@@ -20,7 +20,7 @@ import { NonceContext } from "~/context/nonce";
 import { userContext } from "~/context/user";
 import { getFeaturePayload } from "~/lib/growthbook/payload.server";
 import { ExperimentProvider } from "~/lib/growthbook/provider";
-import { useIdentify } from "~/lib/openpanel/useOpenPanel";
+import { identifyVisitor } from "~/lib/openpanel/useOpenPanel";
 import { getStoredTheme, resolveTheme } from "~/lib/theme";
 import { useThemeStore } from "~/store/theme";
 import type { Route } from "./+types/root";
@@ -112,16 +112,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App({ loaderData }: Route.ComponentProps) {
   const { fingerprint, features } = loaderData;
-  const identify = useIdentify();
-
   useEffect(() => {
-    identify({
-      profileId: fingerprint,
-      // The SDK skips an identify carrying only a profile id, so the profile
-      // row is written only because of this second field.
-      properties: { fingerprint },
-    });
-  }, [fingerprint, identify]);
+    // The SDK skips an identify carrying only a profile id, so the profile row
+    // is written only because of this second field.
+    identifyVisitor(fingerprint, { fingerprint });
+  }, [fingerprint]);
 
   return (
     <ExperimentProvider payload={features} fingerprint={fingerprint}>
