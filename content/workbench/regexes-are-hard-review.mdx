@@ -1,0 +1,33 @@
+---
+title: "Regexes are Hard: developer practices and risk awareness"
+lane: keeping
+summary: Research on how developers choose, write, and risk-assess regular expressions in real work.
+publishedAt: 2026-09-06
+topics:
+  - regex
+  - research
+  - developer-practices
+draft: true
+---
+
+This is a review of a paper by Louis G. Michael IV, James Donohue, James C. Davis, Dongyoon Lee, and Francisco Servant. The work surveys 279 professional developers and interviews 17 in depth to understand how developers think about regex: when they choose it, what makes it hard, and how well they understand the risks.
+
+## The pattern: middle ground
+
+Developers choose regex for medium-complexity tasks but avoid it for very simple or very complex work. When the task is simple enough, direct string checks win. When it is too hard, developers step back and reach for a parser or a purpose-built library instead.
+
+The main friction points are not abstract. Developers struggle with readability—regex is terse and hard to trace—and they struggle to find working patterns. Most don't write regex from scratch; they search for examples and adapt them. Different regex dialects (PCRE, JavaScript, .NET) add friction; a pattern found in one context often needs tweaking.
+
+## The blind spot: ReDoS
+
+The paper names a critical gap: ReDoS (Regular Expression Denial of Service). A badly written or malicious regex can consume CPU in catastrophic time, becoming a denial-of-service attack if user input shapes the pattern. This is important for security-sensitive work—finance, health, authentication—but the research shows most developers don't know about it or don't think about it when writing regex.
+
+This is not a weakness of the developers. It is a gap in tools and knowledge: no standard analyzer warns you. You have to seek that knowledge separately.
+
+## The solution space
+
+The paper points toward what would help: semantic search for patterns, tools that visualize regex behavior, analyzers that surface ReDoS risk. Right now, developers muddle through with cheat-sheets and trial-and-error.
+
+## What it changes
+
+The paper's real value is not that regex is hard—we know that. It is that the difficulties come not from the tool itself but from how developers *decide*, *test*, and *document* their regexes. Better tools and better awareness of ReDoS would move the needle more than lecturing developers to write "better" regex. The pattern is rational: regex works for the middle, and developers know when to avoid it. What is missing is visibility into risk and access to good pattern libraries for the tasks that matter.
