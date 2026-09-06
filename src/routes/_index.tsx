@@ -30,7 +30,18 @@ export const meta: Route.MetaFunction = () =>
 
 function getWorkbenchPreview() {
   const featured =
-    artifacts.find((artifact) => artifact.featured) ?? artifacts[0];
+    artifacts
+      .filter((artifact) => artifact.featured)
+      .sort((a, b) => {
+        const publishedA = a.publishedAt
+          ? new Date(a.publishedAt).getTime()
+          : 0;
+        const publishedB = b.publishedAt
+          ? new Date(b.publishedAt).getTime()
+          : 0;
+
+        return publishedB - publishedA;
+      })[0] || null;
 
   const secondary = featured
     ? LANES.filter((lane) => lane !== featured.lane)

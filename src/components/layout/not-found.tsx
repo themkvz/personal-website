@@ -1,7 +1,6 @@
 import { Button } from "~/components/atoms/button";
 import { Link } from "~/components/atoms/link";
 import { Overline } from "~/components/atoms/overline";
-import { SearchTrigger } from "~/components/atoms/search-trigger";
 import { Container } from "~/components/layout/container";
 import { Section } from "~/components/layout/section";
 import { NotFound as NotFoundCopy } from "~/constants";
@@ -17,8 +16,8 @@ export function NotFound() {
   const track = useTrack();
 
   return (
-    <Section className="pt-12 pb-14">
-      <Container className="flex flex-col gap-24 lg:flex-row lg:items-center lg:justify-between">
+    <Section>
+      <Container className="min-h-[60svh] flex flex-col gap-24 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex flex-col gap-4">
           <Overline>{NotFoundCopy.overline}</Overline>
           <p aria-hidden="true" className="flex items-center">
@@ -46,7 +45,6 @@ export function NotFound() {
             <Link to="/workbench" tone="accent">
               {NotFoundCopy.workbenchCta}
             </Link>
-            <SearchTrigger />
           </div>
         </div>
       </Container>

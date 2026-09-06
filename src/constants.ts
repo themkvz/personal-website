@@ -70,36 +70,35 @@ export const Home = {
   primaryCta: "Explore the workbench",
   secondaryCta: "About Ihor →",
 
-  profileLabel: "PROFILE / LVIV, UKRAINE",
+  profileLabel: "PROFILE / UKRAINE",
   profileRole: "software engineer",
   profileSummary:
     "Frontend developer and technical lead working across web and cross-platform product systems.",
   facts: [
     { label: "EXPERIENCE", value: "9+ years" },
     { label: "PRIMARY WORK", value: "TypeScript · React" },
-    { label: "SCOPE", value: "Architecture · Products" },
+    { label: "SCOPE", value: "Product · Delivery · Maintenance" },
   ],
-  profileTopics: ["WEB APPS", "CROSS-PLATFORM", "SYSTEMS"],
+  profileTopics: ["WEB APPS", "CROSS-PLATFORM", "EXPERIMENTS"],
 
   workbenchEyebrow: "WORKBENCH",
   workbenchHeading: "Useful notes from real software work.",
   workbenchLead:
     "Read the implementation notes, open questions, decisions, and references that remain useful beyond a single project.",
-  workbenchHint: "Four ways into the work: build, investigate, decide, keep.",
+  workbenchHint: "Four ways into the work: investigate, decide, build, ship.",
   workbenchCta: "Browse all notes",
   readFeatured: "Read the note →",
 
   toolsEyebrow: "TOOLS",
   toolsHeading: "Small utilities for specific problems.",
-  toolsBlurb:
-    "Useful immediately, focused on one task, and designed to work without an account.",
+  toolsBlurb: "Useful immediately, focused on one task, without distracting.",
   toolsCta: "Browse all tools →",
 } as const;
 
 export const About = {
   eyebrow: "ABOUT / IHOR MUKOVOZ",
   title: "Frontend work,\nmade durable.",
-  lead: "I’m a frontend developer and technical lead based in Lviv, Ukraine. I build web and cross-platform products, and help their foundations remain understandable as they grow.",
+  lead: "I’m a frontend developer and technical lead based in Ukraine. I build web and cross-platform products, and help their foundations remain understandable as they grow.",
   detail:
     "My daily work is mostly TypeScript and React, with a focus on frontend architecture, legacy modernization, product development, and technical leadership.",
   resumeCta: "Résumé / CV",
@@ -114,12 +113,12 @@ export const About = {
     { label: "Incremental modernization", icon: "branch" },
     { label: "Legible decisions", icon: "note" },
   ],
-  practiceTopics: ["TYPESCRIPT", "REACT", "ARCHITECTURE"],
+  practiceTopics: ["INVESTIGATE", "ARCHITECTURE", "LEADERSHIP"],
 
   practiceSectionEyebrow: "WORKING PRACTICE",
   practiceSectionTitle: "Where frontend work becomes system work.",
   practiceIntroduction:
-    "My role usually sits between implementation, product delivery, and the technical foundations that let teams keep changing software safely.",
+    "My role usually sits between implementation, product delivery, marketing vision and the technical foundations that let teams keep changing software safely.",
   practiceColumns: [
     {
       label: "ARCHITECTURE",
@@ -147,8 +146,8 @@ export const About = {
   experienceEyebrow: "EXPERIENCE",
   experienceTitle: "Selected professional timeline.",
   experienceCopy:
-    "A concise view of the roles behind the work. The full employment history remains available in the résumé.",
-  experienceCta: "Open full résumé →",
+    "A concise view of the roles behind the work. The full employment history remains available in the CV.",
+  experienceCta: "Open full CV →",
 
   contactEyebrow: "CONTACT / ELSEWHERE",
   contactTitle: "Work, questions, or a useful reference?",
@@ -160,7 +159,7 @@ export const About = {
   elsewhere: [
     {
       label: "GitHub",
-      description: "Code and public repositories",
+      description: "Code, repositories and graphs",
       href: "https://github.com/themkvz",
       icon: "github",
     },
@@ -189,16 +188,17 @@ export const Workbench = {
   indexEyebrow: "ARTIFACT INDEX",
   indexTitle: "All notes, one index.",
   indexCopy:
-    "Each entry is filed by intent, so the useful part is visible before you open it.",
+    "Each entry is filed by intent, so the main part is visible before you open it.",
 } as const;
 
 export const Tools = {
   eyebrow: "TOOLS",
   title: "Small utilities.",
-  lede: "Focused browser tools for recurring technical work: inspect and rebuild URLs, convert timestamps, and clean pasted text.",
+  lede: "Focused browser tools for recurring technical work: later more",
   collectionEyebrow: "AVAILABLE TOOLS",
   collectionTitle: "Pick a task.",
-  valueText: "Local-first where practical · no account · keyboard friendly",
+  valueText:
+    "Local-first where practical · one solution · deps free · no tracking",
   openCta: "Open tool →",
   runtimeLabel: "LOCAL",
   forthcomingLabel: "FORTHCOMING",
@@ -209,7 +209,7 @@ export const NotFound = {
   status: "ROUTE / UNAVAILABLE",
   title: "This route ends here.\nThe useful parts don’t.",
   explanation:
-    "The address may have changed or the page may have moved. Search the notes, return to the index, or choose a useful destination below.",
+    "The address may have changed or the page may have moved. Return to the index, or choose a useful destination below.",
   returnCta: "Return to index",
   workbenchCta: "Browse the workbench",
 } as const;

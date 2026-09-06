@@ -20,7 +20,7 @@ All updatable site content SHALL be authored as MDX files committed to the repos
 
 ### Requirement: Artifact frontmatter contract
 
-Every workbench artifact file SHALL declare frontmatter with `title`, `lane`, `summary`, and `publishedAt`. It MAY declare `updatedAt`, `topics`, `featured`, and `draft`. `lane` MUST be one of `building`, `investigating`, `deciding`, `keeping`. `publishedAt` and `updatedAt` MUST be ISO-8601 dates. An artifact's slug SHALL be derived from its filename, so slug uniqueness is guaranteed by the filesystem.
+Every workbench artifact file SHALL declare frontmatter with `title`, `lane`, `summary`, and `publishedAt`. It MAY declare `updatedAt`, `topics`, `kind`, `featured`, and `draft`. `lane` MUST be one of `building`, `investigating`, `deciding`, `keeping`. `publishedAt` and `updatedAt` MUST be ISO-8601 dates. An artifact's slug SHALL be derived from its filename, so slug uniqueness is guaranteed by the filesystem.
 
 #### Scenario: Valid artifact is indexed
 - **WHEN** an artifact file declares all required fields with a valid `lane`
@@ -87,7 +87,7 @@ Every experience entry file SHALL declare `organisation`, `role`, and `startDate
 
 ### Requirement: Tool cards are content with a typed contract
 
-Every tool card file SHALL declare `name` and `description`, and MAY declare `href`. A card with `href` is implemented and links there; a card without `href` is forthcoming. Cards SHALL be validated at build time under the same failure rule as artifacts and SHALL render in filename order.
+Every tool card file SHALL declare `name`, `category`, and `description`, and MAY declare `href` and `featured`. A card with `href` is implemented and links there; a card without `href` is forthcoming. A card marked `featured` is visually emphasised on the Tools page. Cards SHALL be validated at build time under the same failure rule as artifacts and SHALL render in filename order.
 
 #### Scenario: Forthcoming card
 - **WHEN** a tool file has no `href`

@@ -190,8 +190,16 @@ export default function AboutRoute({ loaderData }: Route.ComponentProps) {
                     <Overline>{entry.role.toUpperCase()}</Overline>
                   </div>
 
-                  <div className="t-body-sm text-[15px] text-muted-foreground">
-                    {Body ? <Body /> : null}
+                  <div>
+                    <div className="t-body-sm text-[15px] text-muted-foreground">
+                      {Body ? <Body /> : null}
+                    </div>
+
+                    {entry.location && (
+                      <p className="mt-4 t-meta text-muted-foreground">
+                        {entry.location}
+                      </p>
+                    )}
                   </div>
 
                   {entry.url ? (

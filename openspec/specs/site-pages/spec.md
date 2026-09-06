@@ -10,9 +10,10 @@ The Home page SHALL render, in order: a display statement with supporting prose;
 
 #### Scenario: Preview composed from the index
 - **WHEN** the Home page renders its workbench preview
-- **THEN** the featured artifact is the one marked `featured`, or the newest artifact if none is marked
+- **THEN** the featured artifact is the newest artifact marked `featured`
 - **AND** the secondary entries are, for each of the three lanes other than the featured artifact's lane, in the fixed lane order `building, investigating, deciding, keeping`, the newest artifact in that lane
 - **AND** a lane with no artifact is skipped, so fewer than three secondary entries may render
+- **AND** when no artifact is marked `featured` the workbench preview renders neither a featured artifact nor secondary entries
 
 #### Scenario: Single identifying heading
 - **WHEN** the Home markup is inspected
