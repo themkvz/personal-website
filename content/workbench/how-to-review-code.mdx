@@ -1,0 +1,29 @@
+---
+title: Notes on reviewing code well
+lane: keeping
+summary: Bookmark notes on Matthias Endler's guide to code review — what experienced reviewers actually spend their time on.
+publishedAt: 2025-08-06
+topics:
+  - code-review
+  - engineering-practice
+---
+
+Notes from [How To Review Code](https://endler.dev/2025/how-to-review-code/) by Matthias Endler. He's been reviewing code for twenty-plus years and now spends 50–70% of his time on it. The post is practical, not theoretical — it reads like a list of things he learned by getting them wrong first.
+
+## What stuck
+
+- **Review the lines that weren't changed.** The unchanged code around a diff often reveals the real problems: stale docs, missed call sites, tests that no longer test the right thing. Most reviewers look only at the green and red lines.
+- **Naming is the review.** He argues bad names are the deepest code smell — not a nitpick but a signal that the author doesn't fully understand the concept yet. His example of shadowing variables until they match struct field names is a neat Rust pattern.
+- **Say no, plainly.** "Let's merge this and fix it later" is a slippery slope. Setting precedent is harder to undo than rejecting a PR. The gatekeeping is the job, not a side effect of it.
+- **Multiple iterations are normal.** The expectation that a review is a one-pass stamp is wrong. First pass is architecture, second is detail. Wanting to merge today is the author's problem, not the reviewer's.
+- **Socratic questions over assertions.** "What happens if you call this with an empty array?" lands better than "this is wrong." It also surfaces assumptions the author didn't know they had.
+
+## What I'd add
+
+- **Review your own code first.** The best PRs I've received were from people who clearly re-read their own diff before requesting review. It catches the obvious stuff and signals respect for the reviewer's time.
+- **Time-box the first read.** Endler doesn't mention this, but I find it useful: skim the whole PR in five minutes before reading any line carefully. It prevents getting lost in a detail early and missing the shape of the change.
+- **The "no" gets easier with written standards.** He hints at this — "write a style guide" — but understates it. A linter rule or a documented convention turns a subjective argument into a link. The hard part isn't saying no, it's saying no without it feeling personal.
+
+## What's missing
+
+The post doesn't touch on reviewing AI-generated code, which is where most of the volume is heading. Reviewing code you didn't write is one thing; reviewing code nobody wrote — where the author can't explain the reasoning because there wasn't any — is a different skill. The Socratic questions don't work when there's no human on the other side to Socrates.
