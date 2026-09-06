@@ -1,0 +1,32 @@
+---
+title: A better Result type for TypeScript
+lane: keeping
+summary: Notes on better-result, a small TypeScript library that makes expected failures explicit without hiding defects.
+publishedAt: 2026-07-06
+topics:
+  - typescript
+  - error-handling
+  - libraries
+---
+
+I found [better-result](https://better-result.dev/) while looking for a Result type that feels natural in TypeScript. It keeps the runtime small and makes a useful promise: a function can return either a value or a known failure, and the caller has to decide what to do with it.
+
+## Key pieces
+
+- **`Result.ok` and `Result.err`** make success and expected failure part of the function's type.
+- **`TaggedError`** gives errors a name and typed fields, instead of passing strings through the whole application.
+- **`Result.gen`** lets a multi-step workflow read from top to bottom. `yield*` stops at the first error and keeps the error union visible.
+- **`Result.try` and `Result.tryPromise`** turn throwing APIs into typed results at the boundary.
+- **`match`** makes the final decision explicit. There is no hidden `catch` path waiting somewhere else.
+
+## What I noticed
+
+The important rule is small: return `Err` for a failure the caller can handle, and let `Panic` expose a broken invariant. That keeps routine problems, such as an invalid port or a missing user, separate from bugs in the program. It also gives `unwrap` a clear meaning. It is an assertion, not a shortcut for handling normal failures.
+
+The generator API is the part I would reach for first. A workflow such as loading a session, fetching a user, and then loading posts can stay linear without losing its error types. This is easier to scan than a long chain, but the library still keeps the individual operations separate.
+
+## Limits worth remembering
+
+`fetch` does not reject on a 404 or 500, so `tryPromise` cannot solve HTTP error handling by itself. The response still needs to become a domain error. Retries need the same care. A retry policy is useful for a rate limit, but repeating a state-changing request may be wrong even when the transport allows it.
+
+My takeaway is that better-result is most useful at application boundaries. It does not remove failure from a program. It gives failure a shape that the next layer can read, test, log, and translate. That feels like a better trade than pretending every thrown exception has the same meaning.
