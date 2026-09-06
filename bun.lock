@@ -35,6 +35,7 @@
       },
       "devDependencies": {
         "@biomejs/biome": "^2.5.12",
+        "@glitchtip/cli": "^1.0.0",
         "@react-router/dev": "8.3.1",
         "@tailwindcss/vite": "^4.3.3",
         "@types/bun": "^1.4.1",
@@ -175,6 +176,16 @@
     "@fontsource-variable/inter": ["@fontsource-variable/inter@5.3.0", "", {}, "sha512-OupL48va4JNofb97w6NYeF9S7W/kHNKM0Er8Dem5nqi4jeOLrVJDoE8tZEpnMJmtkvNbB1EIPPwHcdkF6b1oUA=="],
 
     "@fontsource-variable/jetbrains-mono": ["@fontsource-variable/jetbrains-mono@5.3.0", "", {}, "sha512-F32xpS2NsGYoQi2ADSkKTgpJj7ozajsGgDJ8woTnqjmIB+dxDIqImjl4pXZVEExu8UFZ2ndhmX18EBS/hdz3Lw=="],
+
+    "@glitchtip/cli": ["@glitchtip/cli@1.0.0", "", { "optionalDependencies": { "@glitchtip/cli-darwin-arm64": "1.0.0", "@glitchtip/cli-linux-arm64": "1.0.0", "@glitchtip/cli-linux-x64": "1.0.0", "@glitchtip/cli-win32-x64": "1.0.0" }, "bin": { "glitchtip-cli": "bin/glitchtip-cli.js" } }, "sha512-QY9RIk99JohZeLtd7Y7b7qEROmz1+/g2OFhnmys5RK17x2VqK84ya8BD15E16QBu+Jr4fSGGWHBGCZefOQYj8g=="],
+
+    "@glitchtip/cli-darwin-arm64": ["@glitchtip/cli-darwin-arm64@1.0.0", "", { "os": "darwin", "cpu": "arm64" }, "sha512-CczgggQoC+fs5visYl1F4DKOrIj3zHZp7du+oCTEvl09E0nVFksIMEnqmDR9lI9+DKtUDhNEjFsLLKOYdIoF7Q=="],
+
+    "@glitchtip/cli-linux-arm64": ["@glitchtip/cli-linux-arm64@1.0.0", "", { "os": "linux", "cpu": "arm64" }, "sha512-wwux+Yjel2gRZf309HJdTvwPnu6kLxp1jWolT4qB3hACGYiFtNXMzA9JElRyRBaN3GvC0jyOlaqbsYo9bGjSpQ=="],
+
+    "@glitchtip/cli-linux-x64": ["@glitchtip/cli-linux-x64@1.0.0", "", { "os": "linux", "cpu": "x64" }, "sha512-bs28jDcMs/e+3Yooubxb0sgxrN1WfRWfPYGWXYeNNikrNrrXdJ6hj6KJQLsromwPeQrcpCgnAo1gN446fzzelw=="],
+
+    "@glitchtip/cli-win32-x64": ["@glitchtip/cli-win32-x64@1.0.0", "", { "os": "win32", "cpu": "x64" }, "sha512-U5we8ATvyxVGIgn9zSxacFfBTEHZoBfgiTRb7u0Q/g8nF/SoQDoZTnaM2ZnMfgXY2RZTXivk82+ui1sqFs09Dw=="],
 
     "@hono/node-server": ["@hono/node-server@1.19.9", "", { "peerDependencies": { "hono": "^4" } }, "sha512-vHL6w3ecZsky+8P5MD+eFfaGTyCeOHUIFYMGpQGbrBTSmNNoxv0if69rEZ5giu36weC5saFuznL411gRX7bJDw=="],
 

@@ -8,6 +8,7 @@ README.md
 Dockerfile
 .dockerignore
 .env
+.sentryclirc
 .env.*
 openspec
 design

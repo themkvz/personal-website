@@ -8,6 +8,7 @@
   "type": "module",
   "scripts": {
     "build": "react-router build",
+    "build:sourcemaps": "SOURCEMAPS=1 react-router build",
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
     "verify:bundle": "D=${BUNDLE_DIR:-build/client}; test -d \"$D\" || { echo \"verify:bundle: $D not found\" >&2; exit 1; }; grep -rlE 'OP_CLIENT_SECRET|env\\.server' \"$D\" && { echo \"verify:bundle: server env identifiers found in client bundle\" >&2; exit 1; }; test $? -eq 1",
@@ -54,6 +55,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.12",
+    "@glitchtip/cli": "^1.0.0",
     "@react-router/dev": "8.3.1",
     "@tailwindcss/vite": "^4.3.3",
     "@types/bun": "^1.4.1",

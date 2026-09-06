@@ -1,5 +1,6 @@
 .DS_Store
 .env
+.sentryclirc
 /node_modules/
 
 # React Router

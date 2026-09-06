@@ -17,4 +17,9 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
   },
+  build: {
+    // bun run build:sourcemaps — leaves .map files in build/ for manual
+    // `glitchtip-cli sourcemaps inject` + `upload`. Not used by the normal build.
+    sourcemap: process.env.SOURCEMAPS ? "hidden" : false,
+  },
 });
