@@ -1,0 +1,6 @@
+{
+  "$schema": "https://react.doctor/schema/config.json",
+  "scope": "full",
+  "verbose": true,
+  "blocking": "error"
+}
