@@ -39,14 +39,14 @@ export default function WorkbenchIndexRoute({
 
   return (
     <>
-      <Section className="pt-20">
+      <Section>
         <Container className="flex flex-col gap-24 lg:flex-row lg:items-start lg:justify-between">
           <div className="flex max-w-[780px] flex-col gap-8">
             <Overline>{Workbench.eyebrow}</Overline>
             <h1 className="t-display-xl whitespace-pre-line">
               {Workbench.title}
             </h1>
-            <p className="t-body max-w-[720px] text-[18px] text-muted-foreground">
+            <p className="t-body max-w-[720px] text-[18px] text-foreground">
               {Workbench.lead}
             </p>
             <div className="flex flex-wrap items-center gap-4">

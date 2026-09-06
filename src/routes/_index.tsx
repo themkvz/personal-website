@@ -62,14 +62,14 @@ export default function HomeRoute() {
         }}
       />
 
-      <Section className="pt-22">
+      <Section>
         <Container className="flex flex-col gap-24 lg:flex-row lg:items-start lg:justify-between">
           <div className="flex max-w-[780px] flex-col gap-8">
             <Overline>{Home.eyebrow}</Overline>
             <p className="t-display-xl whitespace-pre-line">
               {Home.displayStatement}
             </p>
-            <div className="flex max-w-[700px] flex-col gap-4">
+            <div className="flex max-w-[720px] flex-col gap-4">
               <p className="t-body text-[18px] text-foreground">
                 {Home.introduction}
               </p>

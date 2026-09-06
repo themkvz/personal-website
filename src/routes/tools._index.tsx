@@ -1,7 +1,6 @@
 import { ShieldCheck } from "lucide-react";
 import { CodeChip } from "~/components/atoms/code-chip";
 import { Overline } from "~/components/atoms/overline";
-import { Rule } from "~/components/atoms/rule";
 import { SectionHeader } from "~/components/composites/section-header";
 import { ToolCard } from "~/components/composites/tool-card";
 import { Container } from "~/components/layout/container";
@@ -23,13 +22,10 @@ export default function ToolsIndexRoute() {
   return (
     <Section>
       <Container className="flex flex-col gap-16">
-        <div className="flex flex-col gap-16 lg:flex-row lg:items-start lg:justify-between">
-          <div className="flex max-w-[816px] flex-1 flex-col gap-2">
-            <Overline>{Tools.eyebrow}</Overline>
-            <h1 className="t-display-xl">{Tools.title}</h1>
-            <Rule className="mt-6" />
-          </div>
-          <p className="t-body max-w-[416px] text-[20px] text-foreground">
+        <div className="flex max-w-[780px] flex-col gap-8">
+          <Overline>{Tools.eyebrow}</Overline>
+          <h1 className="t-display-xl whitespace-pre-line">{Tools.title}</h1>
+          <p className="t-body max-w-[720px] text-[18px] text-foreground">
             {Tools.lede}
           </p>
         </div>
