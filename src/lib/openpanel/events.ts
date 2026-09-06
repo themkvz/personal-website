@@ -5,6 +5,7 @@ export const TRACK_EVENTS = {
   NOT_FOUND_CLICKED_BACK: "Clicked Back from Not Found",
   ARTIFACT_VIEWED: "Viewed Artifact",
   ARTIFACT_NOT_FOUND: "Requested Missing Artifact",
+  EXPERIMENT_VIEWED: "Experiment Viewed",
 } as const;
 
 export type TrackEvent = (typeof TRACK_EVENTS)[keyof typeof TRACK_EVENTS];

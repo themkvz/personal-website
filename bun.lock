@@ -8,6 +8,8 @@
         "@base-ui/react": "^1.8.0",
         "@fontsource-variable/inter": "^5.3.0",
         "@fontsource-variable/jetbrains-mono": "^5.3.0",
+        "@growthbook/growthbook": "^1.7.0",
+        "@growthbook/growthbook-react": "^1.7.0",
         "@icons-pack/react-simple-icons": "^13.15.1",
         "@mdx-js/rollup": "^3.1.1",
         "@openpanel/sdk": "^1.3.1",
@@ -186,6 +188,10 @@
     "@glitchtip/cli-linux-x64": ["@glitchtip/cli-linux-x64@1.0.0", "", { "os": "linux", "cpu": "x64" }, "sha512-bs28jDcMs/e+3Yooubxb0sgxrN1WfRWfPYGWXYeNNikrNrrXdJ6hj6KJQLsromwPeQrcpCgnAo1gN446fzzelw=="],
 
     "@glitchtip/cli-win32-x64": ["@glitchtip/cli-win32-x64@1.0.0", "", { "os": "win32", "cpu": "x64" }, "sha512-U5we8ATvyxVGIgn9zSxacFfBTEHZoBfgiTRb7u0Q/g8nF/SoQDoZTnaM2ZnMfgXY2RZTXivk82+ui1sqFs09Dw=="],
+
+    "@growthbook/growthbook": ["@growthbook/growthbook@1.7.0", "", { "dependencies": { "dom-mutator": "^0.6.0" } }, "sha512-Vmad3fWRh1XaFH4q+AS62ofX6Q3IxSTD7sBGuhEHCaad8VyZerxrVdojucjzlnJDUocfrnZFUSpEkR6R/wCV+A=="],
+
+    "@growthbook/growthbook-react": ["@growthbook/growthbook-react@1.7.0", "", { "dependencies": { "@growthbook/growthbook": "^1.7.0" }, "peerDependencies": { "react": "^16.8.0-0 || ^17.0.0-0 || ^18.0.0-0 || ^19.0.0-0" } }, "sha512-7TU0Yjmkl2Me8LKpG5cjqIsLSK+sz9T/1vocJAm49KsBeTvse6QwR9544KB9sU7eJF9qYVGr4GekW/r9bqmaWg=="],
 
     "@hono/node-server": ["@hono/node-server@1.19.9", "", { "peerDependencies": { "hono": "^4" } }, "sha512-vHL6w3ecZsky+8P5MD+eFfaGTyCeOHUIFYMGpQGbrBTSmNNoxv0if69rEZ5giu36weC5saFuznL411gRX7bJDw=="],
 
@@ -804,6 +810,8 @@
     "devlop": ["devlop@1.1.0", "", { "dependencies": { "dequal": "^2.0.0" } }, "sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA=="],
 
     "diff": ["diff@8.0.3", "", {}, "sha512-qejHi7bcSD4hQAZE0tNAawRK1ZtafHDmMTMkrrIGgSLl7hTnQHmKCeB45xAcbfTqK2zowkM3j3bHt/4b/ARbYQ=="],
+
+    "dom-mutator": ["dom-mutator@0.6.0", "", {}, "sha512-iCt9o0aYfXMUkz/43ZOAUFQYotjGB+GNbYJiJdz4TgXkyToXbbRy5S6FbTp72lRBtfpUMwEc1KmpFEU4CZeoNg=="],
 
     "dot-prop": ["dot-prop@10.2.0", "", { "dependencies": { "type-fest": "^5.0.0" } }, "sha512-BTJ9aZYL3vCfZlZOBLy9v8TUqWGQ0pzFnygKwFZt5udj6viBoFIBviKPUoZLDCPn1FoXffv6McQFDenrm5Krfw=="],
 

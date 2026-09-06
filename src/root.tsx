@@ -18,6 +18,8 @@ import { NotFound } from "~/components/layout/not-found";
 import { NotFound as NotFoundCopy, Site } from "~/constants";
 import { NonceContext } from "~/context/nonce";
 import { userContext } from "~/context/user";
+import { getFeaturePayload } from "~/lib/growthbook/payload.server";
+import { ExperimentProvider } from "~/lib/growthbook/provider";
 import { useIdentify } from "~/lib/openpanel/useOpenPanel";
 import { getStoredTheme, resolveTheme } from "~/lib/theme";
 import { useThemeStore } from "~/store/theme";
@@ -56,10 +58,21 @@ export const links: Route.LinksFunction = () => [
 
 export const middleware = [identityMiddleware];
 
-export function loader({ context }: Route.LoaderArgs) {
+export async function loader({ context }: Route.LoaderArgs) {
   const fingerprint = context.get(userContext).fingerprint;
-  return data({ fingerprint });
+  // Only the decrypted, browser-safe SDK payload crosses the wire: the API host
+  // and client key stay in the server module that fetched it.
+  const features = await getFeaturePayload();
+  return data({ fingerprint, features });
 }
+
+/**
+ * Neither the fingerprint nor the feature snapshot changes within a visit, and
+ * re-running this loader would hand the provider a new payload object on every
+ * navigation — resetting the GrowthBook instance and, with it, the SDK's
+ * once-per-experiment tracking. A reload picks up fresh definitions.
+ */
+export const shouldRevalidate = () => false;
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { theme, setTheme } = useThemeStore();
@@ -98,7 +111,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App({ loaderData }: Route.ComponentProps) {
-  const { fingerprint } = loaderData;
+  const { fingerprint, features } = loaderData;
   const identify = useIdentify();
 
   useEffect(() => {
@@ -111,15 +124,17 @@ export default function App({ loaderData }: Route.ComponentProps) {
   }, [fingerprint, identify]);
 
   return (
-    <NuqsAdapter>
-      <div className="flex min-h-screen flex-col">
-        <Nav />
-        <main className="flex-1">
-          <Outlet />
-        </main>
-        <Footer />
-      </div>
-    </NuqsAdapter>
+    <ExperimentProvider payload={features} fingerprint={fingerprint}>
+      <NuqsAdapter>
+        <div className="flex min-h-screen flex-col">
+          <Nav />
+          <main className="flex-1">
+            <Outlet />
+          </main>
+          <Footer />
+        </div>
+      </NuqsAdapter>
+    </ExperimentProvider>
   );
 }
 

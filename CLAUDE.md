@@ -82,6 +82,7 @@ A personal workbench — notes, decisions, investigations, references, and small
 - **Content:** MDX files under `content/`, no database or CMS — see Content Layer below
 - **Validation:** `valibot` for content frontmatter and env vars
 - **State:** Zustand for client-side theme state, `localStorage` for persistence
+- **Experiments:** GrowthBook payload loaded in the root loader and shared through `GrowthBookProvider`; assignments reported to OpenPanel
 - **Linter/Formatter:** Biome (double quotes, 2-space indent)
 - **Icons:** Lucide React
 

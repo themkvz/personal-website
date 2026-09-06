@@ -11,6 +11,10 @@ export const env = createEnv({
       "development",
     ),
     OP_CLIENT_SECRET: v.string(),
+    // GrowthBook SDK connection. Set both or neither; without them every
+    // feature consumer renders its fallback.
+    GROWTHBOOK_API_HOST: v.optional(v.string()),
+    GROWTHBOOK_CLIENT_KEY: v.optional(v.string()),
   },
   shared: { ...publicEnvSchema },
   client: {},
