@@ -10,6 +10,7 @@
     "build": "react-router build",
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
+    "verify:bundle": "D=${BUNDLE_DIR:-build/client}; test -d \"$D\" || { echo \"verify:bundle: $D not found\" >&2; exit 1; }; grep -rlE 'OP_CLIENT_SECRET|env\\.server' \"$D\" && { echo \"verify:bundle: server env identifiers found in client bundle\" >&2; exit 1; }; test $? -eq 1",
     "typecheck": "react-router typegen && tsc",
     "prepare": "husky",
     "lint": "biome check .",

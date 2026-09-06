@@ -40,6 +40,8 @@ bun run build
 
 ### Docker Deployment
 
+The canonical list of required variables is `.env.example` — copy it to `.env` and fill in the values.
+
 Two client-side variables are inlined into the browser bundle at **build time** and must be passed as `--build-arg`s. Three variables are read by the server at **container start** and must be passed as `-e`/`--env-file` — the process refuses to start if they're missing.
 
 | Variable | Phase | Required |

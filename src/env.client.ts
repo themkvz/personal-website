@@ -1,12 +1,13 @@
 import { createEnv } from "@t3-oss/env-core";
-import * as v from "valibot";
+import { onValidationError, publicEnvSchema } from "~/env.shared";
 
 export const envPublic = createEnv({
   clientPrefix: "VITE_",
-  client: {
-    VITE_OP_CLIENT_ID: v.string(),
-    VITE_OP_API_URL: v.string(),
+  client: { ...publicEnvSchema },
+  runtimeEnvStrict: {
+    VITE_OP_CLIENT_ID: import.meta.env.VITE_OP_CLIENT_ID,
+    VITE_OP_API_URL: import.meta.env.VITE_OP_API_URL,
   },
-  runtimeEnv: import.meta.env,
   emptyStringAsUndefined: true,
+  onValidationError,
 });
