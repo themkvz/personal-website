@@ -1,6 +1,6 @@
 import { Link } from "~/components/atoms/link";
 import { Overline } from "~/components/atoms/overline";
-import { SearchTrigger } from "~/components/atoms/search-trigger";
+// import { SearchTrigger } from "~/components/atoms/search-trigger";
 import { ArtifactRow } from "~/components/composites/artifact-row";
 import { LaneGuide } from "~/components/composites/lane-guide";
 import { SectionHeader } from "~/components/composites/section-header";
@@ -16,8 +16,9 @@ import type { Route } from "./+types/workbench._index";
 
 export function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
-  const laneParam = url.searchParams.get("lane");
+  const laneParam = url.searchParams.get("l");
   const lane = isLane(laneParam) ? laneParam : undefined;
+
   return { lane };
 }
 
@@ -50,7 +51,7 @@ export default function WorkbenchIndexRoute({
               {Workbench.lead}
             </p>
             <div className="flex flex-wrap items-center gap-4">
-              <SearchTrigger />
+              {/*<SearchTrigger />*/}
               {latest && (
                 <Link to={artifactHref(latest.slug)} tone="accent">
                   {Workbench.latestCta}

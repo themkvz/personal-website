@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { tagVariants } from "~/components/atoms/tag";
 import { LANE_LABELS, LANES, type Lane } from "~/lib/lanes";
 import { cn } from "~/lib/utils";
@@ -18,21 +19,24 @@ export function StateFilter({
         className,
       )}
     >
-      <a
-        href="/workbench"
+      <Link
+        to="/workbench"
         aria-current={active ? undefined : "true"}
         className={cn(
           "rounded-xs px-2.5 py-1.5 t-label",
           active ? "text-muted-foreground" : "text-foreground",
         )}
+        preventScrollReset
       >
         ALL
-      </a>
+      </Link>
+
       {LANES.map((lane) => (
-        <a
+        <Link
           key={lane}
-          href={laneHref(lane)}
+          to={laneHref(lane)}
           aria-current={active === lane ? "true" : undefined}
+          preventScrollReset
           className={cn(
             "inline-flex items-center gap-1.5",
             active === lane
@@ -44,7 +48,7 @@ export function StateFilter({
             <span className="size-1.5 rounded-full bg-current" />
           )}
           <span className="t-label">{LANE_LABELS[lane]}</span>
-        </a>
+        </Link>
       ))}
     </div>
   );

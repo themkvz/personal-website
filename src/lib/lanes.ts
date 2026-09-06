@@ -15,10 +15,10 @@ export const LANE_LABELS: Record<Lane, string> = {
 };
 
 export const LANE_DESCRIPTIONS: Record<Lane, string> = {
-  building: "Things taking shape",
-  investigating: "Questions worth exploring",
-  deciding: "Choices worth remembering",
-  keeping: "References worth saving",
+  building: "Work in progress",
+  investigating: "Open questions",
+  deciding: "Decisions, and why",
+  keeping: "References to reuse",
 };
 
 export function isLane(value: string | null | undefined): value is Lane {

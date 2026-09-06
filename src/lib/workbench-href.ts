@@ -5,5 +5,5 @@ export function artifactHref(slug: string): string {
 }
 
 export function laneHref(lane: Lane): string {
-  return `/workbench?lane=${lane}`;
+  return `/workbench?l=${lane}`;
 }
