@@ -104,6 +104,9 @@ export default function App({ loaderData }: Route.ComponentProps) {
   useEffect(() => {
     identify({
       profileId: fingerprint,
+      // The SDK skips an identify carrying only a profile id, so the profile
+      // row is written only because of this second field.
+      properties: { fingerprint },
     });
   }, [fingerprint, identify]);
 

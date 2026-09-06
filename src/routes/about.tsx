@@ -14,6 +14,8 @@ import { Section } from "~/components/layout/section";
 import { About, Site } from "~/constants";
 import { experience, experienceBodies } from "~/content";
 import { pageMeta } from "~/lib/meta";
+import { TRACK_EVENTS } from "~/lib/openpanel/events";
+import { useTrack } from "~/lib/openpanel/useOpenPanel";
 import type { Route } from "./+types/about";
 
 const PRACTICE_ICONS = {
@@ -42,6 +44,7 @@ function formatPeriod(startDate: string, endDate?: string): string {
 
 export default function AboutRoute({ loaderData }: Route.ComponentProps) {
   const { hasResume } = loaderData;
+  const track = useTrack();
 
   return (
     <>
@@ -60,7 +63,11 @@ export default function AboutRoute({ loaderData }: Route.ComponentProps) {
               {hasResume && (
                 <Button href={Site.resumeHref}>{About.resumeCta}</Button>
               )}
-              <Link href={`mailto:${Site.publicEmail}`} tone="accent">
+              <Link
+                href={`mailto:${Site.publicEmail}`}
+                tone="accent"
+                onClick={() => track(TRACK_EVENTS.CONTACT_EMAIL_CLICKED)}
+              >
                 {About.emailCta}
               </Link>
             </div>
@@ -219,7 +226,10 @@ export default function AboutRoute({ loaderData }: Route.ComponentProps) {
               {About.contactCopy}
             </p>
             <div className="flex flex-wrap items-center gap-4">
-              <Button href={`mailto:${Site.publicEmail}`}>
+              <Button
+                href={`mailto:${Site.publicEmail}`}
+                onClick={() => track(TRACK_EVENTS.CONTACT_EMAIL_CLICKED)}
+              >
                 {About.contactEmailCta}
               </Button>
               {hasResume && (

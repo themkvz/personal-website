@@ -16,6 +16,8 @@ import { Home, Site, Tools as ToolsCopy } from "~/constants";
 import { artifacts, tools } from "~/content";
 import { LANES } from "~/lib/lanes";
 import { pageMeta } from "~/lib/meta";
+import { TRACK_EVENTS } from "~/lib/openpanel/events";
+import { useTrack } from "~/lib/openpanel/useOpenPanel";
 import { artifactHref } from "~/lib/workbench-href";
 import type { Route } from "./+types/_index";
 
@@ -41,6 +43,7 @@ function getWorkbenchPreview() {
 
 export default function HomeRoute() {
   const { featured, secondary } = getWorkbenchPreview();
+  const track = useTrack();
 
   return (
     <>
@@ -75,8 +78,17 @@ export default function HomeRoute() {
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-4">
-              <Button to="/workbench">{Home.primaryCta}</Button>
-              <Link to="/about" tone="accent">
+              <Button
+                to="/workbench"
+                onClick={() => track(TRACK_EVENTS.HERO_WORKBENCH_CLICKED)}
+              >
+                {Home.primaryCta}
+              </Button>
+              <Link
+                to="/about"
+                tone="accent"
+                onClick={() => track(TRACK_EVENTS.HERO_ABOUT_CLICKED)}
+              >
                 {Home.secondaryCta}
               </Link>
             </div>

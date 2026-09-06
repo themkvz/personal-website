@@ -1,23 +1,20 @@
-import type { OpenPanel } from "@openpanel/web";
+import type { IdentifyPayload, TrackProperties } from "@openpanel/web";
 import { useCallback } from "react";
+import type { TrackEvent } from "~/lib/openpanel/events";
 
-type TrackFn = OpenPanel["track"];
-type IdentifyFn = OpenPanel["identify"];
+const client = () => import("~/lib/openpanel/op.client").then(({ op }) => op);
 
 export function useTrack() {
-  return useCallback<TrackFn>(async (name, properties) => {
-    return import("~/lib/openpanel/op.client").then(({ op }) => {
-      console.log("start tracking", name, properties);
-
-      op.track(name, properties);
-    });
-  }, []);
+  return useCallback(
+    async (name: TrackEvent, properties?: TrackProperties) =>
+      (await client()).track(name, properties),
+    [],
+  );
 }
 
 export function useIdentify() {
-  return useCallback<IdentifyFn>(async (payload) => {
-    return import("~/lib/openpanel/op.client").then(({ op }) => {
-      op.identify(payload);
-    });
-  }, []);
+  return useCallback(
+    async (payload: IdentifyPayload) => (await client()).identify(payload),
+    [],
+  );
 }

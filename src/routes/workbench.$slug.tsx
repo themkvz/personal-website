@@ -12,16 +12,25 @@ import { Prose } from "~/components/layout/prose";
 import { Section } from "~/components/layout/section";
 import { Site } from "~/constants";
 import { artifacts, bodies } from "~/content";
+import { userContext } from "~/context/user";
 import { formatDate } from "~/lib/format-date";
 import { LANE_LABELS } from "~/lib/lanes";
 import { pageMeta } from "~/lib/meta";
+import { TRACK_EVENTS } from "~/lib/openpanel/events";
 import { artifactHref, laneHref } from "~/lib/workbench-href";
 import type { Route } from "./+types/workbench.$slug";
 
-export function loader({ params }: Route.LoaderArgs) {
+export function loader({ params, context }: Route.LoaderArgs) {
+  const { analytics } = context.get(userContext);
   const artifact = artifacts.find((entry) => entry.slug === params.slug);
 
+  // Fire-and-forget: analytics must never delay the document or hold a 404
+  // open. The SDK swallows its own transport failures, so nothing can reject
+  // here, and `react-router-serve` outlives the request that started the POST.
   if (!artifact) {
+    void analytics.track(TRACK_EVENTS.ARTIFACT_NOT_FOUND, {
+      slug: params.slug,
+    });
     throw data(null, { status: 404 });
   }
 

@@ -5,6 +5,8 @@ import { SearchTrigger } from "~/components/atoms/search-trigger";
 import { Container } from "~/components/layout/container";
 import { Section } from "~/components/layout/section";
 import { NotFound as NotFoundCopy } from "~/constants";
+import { TRACK_EVENTS } from "~/lib/openpanel/events";
+import { useTrack } from "~/lib/openpanel/useOpenPanel";
 
 /* The error numeral is page art rather than running text, so it sits outside
    the type scale; JetBrains Mono supplies the dotted zero the design uses. */
@@ -12,6 +14,8 @@ const DIGIT =
   "font-display text-[120px] leading-none font-bold tracking-[-7px] sm:text-[250px] sm:tracking-[-14px]";
 
 export function NotFound() {
+  const track = useTrack();
+
   return (
     <Section className="pt-12 pb-14">
       <Container className="flex flex-col gap-24 lg:flex-row lg:items-center lg:justify-between">
@@ -33,7 +37,12 @@ export function NotFound() {
             {NotFoundCopy.explanation}
           </p>
           <div className="flex flex-wrap items-center gap-4">
-            <Button to="/">{NotFoundCopy.returnCta}</Button>
+            <Button
+              to="/"
+              onClick={() => track(TRACK_EVENTS.NOT_FOUND_CLICKED_BACK)}
+            >
+              {NotFoundCopy.returnCta}
+            </Button>
             <Link to="/workbench" tone="accent">
               {NotFoundCopy.workbenchCta}
             </Link>

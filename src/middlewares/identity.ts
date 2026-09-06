@@ -1,6 +1,6 @@
 import { userContext } from "~/context/user";
 import { getFingerprint } from "~/lib/fingerprint";
-import { identifyUser } from "~/lib/openpanel/getOpenPanel";
+import { getServerAnalytics } from "~/lib/openpanel/getOpenPanel";
 import type { Route } from "../+types/root";
 
 export const identityMiddleware: Route.MiddlewareFunction = async ({
@@ -9,9 +9,8 @@ export const identityMiddleware: Route.MiddlewareFunction = async ({
 }) => {
   const fingerprint = await getFingerprint(request);
 
-  void identifyUser(fingerprint);
-
   context.set(userContext, {
     fingerprint,
+    analytics: getServerAnalytics(request, fingerprint),
   });
 };
