@@ -1,12 +1,35 @@
+import * as Sentry from "@sentry/react-router";
 import { StrictMode, startTransition } from "react";
 import { hydrateRoot } from "react-dom/client";
 import { HydratedRouter } from "react-router/dom";
+import { envPublic } from "~/env.client";
+import { isNotFound } from "~/lib/glitchtip/errors";
+
+Sentry.init({
+  dsn: envPublic.VITE_GLITCHTIP_DSN,
+  // The server counterpart reads `env.NODE_ENV`; only the browser has this flag.
+  enabled: import.meta.env.PROD,
+  tracesSampleRate: 0.1,
+  integrations: (defaults) => [
+    // GlitchTip has no sessions API, so session envelopes are discarded.
+    ...defaults.filter((integration) => integration.name !== "BrowserSession"),
+    Sentry.reactRouterTracingIntegration(),
+  ],
+});
 
 startTransition(() => {
   hydrateRoot(
     document,
     <StrictMode>
-      <HydratedRouter />
+      <HydratedRouter
+        instrumentations={[
+          Sentry.createSentryClientInstrumentation({ captureErrors: false }),
+        ]}
+        onError={(error, info) => {
+          if (isNotFound(error)) return;
+          Sentry.sentryOnError(error, info);
+        }}
+      />
     </StrictMode>,
   );
 });

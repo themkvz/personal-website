@@ -115,6 +115,7 @@ Keep changes minimal, match existing patterns, and prefer clarity.
 
 ### Server env vars (see `src/env.server.ts`)
 - `NODE_ENV`, `OP_CLIENT_SECRET`, `VITE_OP_CLIENT_ID`, `VITE_OP_API_URL` (OpenPanel credentials) are required.
+- `VITE_GLITCHTIP_DSN` (GlitchTip error tracking) is required at build time and run time. The CSP report endpoint is derived from it — do not add a second variable.
 - Do not commit secrets; keep `.env` out of git.
 - Use local `.env` or `.env.local` for development only.
 

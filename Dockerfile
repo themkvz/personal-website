@@ -16,12 +16,14 @@ RUN bun install --frozen-lockfile --production --ignore-scripts
 FROM base AS build
 ARG VITE_OP_CLIENT_ID
 ARG VITE_OP_API_URL
+ARG VITE_GLITCHTIP_DSN
 ENV VITE_OP_CLIENT_ID=$VITE_OP_CLIENT_ID
 ENV VITE_OP_API_URL=$VITE_OP_API_URL
+ENV VITE_GLITCHTIP_DSN=$VITE_GLITCHTIP_DSN
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN test -n "$VITE_OP_CLIENT_ID" && test -n "$VITE_OP_API_URL"
+RUN test -n "$VITE_OP_CLIENT_ID" && test -n "$VITE_OP_API_URL" && test -n "$VITE_GLITCHTIP_DSN"
 RUN bun run build
 
 # Production image

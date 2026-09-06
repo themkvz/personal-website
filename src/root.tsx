@@ -11,11 +11,12 @@ import {
 import "./app.css";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
-import { useEffect, useLayoutEffect } from "react";
+import { use, useEffect, useLayoutEffect } from "react";
 import { Button } from "~/components/atoms/button";
 import { Link } from "~/components/atoms/link";
 import { NotFound } from "~/components/layout/not-found";
 import { NotFound as NotFoundCopy, Site } from "~/constants";
+import { NonceContext } from "~/context/nonce";
 import { userContext } from "~/context/user";
 import { useIdentify } from "~/lib/openpanel/useOpenPanel";
 import { getStoredTheme, resolveTheme } from "~/lib/theme";
@@ -62,6 +63,7 @@ export function loader({ context }: Route.LoaderArgs) {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { theme, setTheme } = useThemeStore();
+  const nonce = use(NonceContext);
 
   // Sync store from localStorage after hydration — runs before browser paint,
   // so the correct icon and class are applied without a visible flash.
@@ -75,14 +77,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {/* Anti-flicker: must be first script, before any stylesheet or React */}
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script
+          nonce={nonce}
+          dangerouslySetInnerHTML={{ __html: themeInitScript }}
+        />
         <Meta />
-        <Links />
+        {/* Browsers scrub the `nonce` attribute to "", so the client must render
+            the same "" the `NonceContext` default provides — otherwise `Links`
+            falls back to the framework-context nonce (undefined) and hydration
+            mismatches. */}
+        <Links nonce={nonce} />
       </head>
       <body className="min-h-screen antialiased">
         {children}
-        <ScrollRestoration />
-        <Scripts />
+        <ScrollRestoration nonce={nonce} />
+        <Scripts nonce={nonce} />
       </body>
     </html>
   );

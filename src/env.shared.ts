@@ -1,10 +1,22 @@
 import type { StandardSchemaV1 } from "@t3-oss/env-core";
 import * as v from "valibot";
+import { parseGlitchtipDsn } from "~/lib/glitchtip/dsn";
 
 /** Public variables, readable on both sides. Declared once; `env.server.ts` and `env.client.ts` spread this. */
 export const publicEnvSchema = {
   VITE_OP_CLIENT_ID: v.string(),
   VITE_OP_API_URL: v.string(),
+  VITE_GLITCHTIP_DSN: v.pipe(
+    v.string(),
+    v.check((dsn) => {
+      try {
+        parseGlitchtipDsn(dsn);
+        return true;
+      } catch {
+        return false;
+      }
+    }),
+  ),
 };
 
 /**
