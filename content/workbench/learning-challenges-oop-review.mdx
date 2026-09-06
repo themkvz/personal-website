@@ -1,0 +1,35 @@
+---
+title: "Learning Challenges in OOP: code as evidence"
+lane: keeping
+summary: Research connecting code smells and SOLID violations to gaps in how students understand object-oriented programming.
+publishedAt: 2026-08-16
+topics:
+  - oop
+  - code-review
+  - education
+  - code-smells
+---
+
+This is a review of research by André Menolli and Bruno Strik. The work takes code problems and traces them back to learning gaps. It builds a map: from a concrete issue in code, to a possible misunderstanding about OOP concepts.
+
+## The idea
+
+Functional code is not the same as well-designed code. A program can work and still show signs that the developer doesn't yet understand encapsulation, polymorphism, class design, or how to think in objects instead of procedures. The researchers looked for evidence of these gaps by studying student code and linking specific code problems to learning difficulties.
+
+They took 14 known learning challenges in OOP and picked six that leave visible traces in code: problems with classes, methods, encapsulation, polymorphism, object relationships, and procedural thinking. Then they built a model with 22 categories of code problems and connected each to code smells and SOLID violations.
+
+## What the map shows
+
+Long methods suggest trouble with distributing logic across methods, or thinking procedurally. Switch statements point to not understanding polymorphism. Large classes hint at confusion about class responsibility and modularity.
+
+The researchers verified the map with experienced CS teachers reviewing real student code. It worked well in most cases. In complex situations it sometimes missed the root cause, but as a diagnostic tool it had real value.
+
+## Why it matters
+
+Here is what stays with me: working code proves nothing about understanding. This changes how I read code during review. It is not enough to check that it does what it should. The structure tells me whether the person writing it grasped the concepts.
+
+The second insight: code smells are not just a sign to refactor. They are a signal of missing knowledge. If I see a pattern repeated across a codebase, it is not always sloppy work—it might be a concept that did not click.
+
+## What is missing
+
+The model is specific to Java and works through direct observation. Automating this analysis could help, especially in classroom settings where students get feedback on understanding, not just correctness. Scaling to other languages (Python, C++) would test whether the map holds up, or whether each language reveals different learning patterns.
