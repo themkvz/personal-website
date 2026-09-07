@@ -42,6 +42,16 @@ Rendered inside `Prose` (`src/components/layout/prose.tsx`), lazily, under `<Sus
 - Images go in `public/` and are referenced by absolute path (`/hero.webp`). There is no content-relative asset pipeline.
 - Two to six hundred words. Longer than that is usually two artifacts, or one artifact and a `keeping` list.
 
+### References and copyright
+
+Artifacts in any lane that use external sources or third-party material must end with `## References and copyright`, after the main text's takeaway.
+
+- List the sources used, with a descriptive link and the author or organisation when known. Keep useful inline links in the main text too.
+- Credit any quoted or reused text, code, images, or other material to its source and copyright holder. Include the original copyright notice and license or permission details when provided; do not invent ownership or license terms.
+- If no external sources or third-party material were used, omit the section entirely. Do not add a no-source notice or an empty heading.
+- Omit copyright notices for the artifact's original writing (such as “Original writing © 2025 Ihor Mukovoz.”). Copyright attribution in this section is for quoted or reused third-party material only.
+- Replace all template placeholders before publishing.
+
 ## Choosing a lane
 
 The lane is a claim about **what kind of knowledge the artifact carries**, not about its subject or its format. The same React migration can produce one artifact in each lane. Pick by asking what state the thinking is in.

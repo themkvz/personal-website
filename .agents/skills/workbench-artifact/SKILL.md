@@ -51,7 +51,7 @@ The result should read like a person writing about something they found interest
 
 - Start with context: what is this, where did you find it, why does it matter to you. One or two sentences. Link the source.
 - The middle is what you noticed — the parts worth remembering, the parts that connect to your own work or thinking.
-- End with your own take. What does this change? What is still missing? What would you do differently?
+- Close the main text with your own take. What does this change? What is still missing? What would you do differently?
 - Use headings to break sections, but keep them plain. "Key pieces," "What I noticed," "What's missing" — not clever, not cute.
 - Bullet lists for facts and items. Prose for opinions and connections.
 - Two to six hundred words total. Longer usually means two artifacts.
@@ -69,6 +69,12 @@ The result should read like a person writing about something they found interest
 - **`title`**: short, specific, lowercase feel. "Notes on self-hosting with CLI agents" not "Comprehensive Guide to Self-Hosting Infrastructure."
 - **`summary`**: one sentence, plain language. It should tell the reader what they will find if they click. Write it last, after the body settles.
 - **`kind`** (if used): short label, uppercase. Only worth setting if the artifact might be featured on the home page.
+
+### References and copyright
+
+When an artifact uses external sources or third-party material, end it with `## References and copyright`, following `content/docs/workbench.md#references-and-copyright`. Complete the template's source and attribution placeholders before publishing. Otherwise, omit the section entirely, including any no-source notice.
+
+Omit copyright notices for the artifact's original writing. Copyright attribution in this section is for quoted or reused third-party material only.
 
 ## 4. Verify before publishing
 
