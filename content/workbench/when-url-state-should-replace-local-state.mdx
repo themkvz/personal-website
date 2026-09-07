@@ -1,27 +1,38 @@
 ---
 title: When URL state should replace local state
 lane: deciding
-summary: A decision record for choosing durable, shareable state over hidden interface state.
+summary: Use URL state for parts of the interface that should survive reloads, sharing, and navigation.
 publishedAt: 2025-07-18
 topics:
   - state-management
   - urls
+  - react-router
 ---
 
-Local component state is invisible: it disappears on refresh, can't be
-shared as a link, and can't be bookmarked. For a lot of interface state,
-that invisibility is the wrong default.
+Local component state is invisible. It disappears on refresh, cannot be shared as a link, and usually does not work with browser back and forward navigation.
+
+For some UI state this is correct. A hover, temporary input, or open tooltip does not need a permanent address. But filters, selected tabs, pagination, sorting, or active views often describe where user currently is inside product.
+
+For this kind of state, URL feels like better default.
 
 ## The rule adopted
 
-If a piece of state changes what the user sees enough that they'd want to
-share, bookmark, or reload the page and land in the same place, it belongs
-in the URL. Everything else — a hover state, an in-progress form field
-before submission — stays local.
+If changing state changes current view enough that I may want to share it, bookmark it, reload it, or return to it later, I put it in URL.
 
-## Consequence
+I think about app state in three rough layers. Route path describes **where** user is. Search params describe **how that page is configured**. Local React state handles temporary interaction that does not need to survive navigation.
 
-A filter, an active tab, an open lane on the Workbench index — all of these
-became search params instead of `useState`. The trade-off is a small amount
-of extra plumbing (usually solved by `nuqs`) in exchange for links that
-actually work when shared.
+React Router already makes URL part of application state through route params, search params, and location. This also means browser navigation becomes part of UX instead of something application has to recreate itself.
+
+For search params, `nuqs` makes this much nicer than manually working with `URLSearchParams`. Its API is close to `useState`, but state is serialized into URL, with parsers for values such as numbers, booleans, arrays, and enums.
+
+So instead of keeping filter state hidden inside component tree, URL can become source of truth:
+
+`/workbench?l=building`
+
+This is easier to understand, debug, share, and restore.
+
+There is still some judgment around history. Small filter changes often should replace current history entry. More meaningful navigation may deserve a new entry so browser Back works as expected. `nuqs` supports both approaches.
+
+This does add some URL and parsing plumbing, but I prefer that cost over hidden state that stops working after refresh or cannot be sent to another person.
+
+My current rule is simple: durable view state goes into URL. Temporary interaction stays local.
