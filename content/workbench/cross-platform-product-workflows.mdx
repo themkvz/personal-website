@@ -1,7 +1,7 @@
 ---
 title: Cross-platform product workflows
 lane: building
-summary: Notes from a cross-platform application and its React-based administration interface.
+summary: Keeping web and mobile in one stack and one team, while treating backend as a separate system with a clear contract.
 publishedAt: 2025-08-20
 topics:
   - react
@@ -9,19 +9,26 @@ topics:
   - product
 ---
 
-Running a product across desktop, mobile, and a web-based administration
-panel means the same domain logic has to behave identically in three very
-different runtimes.
+Running one product across web, mobile, and an administration interface becomes much easier when these clients are treated as one stack, not as separate products.
 
-## Shared foundations
+For me, monorepo fits this model well. Web, mobile, and admin can live close to each other and share domain logic, types, validation, API clients, and other code that should behave the same everywhere. Platform-specific UI still stays separate where it needs to.
 
-The workflows that actually stayed maintainable were the ones where the
-domain logic lived in one place and each platform's UI layer was a thin
-adapter over it, not a reimplementation.
+Important part is not sharing everything. It is having one source for things that should not be implemented three times.
+
+## One stack, one team
+
+I also like the idea of web and mobile being owned by the same team. When stack and domain are similar, splitting ownership by platform creates extra boundaries without much benefit.
+
+One team can move between web, mobile, and admin work, review the same shared code, and keep product behavior more consistent. Monorepo supports this because changes to shared logic and platform code can happen together.
+
+Backend is different. In this setup it is owned by another in-house team and lives in another repository. I would not try to bring it into the frontend monorepo only to make repository structure look unified.
+
+The important boundary is API contract. Frontend can share everything internally, while backend stays an external dependency with its own release cycle and ownership.
+
+This makes me think about architecture in two levels: keep related frontend platforms close, but keep clear boundaries between teams that own different systems.
 
 ## Open threads
 
-- How much of the validation logic can move into a shared package versus
-  staying duplicated for platform-specific UX reasons.
-- Where the administration interface's data-fetching patterns diverge from
-  the consumer app's, and whether that divergence is justified.
+- How much validation and domain logic should be shared before platform-specific UX makes duplication simpler.
+- How to keep frontend types and API contracts in sync with backend repository.
+- Whether admin data flows are different for good product reasons or only because they evolved separately.
