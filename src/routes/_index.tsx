@@ -21,6 +21,16 @@ import { useTrack } from "~/lib/openpanel/useOpenPanel";
 import { artifactHref } from "~/lib/workbench-href";
 import type { Route } from "./+types/_index";
 
+export function headers() {
+  return {
+    Link: [
+      `<${Site.baseUrl}/.well-known/api-catalog>; rel="api-catalog"`,
+      `<${Site.baseUrl}/openapi.json>; rel="service-desc"`,
+      `<${Site.baseUrl}/openapi.json>; rel="service-doc"`,
+    ].join(", "),
+  };
+}
+
 export const meta: Route.MetaFunction = () =>
   pageMeta({
     title: `${Site.ownerName} — Software, systems, experiments`,
