@@ -2,7 +2,7 @@
 title: Modernizing an existing frontend without stopping product work
 lane: building
 kind: FIELD NOTE / FRONTEND
-summary: A practical record of improving long-lived interfaces while product delivery continues.
+summary: Modernizing a long-lived frontend by making architecture boundaries explicit before replacing individual parts.
 publishedAt: 2025-09-03
 topics:
   - react
@@ -11,25 +11,34 @@ topics:
 featured: true
 ---
 
-The frontend had grown over several years under continuous product pressure.
-Rewriting it outright was never an option — the business needed shipped
-features every sprint, not a multi-month pause for a rebuild.
+Large frontend migrations are rarely difficult because of one old library or one bad pattern.
 
-## The approach
+Routing can be replaced. State management can be changed. Components can be rewritten. Build tooling can be upgraded. Each task alone is usually manageable.
 
-Instead of a rewrite, the migration moved boundary by boundary: a route, a
-shared component, a piece of state at a time. Each boundary was modernized,
-tested against the existing behaviour, and shipped, so the application never
-left a working state for more than a day.
+The real difficulty starts when all of these parts depend on each other.
 
-## What made it work
+In a long-lived product, route structure affects data loading, data loading affects state, state affects shared components, and shared components depend on design system and old application conventions. Changing one part can easily expose assumptions from several others.
 
-- **Strangler-fig routing** — new and old code served side by side behind the
-  same router, swapped one route at a time.
-- **Shared design tokens** — introduced early, so old and new UI could sit
-  next to each other without looking like two different products.
-- **State boundaries made explicit** — global state was audited and narrowed
-  before any component migrated, which removed most of the surprises.
+A full rewrite would avoid some of this integration work, but it would also stop normal product delivery for too long. That was not realistic.
 
-The result: a fully modernized frontend with no dedicated "migration
-sprint," and no regression the product team noticed as a release event.
+## Architecture boundaries first
+
+The useful unit of migration became not a library or framework, but an architecture boundary.
+
+A route, a state domain, or a shared UI layer could be modernized while old and new code continued to work together. New code did not need to replace everything around it immediately. It only needed a clear contract with the parts that were still old.
+
+This changed how I looked at migration. Main problem was not "how do we replace old React patterns?" It was "where can we draw a boundary that lets two generations of the application coexist safely?"
+
+Routing was one important boundary because it allowed old and new areas to live side by side. State boundaries were another because unclear global state created hidden dependencies between otherwise unrelated parts. Shared design primitives helped visually connect old and new UI without forcing both implementations to use the same internal architecture.
+
+None of these changes was especially important alone. Their value came from how they worked together.
+
+When boundaries were clear, migration became predictable. When they were not, even a small modernization could turn into work across half of the application.
+
+## What I want to keep
+
+For future migrations, I would start by mapping integration points before choosing replacement technologies.
+
+I want to know which parts own navigation, state, data, and shared UI, and what contracts exist between them. Then migration can move boundary by boundary while product work continues around it.
+
+This feels more useful than planning a rewrite around individual technologies. Technologies change. Architecture boundaries decide whether those changes stay local or spread through the whole product.
