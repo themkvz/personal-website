@@ -16,6 +16,14 @@ type PracticeColumn = {
   topics: readonly string[];
 };
 
+type Integration = {
+  /** The moment in a page's life this service acts at. Entries are ordered by it. */
+  phase: string;
+  name: string;
+  role: string;
+  consequence: string;
+};
+
 export const Site = {
   name: "THEMKVZ",
   ownerName: "Ihor Mukovoz",
@@ -93,6 +101,41 @@ export const Home = {
   toolsHeading: "Small utilities for specific problems.",
   toolsBlurb: "Useful immediately, focused on one task, without distracting.",
   toolsCta: "Browse all tools →",
+
+  integrationsEyebrow: "INTEGRATIONS / THIRD-PARTY",
+  integrationsHeading: "Every moving part, in the open.",
+  integrationsLead:
+    "A site this size needs none of this. Running it anyway keeps the integration work visible and the failure modes real. Four services, in the order a page meets them.",
+  integrations: [
+    {
+      phase: "BEFORE THE REQUEST",
+      name: "MDX",
+      role: "Every note, decision, and tool card is a file in the repository, typed at load and compiled with the site.",
+      consequence:
+        "No database, no editor, no admin login. Publishing is a commit, so the history of a page is the history of its file.",
+    },
+    {
+      phase: "DURING THE RENDER",
+      name: "GrowthBook",
+      role: "Feature flags and experiment assignment, resolved on the server before the document is sent.",
+      consequence:
+        "The first paint is already the assigned variant. Nothing flickers from a default to a treatment once the page wakes up.",
+    },
+    {
+      phase: "AFTER THE CLICK",
+      name: "OpenPanel",
+      role: "Product analytics, with experiment exposure recorded against the same visitor as everything that follows it.",
+      consequence:
+        "A variant and the actions after it belong to one profile, so a result reads as behaviour instead of a page count.",
+    },
+    {
+      phase: "WHEN IT BREAKS",
+      name: "GlitchTip",
+      role: "Error and performance reporting from both the server and the browser, and the destination for content-security-policy reports.",
+      consequence:
+        "Traces resolve back to the original source. Expected outcomes, like a missing page or an abandoned request, never enter the feed.",
+    },
+  ] satisfies Integration[],
 } as const;
 
 export const About = {

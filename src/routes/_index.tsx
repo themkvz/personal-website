@@ -284,6 +284,50 @@ export default function HomeRoute() {
           </div>
         </Container>
       </Section>
+
+      <Section className="border-t border-border">
+        <Container className="flex flex-col gap-12">
+          <div className="flex flex-col gap-6">
+            <SectionHeader.Root>
+              <SectionHeader.Top>
+                <SectionHeader.Eyebrow>
+                  {Home.integrationsEyebrow}
+                </SectionHeader.Eyebrow>
+              </SectionHeader.Top>
+              <SectionHeader.Title>
+                {Home.integrationsHeading}
+              </SectionHeader.Title>
+              <SectionHeader.Rule />
+            </SectionHeader.Root>
+
+            <p className="t-body max-w-[760px] text-[17px] text-muted-foreground">
+              {Home.integrationsLead}
+            </p>
+          </div>
+
+          <ul className="flex flex-col">
+            {Home.integrations.map((integration) => (
+              <li
+                key={integration.name}
+                className="grid grid-cols-1 gap-4 border-b border-border py-8 first:pt-0 last:border-b-0 last:pb-0 lg:grid-cols-[260px_1fr] lg:gap-12"
+              >
+                <div className="flex flex-col gap-2">
+                  <Overline>{integration.phase}</Overline>
+                  <h3 className="t-display-sm text-foreground">
+                    {integration.name}
+                  </h3>
+                </div>
+                <div className="flex max-w-[680px] flex-col gap-3">
+                  <p className="t-body text-foreground">{integration.role}</p>
+                  <p className="t-body-sm text-muted-foreground">
+                    {integration.consequence}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </Section>
     </>
   );
 }
