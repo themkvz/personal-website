@@ -16,6 +16,7 @@ import { env } from "~/env.server";
 import { buildReportOnlyCsp } from "~/lib/csp";
 import { parseGlitchtipDsn } from "~/lib/glitchtip/dsn";
 import { isNotFound } from "~/lib/glitchtip/errors";
+import { acceptsMarkdown, pageMarkdown } from "~/lib/markdown.server";
 
 export const streamTimeout = 5_000;
 
@@ -49,6 +50,12 @@ export default function handleRequest(
     "Content-Security-Policy-Report-Only",
     buildReportOnlyCsp({ nonce, opApiOrigin, glitchtip }),
   );
+  const markdown = acceptsMarkdown(request.headers.get("Accept"));
+  responseHeaders.append("Vary", "Accept");
+  responseHeaders.set(
+    "Content-Type",
+    markdown ? "text/markdown; charset=utf-8" : "text/html; charset=utf-8",
+  );
 
   // https://httpwg.org/specs/rfc9110.html#HEAD
   if (request.method.toUpperCase() === "HEAD") {
@@ -58,14 +65,14 @@ export default function handleRequest(
     });
   }
 
-  return new Promise((resolve, reject) => {
+  return new Promise<Response>((resolve, reject) => {
     let shellRendered = false;
     const userAgent = request.headers.get("user-agent");
 
     // Ensure requests from bots and SPA Mode renders wait for all content to load before responding
     // https://react.dev/reference/react-dom/server/renderToPipeableStream#waiting-for-all-content-to-load-for-crawlers-and-static-generation
     const readyOption: keyof RenderToPipeableStreamOptions =
-      (userAgent && isbot(userAgent)) || routerContext.isSpaMode
+      markdown || (userAgent && isbot(userAgent)) || routerContext.isSpaMode
         ? "onAllReady"
         : "onShellReady";
 
@@ -82,6 +89,8 @@ export default function handleRequest(
       </NonceContext>,
       {
         nonce,
+        // Keep completed Suspense bodies inline for conversion without JavaScript.
+        ...(markdown && { progressiveChunkSize: Number.POSITIVE_INFINITY }),
         [readyOption]() {
           shellRendered = true;
           const body = new PassThrough({
@@ -94,9 +103,29 @@ export default function handleRequest(
           });
           const stream = createReadableStreamFromReadable(body);
 
-          responseHeaders.set("Content-Type", "text/html");
-
           pipe(body);
+
+          if (markdown) {
+            resolve(
+              new Response(stream).text().then((html) => {
+                for (const header of [
+                  "Content-Length",
+                  "Content-Encoding",
+                  "Content-Range",
+                  "Transfer-Encoding",
+                  "ETag",
+                  "Last-Modified",
+                ]) {
+                  responseHeaders.delete(header);
+                }
+                return new Response(pageMarkdown(html), {
+                  headers: responseHeaders,
+                  status: responseStatusCode,
+                });
+              }),
+            );
+            return;
+          }
 
           resolve(
             new Response(stream, {

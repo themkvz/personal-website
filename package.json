@@ -52,6 +52,7 @@
     "remark-frontmatter": "^5.0.0",
     "remark-mdx-frontmatter": "^5.2.0",
     "ts-pattern": "^5.9.0",
+    "turndown": "^7.2.4",
     "valibot": "^1.4.2",
     "zustand": "^5.0.15"
   },
@@ -65,6 +66,7 @@
     "@types/node": "^24",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
+    "@types/turndown": "^5.0.6",
     "husky": "^9.1.7",
     "lint-staged": "^17.5.0",
     "react-doctor": "^0.9.13",

@@ -29,8 +29,8 @@ Keep changes minimal, match existing patterns, and prefer clarity.
 - Frontmatter is validated by `valibot` (`src/content/schema.ts`); a malformed file fails the build.
 
 ### Tests
-- No test runner is configured in `package.json`.
-- There is no single-test command available yet.
+- Run Markdown negotiation and conversion tests: `bun test src/lib/markdown.server.test.ts`.
+- Include HTTP checks against a running server: `MARKDOWN_TEST_ORIGIN=http://localhost:5173 bun test src/lib/markdown.server.test.ts`.
 - If you add tests, document a per-test command here.
 - Example to add later: `bun run test -- <pattern>` (adjust to runner).
 

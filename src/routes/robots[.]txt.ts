@@ -22,7 +22,7 @@ const AI_CRAWLERS = [
 ];
 
 function group(userAgent: string): string {
-  return `User-agent: ${userAgent}\nAllow: /\n`;
+  return `User-agent: ${userAgent}\nContent-Signal: ai-train=yes, search=yes, ai-input=yes\nAllow: /\n`;
 }
 
 export function loader() {
