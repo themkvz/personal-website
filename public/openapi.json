@@ -1,0 +1,33 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "THEMKVZ Feeds",
+    "version": "1.0.0",
+    "description": "Read-only feed endpoints for themkvz.com."
+  },
+  "servers": [{ "url": "https://themkvz.com" }],
+  "paths": {
+    "/feed.xml": {
+      "get": {
+        "summary": "Workbench RSS feed",
+        "responses": {
+          "200": {
+            "description": "RSS 2.0 feed of workbench artifacts",
+            "content": { "application/xml": {} }
+          }
+        }
+      }
+    },
+    "/sitemap.xml": {
+      "get": {
+        "summary": "XML sitemap",
+        "responses": {
+          "200": {
+            "description": "Sitemap of all site URLs",
+            "content": { "application/xml": {} }
+          }
+        }
+      }
+    }
+  }
+}
