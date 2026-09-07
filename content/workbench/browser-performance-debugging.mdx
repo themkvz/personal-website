@@ -1,27 +1,42 @@
 ---
 title: Browser performance debugging
 lane: investigating
-summary: Questions and references for finding bottlenecks before choosing an optimization.
+summary: Finding real browser and React bottlenecks before choosing an optimization.
 publishedAt: 2025-08-05
 topics:
   - performance
   - devtools
+  - react
 ---
 
-Before reaching for `useMemo`, a virtualization library, or a rewrite in a
-"faster" pattern, the actual bottleneck needs to be located — not guessed at.
+Before reaching for `useMemo`, virtualization, caching, or another "faster" pattern, I want to know what is actually slow.
 
-## Questions worth asking first
+It is easy to see a slow React page and assume React is the problem. Sometimes it is. But time can also go into JavaScript outside React, layout, paint, network requests, or third-party code. Optimizing before checking this often means fixing something that was never the bottleneck.
 
-- Is the cost in rendering, layout, or paint? The Performance panel's flame
-  chart usually answers this in under a minute.
-- Is the component re-rendering more often than it needs to, or is each
-  render itself expensive?
-- Is the bottleneck actually in JavaScript, or is it network waterfall time
-  being misattributed to "slow React"?
+## Find the bottleneck first
 
-## References
+Chrome DevTools Performance panel is usually my starting point. I want to record one slow interaction and look at what browser was doing during that time.
 
-Chrome DevTools' Performance panel and the React DevTools Profiler cover
-almost every case. Reaching for a synthetic benchmark before profiling the
-real page is a common way to optimize the wrong thing.
+Main thread flame chart helps separate JavaScript work from rendering, layout, and paint. Long tasks are also easy to spot there. If trace shows most time inside JavaScript and React updates, then React DevTools Profiler becomes useful. It shows which parts of React tree rendered and how expensive those renders were.
+
+Important part is not to treat every re-render as a bug. Cheap re-renders are often fine. I care about work that has visible cost for user.
+
+[Chrome Performance documentation](https://developer.chrome.com/docs/devtools/performance/) and [React Profiler documentation](https://react.dev/reference/react/Profiler) are good references when trace is not clear.
+
+## Where React Doctor fits
+
+[React Doctor](https://www.react.doctor/) is useful before and around this profiling work. It scans React code and reports problems in areas such as performance, bugs, security, accessibility, and maintainability.
+
+For existing work, changed-scope scan looks especially useful because it can focus on findings introduced by current changes instead of reporting everything in project. Diagnostics include file, line, rule, and suggested fix. Individual rules can also be explained when finding is not obvious.
+
+I see React Doctor as another signal, not proof of a performance bottleneck. Static analysis can tell me that code contains a risky or inefficient pattern. React Profiler can show that React spent noticeable time there. Chrome Performance can show whether this work was part of slow user interaction.
+
+That difference matters. React Doctor finding may be worth fixing, but I still do not want to call it a performance optimization until measurement confirms it.
+
+## What I want to keep
+
+My preferred flow is simple: reproduce slow interaction, profile it in Chrome, and go deeper into React only when trace points there. React Doctor can help find suspicious code around that area or catch problems while reviewing changes.
+
+After changing something, profile same interaction again. If measurement does not improve, optimization probably did not solve problem I was looking for.
+
+Main rule stays the same: find bottleneck first, then choose tool or optimization.
