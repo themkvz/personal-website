@@ -1,32 +1,32 @@
 ---
-title: A better Result type for TypeScript
+title: better-result for typed TypeScript errors
 lane: keeping
-summary: Notes on better-result, a small TypeScript library that makes expected failures explicit without hiding defects.
+summary: Notes on better-result, a TypeScript Result library with tagged errors, generator composition, explicit defect handling, and schema-aware boundaries.
 publishedAt: 2026-07-06
 topics:
   - typescript
   - error-handling
-  - libraries
+  - result-type
 ---
 
-I found [better-result](https://better-result.dev/) while looking for a Result type that feels natural in TypeScript. It keeps the runtime small and makes a useful promise: a function can return either a value or a known failure, and the caller has to decide what to do with it.
+[better-result](https://better-result.dev/) is a TypeScript library for making expected failures part of function return types instead of hiding them behind exceptions.
 
-## Key pieces
+Core type is familiar: `Result<T, E>` is either `Ok<T>` or `Err<E>`. Library has no runtime dependencies, requires TypeScript 5.4+, and is ESM-only.
 
-- **`Result.ok` and `Result.err`** make success and expected failure part of the function's type.
-- **`TaggedError`** gives errors a name and typed fields, instead of passing strings through the whole application.
-- **`Result.gen`** lets a multi-step workflow read from top to bottom. `yield*` stops at the first error and keeps the error union visible.
-- **`Result.try` and `Result.tryPromise`** turn throwing APIs into typed results at the boundary.
-- **`match`** makes the final decision explicit. There is no hidden `catch` path waiting somewhere else.
+## What is worth keeping
 
-## What I noticed
+- **`TaggedError` gives errors useful structure.** Errors are real `Error` subclasses but also have literal `_tag` values and typed properties. This makes error unions easy to narrow and match without depending only on `instanceof`.
 
-The important rule is small: return `Err` for a failure the caller can handle, and let `Panic` expose a broken invariant. That keeps routine problems, such as an invalid port or a missing user, separate from bugs in the program. It also gives `unwrap` a clear meaning. It is an assertion, not a shortcut for handling normal failures.
+- **`Result.gen` makes composition less noisy.** Multiple fallible operations can use `yield*` and read like normal sequential code. First `Err` stops workflow, while TypeScript keeps inferred union of possible errors. This avoids long `andThen` chains while keeping failure types visible.
 
-The generator API is the part I would reach for first. A workflow such as loading a session, fetching a user, and then loading posts can stay linear without losing its error types. This is easier to scan than a long chain, but the library still keeps the individual operations separate.
+- **Expected errors and defects stay separate.** Recoverable cases belong in `Err`. Unexpected throws inside Result callbacks become `Panic`. This prevents programmer bugs and broken invariants from silently becoming another domain error variant.
 
-## Limits worth remembering
+- **Throwing APIs have explicit adapters.** `Result.try` and `Result.tryPromise` convert exceptions into Results. Async version also supports retry policies, backoff, jitter, and cancellation.
 
-`fetch` does not reject on a 404 or 500, so `tryPromise` cannot solve HTTP error handling by itself. The response still needs to become a domain error. Retries need the same care. A retry policy is useful for a rate limit, but repeating a state-changing request may be wrong even when the transport allows it.
+- **Result values can cross boundaries.** `Result.codec` uses Standard Schema-compatible validators for serialization and deserialization. This looks useful around RPC, persistence, queues, or server actions where in-memory types are not enough.
 
-My takeaway is that better-result is most useful at application boundaries. It does not remove failure from a program. It gives failure a shape that the next layer can read, test, log, and translate. That feels like a better trade than pretending every thrown exception has the same meaning.
+## What I would check before adopting it
+
+Main question is whether generator-based composition stays readable in a larger codebase, especially when mixed with existing code that throws exceptions or already has its own error conventions.
+
+Still, `better-result` looks worth keeping as a reference when I need typed domain errors without moving to a much larger effect system.
