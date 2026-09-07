@@ -1,14 +1,12 @@
-import { Site } from "~/constants";
+import { PUBLIC_PAGES, Site } from "~/constants";
 import { artifacts } from "~/content";
 import { artifactHref } from "~/lib/workbench-href";
 
-const STATIC_ROUTES = ["/", "/tools", "/workbench", "/about"];
-
 export function loader() {
-  const staticUrls = STATIC_ROUTES.map(
-    (route) => `
+  const staticUrls = PUBLIC_PAGES.map(
+    (page) => `
   <url>
-    <loc>${Site.baseUrl}${route}</loc>
+    <loc>${Site.baseUrl}${page.path}</loc>
   </url>`,
   ).join("");
 

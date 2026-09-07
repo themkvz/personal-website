@@ -27,6 +27,7 @@ type Integration = {
 export const Site = {
   name: "THEMKVZ",
   ownerName: "Ihor Mukovoz",
+  location: "Ukraine",
   baseUrl: "https://themkvz.com",
   publicEmail: "ihor@themkvz.com",
   resumeHref: "/resume.pdf",
@@ -255,4 +256,41 @@ export const NotFound = {
     "The address may have changed or the page may have moved. Return to the index, or choose a useful destination below.",
   returnCta: "Return to index",
   workbenchCta: "Browse the workbench",
+} as const;
+
+/**
+ * The indexable static pages, in reading order. Deliberately separate from
+ * `Nav.links`, which holds the same four paths today: tying the sitemap to a
+ * navigation decision would silently drop the first page that is published
+ * without being linked from the header. Notes reuse each page's own meta
+ * description so the agent index and the page agree.
+ */
+export const PUBLIC_PAGES = [
+  { path: "/", name: "Index", note: Home.introduction },
+  { path: "/tools", name: "Tools", note: Tools.lede },
+  { path: "/workbench", name: "Workbench", note: Workbench.lead },
+  { path: "/about", name: "About", note: About.lead },
+] as const;
+
+/** Values the public plain-text discovery files are generated from. */
+export const Discovery = {
+  /** The authoritative address of `security.txt` (RFC 9116, via RFC 8615). */
+  securityTxtPath: "/.well-known/security.txt",
+  /**
+   * How long a freshly served `security.txt` stays valid. RFC 9116 recommends
+   * under a year; the shorter window bounds how long a cached copy keeps
+   * claiming validity after the site stops being maintained.
+   */
+  securityExpiryDays: 180,
+  /** RFC 9116: the languages a vulnerability report may be written in. */
+  preferredLanguages: "en",
+  /** Credited in `humans.txt`. Curated, not the dependency tree. */
+  stack: [
+    "React Router",
+    "React",
+    "TypeScript",
+    "Tailwind CSS",
+    "MDX",
+    "Bun",
+  ] as readonly string[],
 } as const;
