@@ -46,7 +46,7 @@ Every page SHALL emit Open Graph metadata comprising at minimum type, site name,
 
 ### Requirement: Structured data
 
-The site SHALL emit valid structured data: `WebSite` and `Person` on the home page, and `Article` plus `BreadcrumbList` on artifact pages, the article including headline, publication date, and updated date when present. Structured data SHALL describe only content that is actually visible on the page.
+The site SHALL emit valid structured data: `WebSite` and `Person` on the home page, `Article` plus `BreadcrumbList` on artifact pages, the article including headline, publication date, and updated date when present, `DefinedTermSet` on the glossary index, and `DefinedTerm` plus `BreadcrumbList` on glossary term pages. Structured data SHALL describe only content that is actually visible on the page.
 
 #### Scenario: Structured data validates
 - **WHEN** any page's structured data is parsed
@@ -58,15 +58,20 @@ The site SHALL emit valid structured data: `WebSite` and `Person` on the home pa
 
 ### Requirement: Sitemap and robots
 
-The site SHALL serve a `sitemap.xml` listing every public page including each artifact page, and a `robots.txt` that permits crawling and references the sitemap. `robots.txt` SHALL be served as `text/plain` with charset `utf-8` and SHALL state its crawler policy explicitly: a default group permitting all user-agents, and named groups for the AI crawlers the site chooses to admit, so that the policy is a recorded decision rather than an absence of one.
+The site SHALL serve a `sitemap.xml` listing every public page including each artifact page and each glossary term page, and a `robots.txt` that permits crawling and references the sitemap. `robots.txt` SHALL be served as `text/plain` with charset `utf-8` and SHALL state its crawler policy explicitly: a default group permitting all user-agents, and named groups for the AI crawlers the site chooses to admit, so that the policy is a recorded decision rather than an absence of one.
 
 #### Scenario: New artifact appears in the sitemap
 - **WHEN** an artifact is added to the content layer and the site is rebuilt
 - **THEN** its URL appears in `sitemap.xml` with its last-modified date
 
+#### Scenario: New glossary term appears in the sitemap
+- **WHEN** a term is added to the content layer and the site is rebuilt
+- **THEN** its URL appears in `sitemap.xml`
+
 #### Scenario: Last-modified is honest
 - **WHEN** `sitemap.xml` is inspected
 - **THEN** artifact entries carry `updatedAt`, or `publishedAt` when there is no update, as `lastmod`
+- **AND** glossary term entries carry `updatedAt` as `lastmod` when present and no `lastmod` otherwise
 - **AND** static route entries carry no `lastmod` rather than the generation time
 
 #### Scenario: Sitemap excludes non-pages

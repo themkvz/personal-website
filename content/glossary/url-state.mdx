@@ -1,0 +1,10 @@
+---
+term: URL state
+summary: Application state kept in the URL so it survives a refresh, a shared link, and browser navigation.
+related:
+  - react-router
+---
+
+Local component state disappears on refresh and can't be shared as a link; the URL is the one place state can live that a browser's back button, a bookmark, and a copy-pasted link all respect automatically. Filters, selected tabs, pagination, sorting, and the active view in a multi-view page are the recurring candidates — anything the user would reasonably expect to still be there after hitting reload or sending someone the link.
+
+Not everything belongs there: a hover state, a temporary input value, or an open tooltip has no reason to survive a refresh and would just add noise to the address bar. The test worth applying to a given piece of state is whether losing it on reload would actually annoy someone.

@@ -60,7 +60,7 @@ The site SHALL serve `/humans.txt` as `text/plain` with charset `utf-8`, followi
 
 ### Requirement: Agent index file
 
-The site SHALL serve `/llms.txt` as `text/plain` with charset `utf-8`, formatted per the llms.txt convention: an H1 naming the site, a blockquote summarising it, and H2 sections whose bodies are markdown link lists of the form `- [name](absolute-url): notes`. It SHALL index the site's pages, every published workbench artifact, and the site's machine-readable endpoints. Every URL it lists SHALL be absolute.
+The site SHALL serve `/llms.txt` as `text/plain` with charset `utf-8`, formatted per the llms.txt convention: an H1 naming the site, a blockquote summarising it, and H2 sections whose bodies are markdown link lists of the form `- [name](absolute-url): notes`. It SHALL index the site's pages, every published workbench artifact, every published glossary term with its one-line definition as the note, and the site's machine-readable endpoints. Every URL it lists SHALL be absolute.
 
 #### Scenario: File is served correctly
 - **WHEN** `/llms.txt` is requested
@@ -75,6 +75,11 @@ The site SHALL serve `/llms.txt` as `text/plain` with charset `utf-8`, formatted
 - **WHEN** an artifact is added to the content layer and the site is rebuilt
 - **THEN** it appears in the workbench section of `llms.txt`
 - **AND** artifacts that are drafts do not appear
+
+#### Scenario: Glossary tracks published terms
+- **WHEN** a term is added to the content layer and the site is rebuilt
+- **THEN** it appears in a Glossary section of `llms.txt` with its one-line definition as the note
+- **AND** terms that are drafts do not appear
 
 #### Scenario: Links are absolute and resolve
 - **WHEN** each URL in the file is fetched

@@ -1,0 +1,8 @@
+---
+term: Idempotent
+summary: An operation that leaves the system in the same end state no matter how many times it's applied, which is what makes retrying it safe.
+---
+
+Setting a value to `5` is idempotent — running it once or five times leaves the same result. Incrementing a value by `1` is not — running it five times leaves a different result than running it once. The distinction matters most at a network boundary, where a request can time out without the caller knowing whether it actually succeeded on the server.
+
+If the operation is idempotent, retrying it is safe for the state it's meant to change; if it isn't, a retry risks applying the effect twice. The guarantee covers that one intended effect, not everything the operation touches — a retried request can still write a second log line or count twice against a rate limit, even while the resource it changes ends up correct either way. HTTP formalizes the core guarantee: `GET`, `PUT`, and `DELETE` are specified as idempotent, `POST` is not, which is part of why a naive retry-on-timeout strategy is safe for one and dangerous for the other without an additional mechanism like an idempotency key.

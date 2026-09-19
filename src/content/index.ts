@@ -5,6 +5,8 @@ import {
   artifactSchema,
   type ExperienceFrontmatter,
   experienceSchema,
+  type GlossaryFrontmatter,
+  glossarySchema,
   type ToolFrontmatter,
   toolSchema,
 } from "~/content/schema";
@@ -120,3 +122,50 @@ export const tools: ToolEntry[] = Object.keys(toolFrontmatter)
     ...parseFrontmatter(toolSchema, path, toolFrontmatter[path]),
     slug: slugFromPath(path),
   }));
+
+export type GlossaryTerm = GlossaryFrontmatter & { slug: string };
+
+const glossaryFrontmatter = import.meta.glob("/content/glossary/*.mdx", {
+  eager: true,
+  import: "frontmatter",
+});
+
+const glossaryModules = import.meta.glob("/content/glossary/*.mdx");
+
+const allTerms: GlossaryTerm[] = Object.entries(glossaryFrontmatter).map(
+  ([path, frontmatter]) => ({
+    ...parseFrontmatter(glossarySchema, path, frontmatter),
+    slug: slugFromPath(path),
+  }),
+);
+
+export const terms: GlossaryTerm[] = allTerms
+  .filter((term) => (import.meta.env.PROD ? !term.draft : true))
+  .sort((a, b) => {
+    const byTerm = a.term.localeCompare(b.term, undefined, {
+      sensitivity: "base",
+    });
+    if (byTerm !== 0) return byTerm;
+    return a.slug < b.slug ? -1 : 1;
+  });
+
+const publishedSlugs = new Set(terms.map((term) => term.slug));
+for (const term of terms) {
+  for (const slug of term.related ?? []) {
+    if (!publishedSlugs.has(slug)) {
+      throw new Error(
+        `Invalid frontmatter in /content/glossary/${term.slug}.mdx: field "related" — unknown term "${slug}"`,
+      );
+    }
+  }
+}
+
+export const termBodies: Record<
+  string,
+  React.LazyExoticComponent<React.ComponentType>
+> = Object.fromEntries(
+  Object.entries(glossaryModules).map(([path, importModule]) => [
+    slugFromPath(path),
+    lazy(() => importModule() as Promise<{ default: React.ComponentType }>),
+  ]),
+);

@@ -1,0 +1,13 @@
+---
+term: Server-side rendering
+summary: Generating a page's initial HTML on the server, before it reaches the browser, instead of building it entirely with client-side JavaScript.
+aka:
+  - SSR
+related:
+  - hydration
+  - react-server-components
+---
+
+SSR renders the component tree to HTML on the server for each request, so the browser receives a fully-formed page rather than an empty shell that JavaScript fills in after loading. That matters most for the first paint a user or a crawler sees: content and structured metadata are present immediately, before any client-side JavaScript has executed, which is why it's the default posture for anything that cares about search visibility or perceived load time.
+
+The browser still needs to run the same component code afterward to attach event handlers and make the page interactive — the step called hydration — so SSR reduces time-to-first-content without eliminating the client-side JavaScript cost entirely.

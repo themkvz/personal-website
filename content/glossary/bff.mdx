@@ -1,0 +1,10 @@
+---
+term: Backend for frontend
+summary: A backend service built specifically to serve one frontend's needs, sitting between the browser and one or more downstream APIs.
+aka:
+  - BFF
+---
+
+A BFF exists to give a frontend the exact shape of data and the exact set of endpoints it needs, without the frontend having to orchestrate calls to several backend services itself or over-fetch a general-purpose API's full response shape. It's also the natural place to hold anything that shouldn't reach the browser: an API secret, a session cookie's server-side validation, a call to an internal service with no public-facing auth.
+
+A React Router app running in framework mode with server-side loaders is effectively acting as its own BFF — the loader runs on the server, can hold secrets safely, and returns only the shaped data the page component needs, without a separate service to deploy and maintain.

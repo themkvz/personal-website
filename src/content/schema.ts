@@ -40,3 +40,14 @@ export const toolSchema = v.object({
 });
 
 export type ToolFrontmatter = v.InferOutput<typeof toolSchema>;
+
+export const glossarySchema = v.object({
+  term: v.string(),
+  summary: v.string(),
+  aka: v.optional(v.array(v.string())),
+  related: v.optional(v.array(v.string())),
+  updatedAt: v.optional(isoDate),
+  draft: v.optional(v.boolean(), false),
+});
+
+export type GlossaryFrontmatter = v.InferOutput<typeof glossarySchema>;

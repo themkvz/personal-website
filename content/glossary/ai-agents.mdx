@@ -1,0 +1,8 @@
+---
+term: AI agents
+summary: Software that uses a language model in a loop — reading state, taking an action, observing the result — to complete a task.
+---
+
+An agent differs from a single prompt-and-response call in that it runs a loop: it can read files, execute commands, inspect the result, and decide the next action, repeating until the task is done or it gets stuck. Coding agents that operate a terminal are the practical example most developers now encounter directly — able to read a codebase, make a change, run the tests, and iterate on a failure without a human in that loop.
+
+The capability shift this represents for something like self-hosting is concrete: a terminal agent that can read logs and debug a broken service removes a large share of the systems-administration expertise that used to gate the hobby. The trust boundary question — what an agent is allowed to do without approval — is the open design problem across most agent tooling today.

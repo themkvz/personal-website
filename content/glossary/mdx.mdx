@@ -1,0 +1,10 @@
+---
+term: MDX
+summary: A file format combining Markdown with embedded JSX components, letting prose and interactive components live in the same document.
+aka:
+  - Markdown + JSX
+---
+
+MDX extends Markdown's plain-text syntax with the ability to import and render React components directly inside the document — a chart, a callout, a live code sample — alongside ordinary headings, lists, and links.
+
+Without a component provider registered, an MDX file with no imports behaves exactly like Markdown, which is the mode this site's content runs in: workbench artifacts and glossary terms are plain markdown bodies, parsed at build time and compiled alongside the rest of the app rather than fetched from a CMS. That build-time compilation is the format's main trade-off against runtime-rendered Markdown: content changes require a rebuild, but there's no client-side Markdown parser to ship, and a broken import fails the build instead of the page.

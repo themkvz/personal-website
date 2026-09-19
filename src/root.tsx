@@ -135,17 +135,28 @@ export default function App({ loaderData }: Route.ComponentProps) {
   );
 }
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+export function ErrorBoundary({ error, loaderData }: Route.ErrorBoundaryProps) {
   const isNotFound = isRouteErrorResponse(error) && error.status === 404;
+  // A child route's loader threw (the common case, e.g. an unknown slug) but
+  // the root loader still ran, so its data is available here. Only a failure
+  // in the root loader itself leaves this undefined; fall back to the same
+  // empty payload `getFeaturePayload` returns when GrowthBook is unreachable,
+  // so `Footer`'s experiment hook has a provider to read from either way.
+  const { fingerprint, features } = loaderData ?? {
+    fingerprint: "",
+    features: {},
+  };
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Nav />
-      <main className="flex-1">
-        {isNotFound ? <NotFound /> : <ErrorPage error={error} />}
-      </main>
-      <Footer />
-    </div>
+    <ExperimentProvider payload={features} fingerprint={fingerprint}>
+      <div className="flex min-h-screen flex-col">
+        <Nav />
+        <main className="flex-1">
+          {isNotFound ? <NotFound /> : <ErrorPage error={error} />}
+        </main>
+        <Footer />
+      </div>
+    </ExperimentProvider>
   );
 }
 

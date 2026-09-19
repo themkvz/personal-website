@@ -25,7 +25,7 @@ Keep changes minimal, match existing patterns, and prefer clarity.
 - `bun run format`           Biome format only
 
 ### Content
-- Add, edit, or delete a file under `content/{workbench,experience,tools}/` and rebuild — no other step is required.
+- Add, edit, or delete a file under `content/{workbench,experience,tools,glossary}/` and rebuild — no other step is required.
 - Frontmatter is validated by `valibot` (`src/content/schema.ts`); a malformed file fails the build.
 
 ### Tests

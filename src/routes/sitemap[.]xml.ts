@@ -1,6 +1,6 @@
 import { PUBLIC_PAGES, Site } from "~/constants";
-import { artifacts } from "~/content";
-import { artifactHref } from "~/lib/workbench-href";
+import { artifacts, terms } from "~/content";
+import { artifactHref, glossaryHref } from "~/lib/workbench-href";
 
 export function loader() {
   const staticUrls = PUBLIC_PAGES.map(
@@ -20,8 +20,19 @@ export function loader() {
     )
     .join("");
 
+  const termUrls = terms
+    .map(
+      (term) => `
+  <url>
+    <loc>${Site.baseUrl}${glossaryHref(term.slug)}</loc>${
+      term.updatedAt ? `\n    <lastmod>${term.updatedAt}</lastmod>` : ""
+    }
+  </url>`,
+    )
+    .join("");
+
   const content = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${artifactUrls}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${artifactUrls}${termUrls}
 </urlset>
 `;
 

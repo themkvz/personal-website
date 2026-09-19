@@ -1,0 +1,8 @@
+---
+term: TypeScript
+summary: A typed superset of JavaScript that adds static type checking, compiled away before the code runs.
+---
+
+TypeScript adds a type system on top of JavaScript: interfaces, generics, union and literal types, and inference that fills in the rest. The compiler checks types during development and strips them out for the JavaScript that actually ships, so there is no runtime cost and no new language to execute.
+
+Its main value shows up at the boundaries — a function's parameters, a piece of parsed content, the shape declared for an API response — where a wrong assumption inside your own code becomes a compile error instead of a runtime surprise. That check only covers code the compiler can see, though: for anything arriving from outside the program, like a network response, the declared type is a claim, and it takes a runtime schema check to make that claim trustworthy. Strictness is a dial: `strict: true` catches implicit `any`, null and undefined access, and unchecked property use, and most non-trivial codebases turn it on. This site is written entirely in TypeScript, with content frontmatter validated against typed schemas at build time.

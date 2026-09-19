@@ -1,0 +1,13 @@
+---
+term: React Server Components
+summary: React components that render only on the server and never ship their code to the browser, reducing the client-side JavaScript bundle.
+aka:
+  - RSC
+related:
+  - server-side-rendering
+  - hydration
+---
+
+A traditional server-side-rendered app still ships every component's JavaScript to the client, because the same component code has to run again during hydration. Server Components remove that requirement for components that never need to be interactive on the client — a static layout, a data-fetching wrapper around a database query — by rendering them exclusively on the server and sending the result down as part of the response, with no client bundle for that component at all.
+
+Client Components, marked explicitly, still ship and hydrate as before, so an RSC-based app is a mix of both, and the boundary between them is a real architectural decision: pushing a component to the server saves bundle size, but only for the parts of the tree that genuinely don't need client-side interactivity.

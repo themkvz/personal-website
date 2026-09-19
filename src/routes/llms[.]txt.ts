@@ -1,7 +1,7 @@
 import { Discovery, Home, PUBLIC_PAGES, Site } from "~/constants";
-import { artifacts, tools } from "~/content";
+import { artifacts, terms, tools } from "~/content";
 import { text } from "~/lib/text-response";
-import { artifactHref } from "~/lib/workbench-href";
+import { artifactHref, glossaryHref } from "~/lib/workbench-href";
 
 /**
  * The llmstxt.org format: an H1, a blockquote, then H2 sections whose bodies
@@ -37,6 +37,12 @@ export function loader() {
       "Workbench",
       artifacts.map((artifact) =>
         link(artifact.title, artifactHref(artifact.slug), artifact.summary),
+      ),
+    ),
+    section(
+      "Glossary",
+      terms.map((term) =>
+        link(term.term, glossaryHref(term.slug), term.summary),
       ),
     ),
     section(

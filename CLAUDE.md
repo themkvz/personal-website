@@ -96,7 +96,7 @@ A personal workbench — notes, decisions, investigations, references, and small
 - `src/components/layout/` — Site chrome: `Nav`, `Footer`, `Container`, `Section`, `Prose`, `NotFound`
 - `src/components/identity/` — Retained `IdentityCard`, `DecryptedText`
 - `src/content/` — Content schemas (`schema.ts`) and the derived index (`index.ts`)
-- `content/` — MDX content files (`workbench/`, `experience/`, `tools/`)
+- `content/` — MDX content files (`workbench/`, `experience/`, `tools/`, `glossary/`)
 - `src/store/` — Zustand stores
 - `src/constants.ts` — Navigation, social links, and design-bound page copy
 

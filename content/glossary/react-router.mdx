@@ -1,0 +1,11 @@
+---
+term: React Router
+summary: A routing library for React that maps URLs to components, with a framework mode that adds server rendering, loaders, and actions.
+related:
+  - react
+  - url-state
+---
+
+React Router matches a URL against a set of route definitions and renders the component tree for the match. In its framework mode, each route module can export a `loader` for server-side data fetching, an `action` for mutations, and `meta` for page metadata, alongside the component itself — closer to a full-stack framework than a client-side router.
+
+File-based routing (`@react-router/fs-routes`) derives routes from the file system, so a new page is usually a new file rather than a new registration. Because loaders run on the server, a page's data is available before the first paint, and the URL becomes a legitimate place to keep state that should survive a refresh or a shared link. This site runs entirely on React Router's framework mode, server-rendered per request.

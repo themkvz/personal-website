@@ -1,0 +1,8 @@
+---
+term: Technical debt
+summary: The gap between a system's current implementation and the one that would best serve its present requirements.
+---
+
+The debt metaphor is useful because it captures two real axes: principal, the cost of the shortcut itself, and interest, the ongoing cost of working around it, paid every time the affected code is touched again. Debt taken on deliberately, with a plan to repay it — shipping a simpler version to hit a deadline, with the harder version scheduled for later — is a reasonable trade.
+
+Debt that accumulates as drift, where nobody decided to take it on and nobody is tracking it, is the more dangerous kind, because it compounds silently until a change that should take an hour takes a week. Not every simplification is debt; the distinction is whether the corner being cut has a known ceiling and an upgrade path, or whether it's just deferred understanding.

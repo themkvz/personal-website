@@ -1,0 +1,10 @@
+---
+term: Object-oriented programming
+summary: A paradigm that models a system as objects, each combining its own data with the methods that operate on it.
+aka:
+  - OOP
+---
+
+OOP rests on a few core ideas. Encapsulation bundles data with the methods that operate on it, and hides that data behind a public interface, so a system's parts stay independent enough to change one without breaking the others. Inheritance lets a subtype reuse and extend a supertype's behaviour. Polymorphism lets code written against an interface work with any type that implements it, without knowing which one at compile time.
+
+In practice, the concepts are also where a lot of confusion concentrates — research tracing code smells back to root causes finds many stem from an incomplete grasp of exactly these ideas, particularly when inheritance is reached for to share code rather than to model a genuine is-a relationship. Composition over inheritance is the common corrective: prefer objects that hold a reference to another object's behaviour over subclassing to get it.

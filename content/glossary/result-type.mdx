@@ -1,0 +1,10 @@
+---
+term: Result type
+summary: A return type that is explicitly either a success value or a typed error, visible at the call site.
+related:
+  - error-handling
+---
+
+A `Result<T, E>` is either `Ok<T>` or `Err<E>` — a discriminated union a caller must check before extracting the value, rather than an exception a caller can silently ignore. The pattern comes from Rust and functional languages, and TypeScript libraries like `better-result` or `neverthrow` bring the same shape without runtime dependencies.
+
+Its main benefit is at the type-checker level: a function that returns `Result<User, NotFoundError>` documents its failure mode in a way a thrown exception never does, and reading the success value without first narrowing on `ok` is a compile error rather than a runtime crash. That guarantee only holds where the result is actually used, though — nothing stops a caller from ignoring the return value entirely, the same way nothing stops ignoring a Promise. It composes well with `map`, `andThen`, and similar combinators for chaining fallible operations without nested try/catch.

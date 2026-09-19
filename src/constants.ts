@@ -38,6 +38,7 @@ export const Nav = {
     { to: "/", label: "Index" },
     { to: "/tools", label: "Tools" },
     { to: "/workbench", label: "Workbench" },
+    { to: "/glossary", label: "Glossary" },
     { to: "/about", label: "About" },
   ] satisfies NavLink[],
 
@@ -46,6 +47,7 @@ export const Nav = {
   footerLinks: [
     { to: "/", label: "Index" },
     { to: "/workbench", label: "Workbench" },
+    { to: "/glossary", label: "Glossary" },
     { to: "/tools", label: "Tools" },
     { to: "/about", label: "About" },
   ] satisfies NavLink[],
@@ -235,6 +237,22 @@ export const Workbench = {
     "Each entry is filed by intent, so the main part is visible before you open it.",
 } as const;
 
+export const Glossary = {
+  eyebrow: "GLOSSARY / TERMS FROM PRACTICE",
+  title: "Terms this site\nuses, defined.",
+  lede: "Definitions for the frontend architecture, delivery, and web platform terms the workbench uses, each with its own page, aliases, and links to where it appears.",
+
+  indexEyebrow: "TERM INDEX",
+  indexTitle: "Every term, one index.",
+  indexCopy:
+    "Alphabetical and complete — every definition is here, not behind a search box.",
+  emptyState: "No terms are published yet.",
+
+  backCta: "Back to the glossary",
+  usedInLabel: "Used in",
+  relatedLabel: "Related terms",
+} as const;
+
 export const Tools = {
   eyebrow: "TOOLS",
   title: "Small utilities.",
@@ -269,6 +287,7 @@ export const PUBLIC_PAGES = [
   { path: "/", name: "Index", note: Home.introduction },
   { path: "/tools", name: "Tools", note: Tools.lede },
   { path: "/workbench", name: "Workbench", note: Workbench.lead },
+  { path: "/glossary", name: "Glossary", note: Glossary.lede },
   { path: "/about", name: "About", note: About.lead },
 ] as const;
 

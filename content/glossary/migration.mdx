@@ -1,0 +1,10 @@
+---
+term: Migration
+summary: Moving a system from an old implementation, library, or architecture to a new one while it keeps shipping.
+related:
+  - frontend-architecture
+---
+
+A frontend migration is rarely difficult because of one outdated library or one bad pattern; it's difficult because the team has to keep delivering product work on the old system while the new one gets built underneath it. The incremental approach — running both systems side by side, moving one module or route at a time, and keeping a working product at every commit — is slower to finish than a rewrite but never puts the business on hold waiting for it.
+
+The strangler pattern (new code progressively taking traffic from old code until nothing routes to the old path) is the common shape this takes at the infrastructure level. The alternative, a big-bang rewrite, trades that continuous delivery for a single high-risk cutover.

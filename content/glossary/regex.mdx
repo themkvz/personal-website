@@ -1,0 +1,8 @@
+---
+term: Regex
+summary: A pattern language for matching text, powerful for the class of problem it fits and consistently misjudged outside it.
+---
+
+A pattern like `^\d{3}-\d{4}$` matches a string of exactly three digits, a hyphen, and four more digits — nothing else. That's a regular expression: a way to describe a set of strings using literals, character classes like `\d` for "any digit," and operators for repetition, alternation, and grouping. It is the right tool for validating shapes like that one — a postal code, a log line's structure, a token boundary — and the wrong tool for parsing anything recursive, like matching nested brackets or parentheses to any depth, where it either fails silently or grows into something unreadable.
+
+Catastrophic backtracking is the sharp edge: certain patterns against certain inputs cause matching time to blow up exponentially, a real denial-of-service vector in servers that run user-supplied input through unvalidated patterns. Survey research on how developers actually use regex finds most treat it as write-once, rarely revisit a working pattern, and underestimate how hard it is to read someone else's.

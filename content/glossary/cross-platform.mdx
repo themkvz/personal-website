@@ -1,0 +1,8 @@
+---
+term: Cross-platform
+summary: Building for web, mobile, and other targets from a single codebase or a shared core, rather than maintaining separate implementations.
+---
+
+A cross-platform product shares what genuinely doesn't vary by platform — domain logic, types, validation, API clients — and keeps what does vary — navigation idioms, gestures, platform-specific UI — separate. A monorepo is the common structural choice for this: web, mobile, and admin packages living close enough to share code directly, with platform-specific UI staying in its own package rather than being abstracted into a lowest-common-denominator component.
+
+React and React Native make the JavaScript layer shareable but not automatic; the platforms still diverge in layout primitives, navigation, and native capability access. The payoff is that a bug fix or a business-rule change lands once instead of twice, at the cost of a build and tooling setup that has to serve more than one target.

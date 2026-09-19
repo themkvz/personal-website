@@ -1,0 +1,8 @@
+---
+term: State management
+summary: Deciding where a piece of application data lives, how it changes, and who is allowed to read it.
+---
+
+Every piece of state has a natural home: local component state for something no other part of the page needs, a shared store for client-only state several components read, a query cache for anything that mirrors server data, and the URL for state a link or a refresh should preserve.
+
+Picking the wrong home is the recurring failure mode — a filter kept only in `useState` disappears on refresh; a server response duplicated into a store drifts from the source of truth the moment it goes stale. The question worth asking for each piece of state is not "where is it convenient to put this" but "what should survive a reload, a shared link, or a browser back button" — the answer usually decides the layer.

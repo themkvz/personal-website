@@ -1,0 +1,8 @@
+---
+term: Code review
+summary: Reading someone else's change before it merges, to catch defects and keep a shared codebase legible to more than its author.
+---
+
+A review is doing two different jobs that are easy to conflate: checking whether the change is correct, and checking whether it fits the codebase's conventions and the reviewer's taste. The first is worth blocking a merge over; the second is worth a comment and a shrug if the author disagrees.
+
+Reviews that spend their scrutiny on formatting and naming while missing a race condition or an unhandled error path are optimizing the wrong axis. The most useful review comments explain the "why" behind a requested change, so the author can apply the same reasoning next time without being asked. Reviewing well is a skill practiced over years, not a checklist run once per pull request.

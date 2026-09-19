@@ -1,0 +1,10 @@
+---
+term: React
+summary: A JavaScript library for building user interfaces out of composable, declarative components.
+related:
+  - react-router
+---
+
+React renders UI as a function of state: a component describes what the interface should look like for a given set of props and state, and React handles updating the DOM to match. Composition is the core idiom — small components combine into larger ones, and data flows down through props while events flow back up through callbacks. Hooks (`useState`, `useEffect`, and the rest) let function components hold state and side effects without a class.
+
+React itself only renders components; routing, data fetching, and server rendering are separate concerns handled by a framework layered on top, such as React Router or Next.js. Most of this site's own pages, and its interactive artifacts, are React components rendered on the server first.

@@ -1,0 +1,10 @@
+---
+term: Error handling
+summary: Deciding, for each way a function can fail, how it's made visible, and what a caller should do about it.
+related:
+  - result-type
+---
+
+An operation can fail in ways that are expected — a network request times out, a form field doesn't validate — and ways that are not — a programming bug, a violated invariant. Treating both the same, by throwing an exception for either, hides the expected failures from the type system and from every caller who doesn't happen to read the implementation.
+
+Handling an expected failure well is more than picking a return shape. It also means deciding whether to retry, fall back to a default, surface a message the user can act on, or log enough context for someone to debug it later. A `Result` type is one technique for the first step — making the failure visible in the return value so a caller has to look at it — but what happens next is a separate decision the type alone doesn't make. Exceptions remain the right tool for the unexpected case: something the caller cannot reasonably plan for and that should stop execution rather than continue on bad state.
