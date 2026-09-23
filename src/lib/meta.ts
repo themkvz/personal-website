@@ -14,7 +14,7 @@ type PageMetaInput = {
   article?: { publishedTime: string; modifiedTime?: string };
 };
 
-export const DEFAULT_OG_IMAGE = `${Site.baseUrl}/hero.webp`;
+export const DEFAULT_OG_IMAGE = `${Site.baseUrl}/dottt.webp`;
 
 export function pageMeta({
   title,

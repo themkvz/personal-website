@@ -41,7 +41,7 @@ Rendered inside `Prose` (`src/components/layout/prose.tsx`), lazily, under `<Sus
 - Start headings at `##`. The `#` level is the frontmatter `title`.
 - Styled elements: links, inline `code`, `ul`/`ol`, `blockquote`. Everything else inherits body type.
 - No MDX component provider is registered — plain markdown only. To use a component, `import` it explicitly in the file.
-- Images go in `public/` and are referenced by absolute path (`/hero.webp`). There is no content-relative asset pipeline.
+- Images go in `public/` and are referenced by absolute path (`/dottt.webp`). There is no content-relative asset pipeline.
 - Two to six hundred words. Longer than that is usually two artifacts, or one artifact and a `keeping` list.
 
 ### References and copyright
