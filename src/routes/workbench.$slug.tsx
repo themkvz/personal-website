@@ -15,7 +15,7 @@ import { artifacts, bodies } from "~/content";
 import { userContext } from "~/context/user";
 import { formatDate } from "~/lib/format-date";
 import { LANE_LABELS } from "~/lib/lanes";
-import { pageMeta } from "~/lib/meta";
+import { DEFAULT_OG_IMAGE, pageMeta } from "~/lib/meta";
 import { TRACK_EVENTS } from "~/lib/openpanel/events";
 import { artifactHref, laneHref } from "~/lib/workbench-href";
 import type { Route } from "./+types/workbench.$slug";
@@ -52,12 +52,17 @@ export const meta: Route.MetaFunction = ({ loaderData }) => {
     title: `${artifact.title} — Workbench`,
     description: artifact.summary,
     path: artifactHref(artifact.slug),
+    article: {
+      publishedTime: artifact.publishedAt,
+      modifiedTime: artifact.updatedAt,
+    },
   });
 };
 
 export default function ArtifactRoute({ loaderData }: Route.ComponentProps) {
   const { artifact } = loaderData;
   const Body = bodies[artifact.slug];
+  const url = `${Site.baseUrl}${artifactHref(artifact.slug)}`;
 
   return (
     <Section className="pt-16">
@@ -69,6 +74,13 @@ export default function ArtifactRoute({ loaderData }: Route.ComponentProps) {
             datePublished: artifact.publishedAt,
             ...(artifact.updatedAt && { dateModified: artifact.updatedAt }),
             description: artifact.summary,
+            author: {
+              "@type": "Person",
+              name: Site.ownerName,
+              url: Site.baseUrl,
+            },
+            mainEntityOfPage: url,
+            image: DEFAULT_OG_IMAGE,
           }}
         />
         <JsonLd
@@ -85,7 +97,7 @@ export default function ArtifactRoute({ loaderData }: Route.ComponentProps) {
                 "@type": "ListItem",
                 position: 2,
                 name: artifact.title,
-                item: `${Site.baseUrl}${artifactHref(artifact.slug)}`,
+                item: url,
               },
             ],
           }}

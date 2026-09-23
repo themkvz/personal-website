@@ -10,9 +10,11 @@ type PageMetaInput = {
   image?: string;
   /** Keep the page out of the index and emit no canonical or og:url. */
   noIndex?: boolean;
+  /** Type the page as an Open Graph article. Dates are ISO strings. */
+  article?: { publishedTime: string; modifiedTime?: string };
 };
 
-const FALLBACK_IMAGE = "/hero.webp";
+export const DEFAULT_OG_IMAGE = `${Site.baseUrl}/hero.webp`;
 
 export function pageMeta({
   title,
@@ -20,13 +22,14 @@ export function pageMeta({
   path,
   image,
   noIndex = false,
+  article,
 }: PageMetaInput): MetaDescriptor[] {
-  const ogImage = `${Site.baseUrl}${image ?? FALLBACK_IMAGE}`;
+  const ogImage = image ? `${Site.baseUrl}${image}` : DEFAULT_OG_IMAGE;
 
   const descriptors: MetaDescriptor[] = [
     { title },
     { name: "description", content: description },
-    { property: "og:type", content: "website" },
+    { property: "og:type", content: article ? "article" : "website" },
     { property: "og:site_name", content: Site.name },
     { property: "og:title", content: title },
     { property: "og:description", content: description },
@@ -36,6 +39,19 @@ export function pageMeta({
     { name: "twitter:description", content: description },
     { name: "twitter:image", content: ogImage },
   ];
+
+  if (article) {
+    descriptors.push({
+      property: "article:published_time",
+      content: article.publishedTime,
+    });
+    if (article.modifiedTime) {
+      descriptors.push({
+        property: "article:modified_time",
+        content: article.modifiedTime,
+      });
+    }
+  }
 
   if (noIndex) {
     return [...descriptors, { name: "robots", content: "noindex" }];

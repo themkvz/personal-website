@@ -12,7 +12,7 @@ import { ToolCard } from "~/components/composites/tool-card";
 import { Container } from "~/components/layout/container";
 import { JsonLd } from "~/components/layout/json-ld";
 import { Section } from "~/components/layout/section";
-import { Home, Site, Tools as ToolsCopy } from "~/constants";
+import { Home, Nav, Site, Tools as ToolsCopy } from "~/constants";
 import { artifacts, tools } from "~/content";
 import { LANES } from "~/lib/lanes";
 import { pageMeta } from "~/lib/meta";
@@ -80,6 +80,12 @@ export default function HomeRoute() {
           "@type": "Person",
           name: Site.ownerName,
           url: Site.baseUrl,
+          jobTitle: Home.profileRole,
+          sameAs: Nav.social
+            .map((link) => link.href)
+            .filter((href) => href.startsWith("http")),
+          address: { "@type": "PostalAddress", addressCountry: Site.location },
+          knowsAbout: Home.profileTopics,
         }}
       />
 
