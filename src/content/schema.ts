@@ -16,6 +16,7 @@ export const artifactSchema = v.object({
   kind: v.optional(v.string()),
   featured: v.optional(v.boolean(), false),
   draft: v.optional(v.boolean(), false),
+  related: v.optional(v.array(v.string())),
 });
 
 export type ArtifactFrontmatter = v.InferOutput<typeof artifactSchema>;

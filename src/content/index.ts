@@ -1,5 +1,6 @@
 import { lazy } from "react";
 import * as v from "valibot";
+import { assertRelated } from "~/content/related";
 import {
   type ArtifactFrontmatter,
   artifactSchema,
@@ -60,6 +61,8 @@ export const artifacts: Artifact[] = allArtifacts
     }
     return a.slug < b.slug ? -1 : 1;
   });
+
+assertRelated(artifacts);
 
 export const bodies: Record<
   string,
@@ -149,10 +152,10 @@ export const terms: GlossaryTerm[] = allTerms
     return a.slug < b.slug ? -1 : 1;
   });
 
-const publishedSlugs = new Set(terms.map((term) => term.slug));
+export const termSlugs = new Set(terms.map((term) => term.slug));
 for (const term of terms) {
   for (const slug of term.related ?? []) {
-    if (!publishedSlugs.has(slug)) {
+    if (!termSlugs.has(slug)) {
       throw new Error(
         `Invalid frontmatter in /content/glossary/${term.slug}.mdx: field "related" — unknown term "${slug}"`,
       );

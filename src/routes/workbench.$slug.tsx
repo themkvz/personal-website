@@ -1,17 +1,18 @@
 import { Suspense } from "react";
 import { data } from "react-router";
-import { CodeChip } from "~/components/atoms/code-chip";
 import { Link } from "~/components/atoms/link";
 import { MetaStamp } from "~/components/atoms/meta-stamp";
 import { Rule } from "~/components/atoms/rule";
 import { Tag } from "~/components/atoms/tag";
 import { Breadcrumb } from "~/components/composites/breadcrumb";
+import { TopicChips } from "~/components/composites/topic-chips";
 import { Container } from "~/components/layout/container";
 import { JsonLd } from "~/components/layout/json-ld";
 import { Prose } from "~/components/layout/prose";
 import { Section } from "~/components/layout/section";
-import { Site } from "~/constants";
+import { Site, Workbench } from "~/constants";
 import { artifacts, bodies } from "~/content";
+import { relatedArtifacts } from "~/content/related";
 import { userContext } from "~/context/user";
 import { formatDate } from "~/lib/format-date";
 import { LANE_LABELS } from "~/lib/lanes";
@@ -34,7 +35,11 @@ export function loader({ params, context }: Route.LoaderArgs) {
     throw data(null, { status: 404 });
   }
 
-  return { artifact };
+  const related = relatedArtifacts(artifact, artifacts).map(
+    ({ slug, title, lane, summary }) => ({ slug, title, lane, summary }),
+  );
+
+  return { artifact, related };
 }
 
 export const meta: Route.MetaFunction = ({ loaderData }) => {
@@ -60,7 +65,7 @@ export const meta: Route.MetaFunction = ({ loaderData }) => {
 };
 
 export default function ArtifactRoute({ loaderData }: Route.ComponentProps) {
-  const { artifact } = loaderData;
+  const { artifact, related } = loaderData;
   const Body = bodies[artifact.slug];
   const url = `${Site.baseUrl}${artifactHref(artifact.slug)}`;
 
@@ -133,14 +138,37 @@ export default function ArtifactRoute({ loaderData }: Route.ComponentProps) {
 
         <div className="flex flex-wrap items-center justify-between gap-4">
           {artifact.topics && artifact.topics.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {artifact.topics.map((topic) => (
-                <CodeChip key={topic}>{topic}</CodeChip>
-              ))}
-            </div>
+            <TopicChips topics={artifact.topics} />
           )}
           <Link to="/workbench">Back to the Workbench</Link>
         </div>
+
+        {related.length > 0 && (
+          <>
+            <Rule />
+            <nav
+              aria-labelledby="related-notes"
+              className="flex flex-col gap-4"
+            >
+              <h2 id="related-notes" className="t-label text-muted-foreground">
+                {Workbench.relatedLabel}
+              </h2>
+              <ul className="flex flex-col gap-5">
+                {related.map((entry) => (
+                  <li key={entry.slug} className="flex flex-col gap-1.5">
+                    <div className="flex items-center gap-3">
+                      <Tag lane={entry.lane}>{entry.lane.toUpperCase()}</Tag>
+                      <Link to={artifactHref(entry.slug)}>{entry.title}</Link>
+                    </div>
+                    <p className="t-body-sm text-muted-foreground">
+                      {entry.summary}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </>
+        )}
       </Container>
     </Section>
   );

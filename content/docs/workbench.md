@@ -17,10 +17,11 @@ Notes, investigations, decisions, and reference lists. One MDX file per artifact
 | `summary` | yes | string | One sentence. Rendered as the visible lede under the title, and reused as the meta description, the index-row copy, and the RSS `<description>`. |
 | `publishedAt` | yes | ISO date `YYYY-MM-DD` | Sort key. Unquoted is fine — YAML 1.2 keeps it a string. |
 | `updatedAt` | no | ISO date | Renders as `· UPDATED <date>` beside the publish stamp, plus `dateModified` in JSON-LD and `lastmod` in the sitemap. |
-| `topics` | no | string[] | Lowercase kebab tags, two to four. Chips on the detail page, the index row, and the home hero. Free-form: no page filters by them yet. |
+| `topics` | no | string[] | Lowercase kebab tags, two to four. Chips on the detail page, the index row, and the home hero. On the detail page and index row, a topic that matches a published glossary term's slug links to `/glossary/<slug>`; any other topic is plain text. No page filters by them yet. |
 | `kind` | no | string | Eyebrow label, uppercase by convention (`FIELD NOTE / FRONTEND`). **Only rendered in the home hero slot** — invisible everywhere else, so it earns its place only on an artifact you expect to feature. |
 | `featured` | no | boolean (default `false`) | Candidate for the home hero. |
 | `draft` | no | boolean (default `false`) | Indexed in dev, dropped from production builds. |
+| `related` | no | string[] | Other artifact slugs, in display order, for the "Related notes" block. Each must be a published artifact, not this one, and listed once. See [Related notes](#behaviour). |
 
 ## Behaviour
 
@@ -29,7 +30,8 @@ Notes, investigations, decisions, and reference lists. One MDX file per artifact
 - **Home secondary row:** for each lane other than the hero's, the first artifact in index order.
 - **Lane filter:** `/workbench?l=<lane>`, built by `laneHref` in `src/lib/workbench-href.ts`. An unrecognised value falls back to the full index.
 - **Drafts:** `draft: true` is filtered out when `import.meta.env.PROD` — no list entry, no sitemap, no feed, and the URL 404s. Visible in `bun run dev`.
-- **Validation:** frontmatter is parsed at module load. A missing field, a bad lane, or a non-ISO date throws `Invalid frontmatter in <path>: field "<field>" — <message>` and takes the build down with it. There is no silent fallback.
+- **Related notes:** the detail page ends with the artifacts named in `related`. Without `related`, it picks up to three others: most shared topics first, then the same lane, each in index order. With nothing to relate, the block is omitted. Logic in `src/content/related.ts`.
+- **Validation:** frontmatter is parsed at module load. A missing field, a bad lane, a non-ISO date, or a `related` slug that is unknown, a draft (in production), the artifact itself, or repeated throws `Invalid frontmatter in <path>: field "<field>" — <message>` and takes the build down with it. There is no silent fallback.
 - **No search index.** `SearchTrigger` is disabled and its usage is commented out in `src/routes/workbench._index.tsx`. Readers arrive through the lane filter and the index, so the `title` plus `summary` pair is the whole discovery surface — write them to be scanned.
 
 ## Body

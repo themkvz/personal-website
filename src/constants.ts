@@ -235,6 +235,8 @@ export const Workbench = {
   indexTitle: "All notes, one index.",
   indexCopy:
     "Each entry is filed by intent, so the main part is visible before you open it.",
+
+  relatedLabel: "Related notes",
 } as const;
 
 export const Glossary = {
