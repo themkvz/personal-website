@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { data } from "react-router";
 import { Link } from "~/components/atoms/link";
 import { MetaStamp } from "~/components/atoms/meta-stamp";
@@ -130,9 +129,7 @@ export default function ArtifactRoute({ loaderData }: Route.ComponentProps) {
 
         <Rule />
 
-        <Prose>
-          <Suspense fallback={null}>{Body && <Body />}</Suspense>
-        </Prose>
+        <Prose>{Body && <Body />}</Prose>
 
         <Rule />
 

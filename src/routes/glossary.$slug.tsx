@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { data } from "react-router";
 import { Link } from "~/components/atoms/link";
 import { Rule } from "~/components/atoms/rule";
@@ -102,9 +101,7 @@ export default function GlossaryTermRoute({
 
         <Rule />
 
-        <Prose>
-          <Suspense fallback={null}>{Body && <Body />}</Suspense>
-        </Prose>
+        <Prose>{Body && <Body />}</Prose>
 
         <Rule />
 
