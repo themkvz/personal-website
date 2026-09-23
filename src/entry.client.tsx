@@ -3,7 +3,7 @@ import { StrictMode, startTransition } from "react";
 import { hydrateRoot } from "react-dom/client";
 import { HydratedRouter } from "react-router/dom";
 import { envPublic } from "~/env.client";
-import { isNotFound } from "~/lib/glitchtip/errors";
+import { isClientError } from "~/lib/glitchtip/errors";
 import { TRACES_SAMPLE_RATE, withoutSessions } from "~/lib/glitchtip/options";
 
 Sentry.init({
@@ -26,7 +26,7 @@ startTransition(() => {
           Sentry.createSentryClientInstrumentation({ captureErrors: false }),
         ]}
         onError={(error, info) => {
-          if (isNotFound(error)) return;
+          if (isClientError(error)) return;
           Sentry.sentryOnError(error, info);
         }}
       />

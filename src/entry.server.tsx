@@ -15,7 +15,7 @@ import { NonceContext } from "~/context/nonce";
 import { env } from "~/env.server";
 import { buildReportOnlyCsp } from "~/lib/csp";
 import { parseGlitchtipDsn } from "~/lib/glitchtip/dsn";
-import { isNotFound } from "~/lib/glitchtip/errors";
+import { isClientError } from "~/lib/glitchtip/errors";
 import { acceptsMarkdown, pageMarkdown } from "~/lib/markdown.server";
 
 export const streamTimeout = 5_000;
@@ -24,14 +24,14 @@ const glitchtip = parseGlitchtipDsn(env.VITE_GLITCHTIP_DSN);
 const opApiOrigin = new URL(env.VITE_OP_API_URL).origin;
 
 // `captureErrors` defaults to true and reports with no filtering, which would
-// both duplicate `handleError` and bypass its aborted/404 guards below.
+// both duplicate `handleError` and bypass its aborted/4xx guards below.
 export const instrumentations = [
   Sentry.createSentryServerInstrumentation({ captureErrors: false }),
 ];
 
 export const handleError: HandleErrorFunction = (error, { request }) => {
   if (request.signal.aborted) return;
-  if (isNotFound(error)) return;
+  if (isClientError(error)) return;
 
   console.error(error);
   Sentry.captureException(error);
