@@ -7,7 +7,8 @@ import { JsonLd } from "~/components/layout/json-ld";
 import { Prose } from "~/components/layout/prose";
 import { Section } from "~/components/layout/section";
 import { Glossary, Site } from "~/constants";
-import { artifacts, termBodies, terms } from "~/content";
+import { artifacts, terms } from "~/content";
+import { termHtml } from "~/content/bodies.server";
 import { pageMeta } from "~/lib/meta";
 import { artifactHref, glossaryHref } from "~/lib/workbench-href";
 import type { Route } from "./+types/glossary.$slug";
@@ -19,7 +20,7 @@ export function loader({ params }: Route.LoaderArgs) {
     throw data(null, { status: 404 });
   }
 
-  return { term };
+  return { term, html: termHtml[term.slug] };
 }
 
 export const meta: Route.MetaFunction = ({ loaderData }) => {
@@ -43,8 +44,7 @@ export const meta: Route.MetaFunction = ({ loaderData }) => {
 export default function GlossaryTermRoute({
   loaderData,
 }: Route.ComponentProps) {
-  const { term } = loaderData;
-  const Body = termBodies[term.slug];
+  const { term, html } = loaderData;
 
   const relatedTerms = (term.related ?? [])
     .map((slug) => terms.find((entry) => entry.slug === slug))
@@ -101,7 +101,7 @@ export default function GlossaryTermRoute({
 
         <Rule />
 
-        <Prose>{Body && <Body />}</Prose>
+        <Prose dangerouslySetInnerHTML={{ __html: html }} />
 
         <Rule />
 

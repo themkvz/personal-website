@@ -10,7 +10,8 @@ import { JsonLd } from "~/components/layout/json-ld";
 import { Prose } from "~/components/layout/prose";
 import { Section } from "~/components/layout/section";
 import { Site, Workbench } from "~/constants";
-import { artifacts, bodies } from "~/content";
+import { artifacts } from "~/content";
+import { artifactHtml } from "~/content/bodies.server";
 import { relatedArtifacts } from "~/content/related";
 import { userContext } from "~/context/user";
 import { formatDate } from "~/lib/format-date";
@@ -38,7 +39,7 @@ export function loader({ params, context }: Route.LoaderArgs) {
     ({ slug, title, lane, summary }) => ({ slug, title, lane, summary }),
   );
 
-  return { artifact, related };
+  return { artifact, related, html: artifactHtml[artifact.slug] };
 }
 
 export const meta: Route.MetaFunction = ({ loaderData }) => {
@@ -64,8 +65,7 @@ export const meta: Route.MetaFunction = ({ loaderData }) => {
 };
 
 export default function ArtifactRoute({ loaderData }: Route.ComponentProps) {
-  const { artifact, related } = loaderData;
-  const Body = bodies[artifact.slug];
+  const { artifact, related, html } = loaderData;
   const url = `${Site.baseUrl}${artifactHref(artifact.slug)}`;
 
   return (
@@ -129,7 +129,7 @@ export default function ArtifactRoute({ loaderData }: Route.ComponentProps) {
 
         <Rule />
 
-        <Prose>{Body && <Body />}</Prose>
+        <Prose dangerouslySetInnerHTML={{ __html: html }} />
 
         <Rule />
 

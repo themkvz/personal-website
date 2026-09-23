@@ -43,11 +43,6 @@ const artifactFrontmatter = import.meta.glob("/content/workbench/*.mdx", {
   import: "frontmatter",
 });
 
-const artifactModules = import.meta.glob("/content/workbench/*.mdx", {
-  eager: true,
-  import: "default",
-});
-
 const allArtifacts: Artifact[] = Object.entries(artifactFrontmatter).map(
   ([path, frontmatter]) => ({
     ...parseFrontmatter(artifactSchema, path, frontmatter),
@@ -65,13 +60,6 @@ export const artifacts: Artifact[] = allArtifacts
   });
 
 assertRelated(artifacts);
-
-export const bodies: Record<string, React.ComponentType> = Object.fromEntries(
-  Object.entries(artifactModules).map(([path, Body]) => [
-    slugFromPath(path),
-    Body as React.ComponentType,
-  ]),
-);
 
 export function artifactsByLane(lane: Lane): Artifact[] {
   return artifacts.filter((artifact) => artifact.lane === lane);
@@ -132,11 +120,6 @@ const glossaryFrontmatter = import.meta.glob("/content/glossary/*.mdx", {
   import: "frontmatter",
 });
 
-const glossaryModules = import.meta.glob("/content/glossary/*.mdx", {
-  eager: true,
-  import: "default",
-});
-
 const allTerms: GlossaryTerm[] = Object.entries(glossaryFrontmatter).map(
   ([path, frontmatter]) => ({
     ...parseFrontmatter(glossarySchema, path, frontmatter),
@@ -164,11 +147,3 @@ for (const term of terms) {
     }
   }
 }
-
-export const termBodies: Record<string, React.ComponentType> =
-  Object.fromEntries(
-    Object.entries(glossaryModules).map(([path, Body]) => [
-      slugFromPath(path),
-      Body as React.ComponentType,
-    ]),
-  );

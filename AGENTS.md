@@ -78,6 +78,7 @@ Keep changes minimal, match existing patterns, and prefer clarity.
 
 ### Content Layer
 - Frontmatter schemas live in `src/content/schema.ts`; the derived index lives in `src/content/index.ts`.
+- Workbench and glossary bodies render to HTML in `src/content/bodies.server.ts` and reach pages as loader data (`html`); never import MDX bodies into client code.
 - Never read `content/` files directly in a component — pages import from `~/content` and pass data down.
 - No component below `layout/` may import from `~/content` or React Router's data hooks.
 

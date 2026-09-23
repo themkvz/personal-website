@@ -108,7 +108,7 @@ Dependency direction between component layers is one-way: `layout → composites
 
 ### Content Layer
 
-All time-varying site content — workbench artifacts, the experience timeline, tool cards — is authored as MDX files in `content/`, each with typed YAML frontmatter validated by `valibot` (`src/content/schema.ts`) at module load. `src/content/index.ts` derives a single index per collection from `import.meta.glob`; adding, editing, or deleting a file is the only publishing step. Artifacts marked `draft: true` are indexed only in development. See `content-model` in `openspec/specs/` (once archived) or `openspec/changes/redesign-workbench-site/specs/content-model/spec.md` for the full contract.
+All time-varying site content — workbench artifacts, the experience timeline, tool cards — is authored as MDX files in `content/`, each with typed YAML frontmatter validated by `valibot` (`src/content/schema.ts`) at module load. `src/content/index.ts` derives a single index per collection from `import.meta.glob`; adding, editing, or deleting a file is the only publishing step. Workbench and glossary bodies are rendered to HTML once on the server by `src/content/bodies.server.ts` and returned from the slug loaders, so no body ships in the client bundle. Artifacts marked `draft: true` are indexed only in development. See `content-model` in `openspec/specs/` (once archived) or `openspec/changes/redesign-workbench-site/specs/content-model/spec.md` for the full contract.
 
 ### Data Flow
 
