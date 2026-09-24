@@ -19,8 +19,8 @@ export function MobileNav() {
         }
       />
       <Drawer.Portal>
-        <Drawer.Backdrop className="fixed inset-0 min-h-dvh bg-black/40 opacity-[calc(1-var(--drawer-swipe-progress))] transition-opacity duration-300 data-swiping:duration-0 data-ending-style:opacity-0 data-starting-style:opacity-0" />
-        <Drawer.Viewport className="fixed inset-0 flex items-end justify-center">
+        <Drawer.Backdrop className="fixed inset-0 z-50 min-h-dvh bg-black/40 opacity-[calc(1-var(--drawer-swipe-progress))] transition-opacity duration-300 data-swiping:duration-0 data-ending-style:opacity-0 data-starting-style:opacity-0" />
+        <Drawer.Viewport className="fixed inset-0 z-50 flex items-end justify-center">
           <Drawer.Popup className="max-h-[80dvh] w-full overflow-y-auto overscroll-contain rounded-t-lg border-t border-border bg-popover px-6 pt-3 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] text-popover-foreground shadow-md outline-none [transform:translateY(var(--drawer-swipe-movement-y))] transition-transform duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-ending-style:[transform:translateY(100%)] data-starting-style:[transform:translateY(100%)] data-swiping:select-none">
             <div
               aria-hidden="true"

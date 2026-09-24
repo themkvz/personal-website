@@ -8,8 +8,8 @@ import { DecryptedText } from "../identity/decrypted-text";
 
 export function Nav() {
   return (
-    <header className="border-b border-border">
-      <Container className="flex flex-wrap items-center justify-between gap-4 py-6.5">
+    <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur-md">
+      <Container className="flex flex-wrap items-center justify-between gap-4 py-3 md:py-6.5">
         <NavLink to="/" className="flex items-center gap-2.5" end>
           <span className="size-2.5 bg-building" aria-hidden="true" />
           <span className="font-mono text-[13px] font-bold tracking-[2px] text-foreground">
