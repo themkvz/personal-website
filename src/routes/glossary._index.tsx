@@ -21,12 +21,16 @@ export default function GlossaryIndexRoute() {
   return (
     <>
       <Section>
-        <Container className="flex max-w-measure flex-col gap-8">
-          <Overline>{Glossary.eyebrow}</Overline>
-          <h1 className="t-display-xl whitespace-pre-line">{Glossary.title}</h1>
-          <p className="t-body max-w-[720px] text-[18px] text-foreground">
-            {Glossary.lede}
-          </p>
+        <Container>
+          <div className="flex max-w-[780px] flex-col gap-8">
+            <Overline>{Glossary.eyebrow}</Overline>
+            <h1 className="t-display-xl whitespace-pre-line">
+              {Glossary.title}
+            </h1>
+            <p className="t-body max-w-[720px] text-[18px] text-foreground">
+              {Glossary.lede}
+            </p>
+          </div>
         </Container>
       </Section>
 
