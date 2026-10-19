@@ -15,32 +15,32 @@ Notes from [2026 is the Year of Self-hosting](https://fulghum.io/self-hosting) b
 
 ## Key pieces
 
-- **Beelink N150 (~$380)** — quiet, palm-sized, low power. Runs 14 containerized apps under 10% CPU.
-- **Tailscale** — private mesh network, no port forwarding. Access everything from phone/laptop.
-- **Claude Code on the server** — describe what you want in English, it runs commands. Docker setup, troubleshooting, config edits. The post calls this the "true game-changer."
+- **Beelink N150 (~$380):** quiet, palm-sized, low power. Runs 14 containerized apps under 10% CPU.
+- **Tailscale:** private mesh network, no port forwarding. Access everything from phone/laptop.
+- **Claude Code on the server:** describe what you want in English, it runs commands. Docker setup, troubleshooting, config edits. The post calls this the "true game-changer."
 
 ## Stack he runs
 
-- **Vaultwarden** — self-hosted Bitwarden. Replaces 1Password, works with the official mobile app and phone autofill.
-- **Immich** — Google Photos replacement. Phone backup, maps, local face recognition.
-- **Readeck** — read-later, Pocket replacement. Simple share-from-phone flow.
-- **Caddy** — reverse proxy, auto HTTPS certs.
-- **Uptime Kuma** — monitoring, email alerts on downtime.
+- **Vaultwarden:** self-hosted Bitwarden. Replaces 1Password, works with the official mobile app and phone autofill.
+- **Immich:** Google Photos replacement. Phone backup, maps, local face recognition.
+- **Readeck:** read-later, Pocket replacement. Simple share-from-phone flow.
+- **Caddy:** reverse proxy, auto HTTPS certs.
+- **Uptime Kuma:** monitoring, email alerts on downtime.
 
 ## Details worth noting
 
-- Asked the agent to build a custom monitoring dashboard — it produced a working Go + Svelte app on first attempt.
+- Asked the agent to build a custom monitoring dashboard. It produced a working Go + Svelte app on first attempt.
 - Backup: daily to USB, weekly to S3 Glacier Deep Archive. ~$0.20/month for 500 GB of photos.
 - Troubleshooting flow: SSH in, ask the agent what broke, it reads logs and patches.
 
 ## Insights
 
-- The real unlock isn't cheaper hardware or better networking — it's that the agent absorbs the configuration burden. The friction was never "can I afford a server" but "do I want to debug nginx at 11 pm." A terminal agent answers that by making the fix take two minutes instead of two hours.
+- For me, the useful part is having an agent help with configuration and troubleshooting. That makes the setup more appealing than hardware and networking alone.
 - Vaultwarden with the native Bitwarden app is the most convincing self-hosted replacement here. Password managers are the one service where trusting a third party actually costs you something if they get breached or sunset the product. The rest (photos, read-later) are nice-to-own but less urgent.
-- The backup strategy is suspiciously cheap and simple — worth stress-testing before relying on it. USB + Glacier covers hardware failure and fire, but what about restore speed? Glacier Deep Archive retrieval takes 12+ hours. For family photos that's fine; for a password vault it's not.
+- The backup strategy is suspiciously cheap and simple, so it is worth stress-testing before relying on it. USB + Glacier covers hardware failure and fire, but what about restore speed? Glacier Deep Archive retrieval takes 12+ hours. For family photos that's fine; for a password vault it's not.
 - His "ask the agent to build a dashboard" anecdote maps to something broader: a home server with a terminal agent is a low-stakes sandbox for vibe-coding real tools. No deploy pipeline, no users, no SLA. Good place to prototype.
 - Missing from the post: what happens when the agent itself breaks, or when you need to update the agent. The meta-maintenance layer is still manual.
 
 ## References and copyright
 
-- [2026 is the Year of Self-hosting](https://fulghum.io/self-hosting) — Jordan Fulghum. Source of the setup, costs, and anecdotes summarized above; the phrase “true game-changer” is quoted from this article.
+- [2026 is the Year of Self-hosting](https://fulghum.io/self-hosting): Jordan Fulghum. Source of the setup, costs, and anecdotes summarized above; the phrase “true game-changer” is quoted from this article.

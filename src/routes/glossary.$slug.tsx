@@ -26,7 +26,7 @@ export function loader({ params }: Route.LoaderArgs) {
 export const meta: Route.MetaFunction = ({ loaderData }) => {
   if (!loaderData) {
     return pageMeta({
-      title: "Not found — Glossary",
+      title: "Not found | Glossary",
       description: "This term could not be found.",
       noIndex: true,
     });
@@ -35,7 +35,7 @@ export const meta: Route.MetaFunction = ({ loaderData }) => {
   const { term } = loaderData;
 
   return pageMeta({
-    title: `${term.term} — Glossary`,
+    title: `${term.term} | Glossary`,
     description: term.summary,
     path: glossaryHref(term.slug),
   });

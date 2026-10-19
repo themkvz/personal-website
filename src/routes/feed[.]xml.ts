@@ -27,7 +27,7 @@ export function loader() {
   const content = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
-  <title>${Site.ownerName} — Workbench</title>
+  <title>${Site.ownerName} | Workbench</title>
   <link>${Site.baseUrl}/workbench</link>
   <description>Implementation notes, open questions, technical decisions, and references.</description>${items}
 </channel>

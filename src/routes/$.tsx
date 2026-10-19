@@ -9,7 +9,7 @@ export function loader() {
 
 export const meta: Route.MetaFunction = () =>
   pageMeta({
-    title: "Not found — Ihor Mukovoz",
+    title: "Not found | Ihor Mukovoz",
     description: "This page could not be found.",
     noIndex: true,
   });

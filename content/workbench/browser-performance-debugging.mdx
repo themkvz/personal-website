@@ -19,34 +19,34 @@ It is easy to see a slow React page and assume React is the problem. Sometimes i
 
 ## Find the bottleneck first
 
-Chrome DevTools Performance panel is usually my starting point. I want to record one slow interaction and look at what browser was doing during that time.
+The Chrome DevTools Performance panel is usually my starting point. I want to record one slow interaction and look at what the browser was doing during that time.
 
-Main thread flame chart helps separate JavaScript work from rendering, layout, and paint. Long tasks are also easy to spot there. If trace shows most time inside JavaScript and React updates, then React DevTools Profiler becomes useful. It shows which parts of React tree rendered and how expensive those renders were.
+The main thread flame chart helps distinguish scripting, layout, and paint work. Long tasks are also easy to spot there. If the trace shows most time inside JavaScript and React updates, then the React DevTools Profiler becomes useful. It shows which parts of the React tree rendered and how expensive those renders were.
 
-Important part is not to treat every re-render as a bug. Cheap re-renders are often fine. I care about work that has visible cost for user.
+The important part is not to treat every re-render as a bug. Cheap re-renders are often fine. I care about work that has a visible cost for the user.
 
-[Chrome Performance documentation](https://developer.chrome.com/docs/devtools/performance/) and [React Profiler documentation](https://react.dev/reference/react/Profiler) are good references when trace is not clear.
+[Chrome Performance documentation](https://developer.chrome.com/docs/devtools/performance/) and [React Profiler documentation](https://react.dev/reference/react/Profiler) are good references when the trace is not clear.
 
 ## Where React Doctor fits
 
 [React Doctor](https://www.react.doctor/) is useful before and around this profiling work. It scans React code and reports problems in areas such as performance, bugs, security, accessibility, and maintainability.
 
-For existing work, changed-scope scan looks especially useful because it can focus on findings introduced by current changes instead of reporting everything in project. Diagnostics include file, line, rule, and suggested fix. Individual rules can also be explained when finding is not obvious.
+For existing work, a changed-scope scan looks especially useful because it can focus on findings introduced by current changes instead of reporting everything in the project. Diagnostics include a file, line, rule, and suggested fix. Individual rules can also be explained when a finding is not obvious.
 
-I see React Doctor as another signal, not proof of a performance bottleneck. Static analysis can tell me that code contains a risky or inefficient pattern. React Profiler can show that React spent noticeable time there. Chrome Performance can show whether this work was part of slow user interaction.
+I see React Doctor as another signal, not proof of a performance bottleneck. Static analysis can tell me that the code contains a risky or inefficient pattern. The React Profiler can show that React spent noticeable time there. Chrome Performance can show whether this work was part of a slow user interaction.
 
-That difference matters. React Doctor finding may be worth fixing, but I still do not want to call it a performance optimization until measurement confirms it.
+That difference matters. A React Doctor finding may be worth fixing, but I still do not want to call it a performance optimization until the measurement confirms it.
 
 ## What I want to keep
 
-My preferred flow is simple: reproduce slow interaction, profile it in Chrome, and go deeper into React only when trace points there. React Doctor can help find suspicious code around that area or catch problems while reviewing changes.
+My preferred flow is simple: reproduce the slow interaction, profile it in Chrome, and go deeper into React only when the trace points there. React Doctor can help find suspicious code around that area or catch problems while reviewing changes.
 
-After changing something, profile same interaction again. If measurement does not improve, optimization probably did not solve problem I was looking for.
+After changing something, profile the same interaction again. If the measurement does not improve, the optimization probably did not solve the problem I was looking for.
 
-Main rule stays the same: find bottleneck first, then choose tool or optimization.
+The main rule stays the same: find the bottleneck first, then choose a tool or optimization.
 
 ## References and copyright
 
-- [Chrome DevTools Performance documentation](https://developer.chrome.com/docs/devtools/performance/) — Google.
-- [React Profiler documentation](https://react.dev/reference/react/Profiler) — React documentation team.
-- [React Doctor](https://www.react.doctor/) — React Doctor project.
+- [Chrome DevTools Performance documentation](https://developer.chrome.com/docs/devtools/performance/): Google.
+- [React Profiler documentation](https://react.dev/reference/react/Profiler): React documentation team.
+- [React Doctor](https://www.react.doctor/): React Doctor project.

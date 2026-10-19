@@ -15,7 +15,7 @@ related:
 
 [better-result](https://better-result.dev/) is a TypeScript library for making expected failures part of function return types instead of hiding them behind exceptions.
 
-Core type is familiar: `Result<T, E>` is either `Ok<T>` or `Err<E>`. Library has no runtime dependencies, requires TypeScript 5.4+, and is ESM-only.
+The core type is familiar: `Result<T, E>` is either `Ok<T>` or `Err<E>`. The library has no runtime dependencies, requires TypeScript 5.4+, and is ESM-only.
 
 ## What is worth keeping
 
@@ -31,10 +31,10 @@ Core type is familiar: `Result<T, E>` is either `Ok<T>` or `Err<E>`. Library has
 
 ## What I would check before adopting it
 
-Main question is whether generator-based composition stays readable in a larger codebase, especially when mixed with existing code that throws exceptions or already has its own error conventions.
+The main question is whether generator-based composition stays readable in a larger codebase, especially when mixed with existing code that throws exceptions or already has its own error conventions.
 
 Still, `better-result` looks worth keeping as a reference when I need typed domain errors without moving to a much larger effect system.
 
 ## References and copyright
 
-- [better-result documentation](https://better-result.dev/) — better-result project.
+- [better-result documentation](https://better-result.dev/): better-result project.

@@ -23,11 +23,11 @@ function section(heading: string, entries: string[]): string {
 
 export function loader() {
   const document = [
-    `# ${Site.name} — ${Site.ownerName}`,
+    `# ${Site.name} | ${Site.ownerName}`,
     "",
     `> ${Home.introduction}`,
     "",
-    `Every page is an MDX file in the repository, typed at load and compiled with the site. Published under ${Site.baseUrl}.`,
+    `Notes, glossary definitions, experience entries, and tool cards come from MDX files in the repository. Published under ${Site.baseUrl}.`,
     "",
     section(
       "Pages",

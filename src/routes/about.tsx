@@ -31,7 +31,7 @@ export function loader() {
 
 export const meta: Route.MetaFunction = () =>
   pageMeta({
-    title: "About — Ihor Mukovoz",
+    title: "About | Ihor Mukovoz",
     description: About.lead,
     path: "/about",
   });
@@ -39,7 +39,7 @@ export const meta: Route.MetaFunction = () =>
 function formatPeriod(startDate: string, endDate?: string): string {
   const startYear = startDate.slice(0, 4);
   const endYear = endDate ? endDate.slice(0, 4) : "NOW";
-  return `${startYear} — ${endYear}`;
+  return `${startYear} to ${endYear}`;
 }
 
 export default function AboutRoute({ loaderData }: Route.ComponentProps) {

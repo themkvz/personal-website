@@ -7,4 +7,4 @@ related:
 
 Every abstraction trades detail for simplicity, and the trade is only good while callers never need the detail. A repository pattern that hides SQL behind method calls is useful until a query needs an index hint the pattern can't express; a shared component with six boolean props usually means someone was trying to avoid writing two components.
 
-The recurring mistake is building the abstraction before a second real use case exists — one call site tells you nothing about what should be generic and what should stay concrete, so the first version of any abstraction is usually guessed rather than derived. Three similar lines of duplicated code are frequently cheaper to read and maintain than the wrong abstraction built to avoid them.
+The recurring mistake is building the abstraction before a second real use case exists; one call site tells you nothing about what should be generic and what should stay concrete, so the first version of any abstraction is usually guessed rather than derived. Three similar lines of duplicated code are frequently cheaper to read and maintain than the wrong abstraction built to avoid them.

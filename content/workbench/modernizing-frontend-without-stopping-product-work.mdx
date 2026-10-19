@@ -27,11 +27,11 @@ A full rewrite would avoid some of this integration work, but it would also stop
 
 ## Architecture boundaries first
 
-The useful unit of migration became not a library or framework, but an architecture boundary.
+The useful unit of migration became an architecture boundary, not a library or framework.
 
 A route, a state domain, or a shared UI layer could be modernized while old and new code continued to work together. New code did not need to replace everything around it immediately. It only needed a clear contract with the parts that were still old.
 
-This changed how I looked at migration. Main problem was not "how do we replace old React patterns?" It was "where can we draw a boundary that lets two generations of the application coexist safely?"
+This changed how I looked at migration. The main problem was "where can we draw a boundary that lets two generations of the application coexist safely?"
 
 Routing was one important boundary because it allowed old and new areas to live side by side. State boundaries were another because unclear global state created hidden dependencies between otherwise unrelated parts. Shared design primitives helped visually connect old and new UI without forcing both implementations to use the same internal architecture.
 

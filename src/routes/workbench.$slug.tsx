@@ -45,7 +45,7 @@ export function loader({ params, context }: Route.LoaderArgs) {
 export const meta: Route.MetaFunction = ({ loaderData }) => {
   if (!loaderData) {
     return pageMeta({
-      title: "Not found — Workbench",
+      title: "Not found | Workbench",
       description: "This artifact could not be found.",
       noIndex: true,
     });
@@ -54,7 +54,7 @@ export const meta: Route.MetaFunction = ({ loaderData }) => {
   const { artifact } = loaderData;
 
   return pageMeta({
-    title: `${artifact.title} — Workbench`,
+    title: `${artifact.title} | Workbench`,
     description: artifact.summary,
     path: artifactHref(artifact.slug),
     article: {

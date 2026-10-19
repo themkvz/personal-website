@@ -5,6 +5,6 @@ related:
   - experiment
 ---
 
-A feature flag separates deploying code from releasing it: a change can ship to production behind a flag that's off, then be turned on for a percentage of traffic, a specific cohort, or everyone, independent of the next deploy. That separation is what makes a fast rollback possible for a bad change — flipping a flag is immediate, where reverting a deploy is not.
+A feature flag separates deploying code from releasing it: a change can ship to production behind a flag that's off, then be turned on for a percentage of traffic, a specific cohort, or everyone, independent of the next deploy. That separation is what makes a fast rollback possible for a bad change; flipping a flag is immediate, while reverting a deploy is not.
 
-The same mechanism underlies A/B testing: a flag assigns users to a variant, and the experiment measures the difference in outcome. The operational cost is flag debt — old flags nobody removes accumulate as dead conditionals, so a flag needs an owner and a removal plan from the day it's added, not just a name.
+The same mechanism underlies A/B testing: a flag assigns users to a variant, and the experiment measures the difference in outcome. The operational cost is flag debt: old flags nobody removes accumulate as dead conditionals, so a flag needs an owner and a removal plan from the day it's added, not just a name.

@@ -15,33 +15,33 @@ related:
 
 Local component state is invisible. It disappears on refresh, cannot be shared as a link, and usually does not work with browser back and forward navigation.
 
-For some UI state this is correct. A hover, temporary input, or open tooltip does not need a permanent address. But filters, selected tabs, pagination, sorting, or active views often describe where user currently is inside product.
+For some UI state this is correct. A hover, temporary input, or open tooltip does not need a permanent address. But filters, selected tabs, pagination, sorting, or active views often describe where the user currently is inside the product.
 
-For this kind of state, URL feels like better default.
+For this kind of state, the URL feels like a better default.
 
 ## The rule adopted
 
-If changing state changes current view enough that I may want to share it, bookmark it, reload it, or return to it later, I put it in URL.
+If changing state changes the current view enough that I may want to share it, bookmark it, reload it, or return to it later, I put it in the URL.
 
-I think about app state in three rough layers. Route path describes **where** user is. Search params describe **how that page is configured**. Local React state handles temporary interaction that does not need to survive navigation.
+I think about app state in three rough layers. The route path describes **where** the user is. Search params describe **how that page is configured**. Local React state handles temporary interaction that does not need to survive navigation.
 
-React Router already makes URL part of application state through route params, search params, and location. This also means browser navigation becomes part of UX instead of something application has to recreate itself.
+React Router already makes the URL part of application state through route params, search params, and location. This also means browser navigation becomes part of the UX instead of something the application has to recreate itself.
 
-For search params, `nuqs` makes this much nicer than manually working with `URLSearchParams`. Its API is close to `useState`, but state is serialized into URL, with parsers for values such as numbers, booleans, arrays, and enums.
+For search params, `nuqs` makes this much nicer than manually working with `URLSearchParams`. Its API is close to `useState`, but state is serialized into the URL, with parsers for values such as numbers, booleans, arrays, and enums.
 
-So instead of keeping filter state hidden inside component tree, URL can become source of truth:
+So instead of keeping filter state hidden inside the component tree, the URL can become the source of truth:
 
 `/workbench?l=building`
 
 This is easier to understand, debug, share, and restore.
 
-There is still some judgment around history. Small filter changes often should replace current history entry. More meaningful navigation may deserve a new entry so browser Back works as expected. `nuqs` supports both approaches.
+There is still some judgment around history. Small filter changes often should replace the current history entry. More meaningful navigation may deserve a new entry so browser Back works as expected. `nuqs` supports both approaches.
 
 This does add some URL and parsing plumbing, but I prefer that cost over hidden state that stops working after refresh or cannot be sent to another person.
 
-My current rule is simple: durable view state goes into URL. Temporary interaction stays local.
+My current rule is simple: durable view state goes into the URL. Temporary interaction stays local.
 
 ## References and copyright
 
-- [State Management](https://reactrouter.com/explanation/state-management) — React Router documentation team. Reference for URL state and search parameters.
-- [nuqs options](https://nuqs.dev/docs/options) — nuqs project. Reference for replacing or pushing browser history entries.
+- [State Management](https://reactrouter.com/explanation/state-management): React Router documentation team. Reference for URL state and search parameters.
+- [nuqs options](https://nuqs.dev/docs/options): nuqs project. Reference for replacing or pushing browser history entries.

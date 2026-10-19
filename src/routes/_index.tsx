@@ -1,4 +1,4 @@
-import { ArrowUpRight, ShieldCheck } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Link as RouterLink } from "react-router";
 import { Button } from "~/components/atoms/button";
 import { CodeChip } from "~/components/atoms/code-chip";
@@ -33,7 +33,7 @@ export function headers() {
 
 export const meta: Route.MetaFunction = () =>
   pageMeta({
-    title: `${Site.ownerName} — Software, systems, experiments`,
+    title: `${Site.ownerName} | Software, systems, experiments`,
     description: Home.introduction,
     path: "/",
   });
@@ -287,16 +287,6 @@ export default function HomeRoute() {
                 </ToolCard.Meta>
               </ToolCard.Root>
             ))}
-          </div>
-
-          <div className="flex items-center gap-3">
-            <ShieldCheck
-              aria-hidden="true"
-              className="size-4.5 text-investigating"
-            />
-            <p className="font-mono text-xs tracking-[0.3px] text-muted-foreground">
-              {ToolsCopy.valueText}
-            </p>
           </div>
         </Container>
       </Section>

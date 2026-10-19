@@ -15,24 +15,24 @@ related:
 
 Running one product across web, mobile, and an administration interface becomes much easier when these clients are treated as one stack, not as separate products.
 
-For me, monorepo fits this model well. Web, mobile, and admin can live close to each other and share domain logic, types, validation, API clients, and other code that should behave the same everywhere. Platform-specific UI still stays separate where it needs to.
+For me, a monorepo fits this model well. Web, mobile, and admin can live close to each other and share domain logic, types, validation, API clients, and other code that should behave the same everywhere. Platform-specific UI still stays separate where it needs to.
 
-Important part is not sharing everything. It is having one source for things that should not be implemented three times.
+The important part is not sharing everything. It is having one source for things that should not be implemented three times.
 
 ## One stack, one team
 
-I also like the idea of web and mobile being owned by the same team. When stack and domain are similar, splitting ownership by platform creates extra boundaries without much benefit.
+I also like the idea of web and mobile being owned by the same team. When the stack and domain are similar, splitting ownership by platform creates extra boundaries without much benefit.
 
-One team can move between web, mobile, and admin work, review the same shared code, and keep product behavior more consistent. Monorepo supports this because changes to shared logic and platform code can happen together.
+One team can move between web, mobile, and admin work, review the same shared code, and keep product behavior more consistent. A monorepo supports this because changes to shared logic and platform code can happen together.
 
-Backend is different. In this setup it is owned by another in-house team and lives in another repository. I would not try to bring it into the frontend monorepo only to make repository structure look unified.
+The backend is different. In this setup it is owned by another in-house team and lives in another repository. I would not try to bring it into the frontend monorepo only to make the repository structure look unified.
 
-The important boundary is API contract. Frontend can share everything internally, while backend stays an external dependency with its own release cycle and ownership.
+The important boundary is the API contract. The frontend can share everything internally, while the backend stays an external dependency with its own release cycle and ownership.
 
 This makes me think about architecture in two levels: keep related frontend platforms close, but keep clear boundaries between teams that own different systems.
 
 ## Open threads
 
 - How much validation and domain logic should be shared before platform-specific UX makes duplication simpler.
-- How to keep frontend types and API contracts in sync with backend repository.
+- How to keep frontend types and API contracts in sync with the backend repository.
 - Whether admin data flows are different for good product reasons or only because they evolved separately.

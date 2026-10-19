@@ -31,7 +31,7 @@ export function loader() {
     ...(updated ? [`  Last update: ${updated}`] : []),
     "  Standards: HTML5, CSS3",
     `  Components: ${Discovery.stack.join(", ")}`,
-    "  Content: MDX files in the repository — no database, no CMS",
+    "  Content: MDX files in the repository, no database or CMS",
   ];
 
   return text(`${lines.join("\n")}\n`);

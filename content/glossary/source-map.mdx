@@ -3,6 +3,6 @@ term: Source map
 summary: A file mapping minified or compiled production code back to its original source, so a stack trace shows real file names and line numbers.
 ---
 
-Production JavaScript is minified and often compiled from TypeScript or JSX, which makes a raw stack trace from an error in production close to unreadable — one-letter variable names, no original line numbers. A source map is a separate file, or an inline data URI, that records the transformation, so a browser's devtools, or an error-reporting service, can translate a minified stack trace back into the original source.
+Production JavaScript is minified and often compiled from TypeScript or JSX, which makes a raw stack trace from an error in production close to unreadable: one-letter variable names and no original line numbers. A source map is a separate file, or an inline data URI, that records the transformation, so a browser's devtools, or an error-reporting service, can translate a minified stack trace back into the original source.
 
 Shipping source maps publicly alongside the production bundle makes debugging easy for a site's own team and also for anyone else who requests the map, which is why many production setups upload maps privately to an error-tracking service instead of serving them from the public bundle.

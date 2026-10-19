@@ -5,6 +5,6 @@ aka:
   - CSP
 ---
 
-A Content Security Policy is a declarative allowlist, delivered as a response header, naming the origins a page may load scripts, styles, images, fonts, and other resources from. Its main job is limiting the damage of a cross-site scripting vulnerability: even if an attacker manages to inject a script tag, a strict policy stops the browser from executing anything not on the allowlist.
+A Content Security Policy is a declarative allowlist, delivered as a response header, naming the origins a page may load scripts, styles, images, fonts, and other resources from. Its main job is limiting the damage of a cross-site scripting vulnerability: even if an attacker injects a script tag, the browser blocks scripts that the policy does not allow.
 
-A report-only mode and a `report-uri` or `report-to` directive let a policy be rolled out and monitored — the browser sends a report of what it would have blocked — before it's switched to actually enforcing, which is how a policy gets tightened without breaking the page it protects on the first attempt.
+A report-only mode and a `report-uri` or `report-to` directive let a policy be rolled out and monitored. The browser sends a report of what it would have blocked before the policy is switched to enforcement. This is how a policy gets tightened without breaking the page it protects on the first attempt.

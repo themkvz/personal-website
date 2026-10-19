@@ -7,4 +7,4 @@ related:
 
 Architecture decisions are the ones that are expensive to reverse: how state is layered (local, store, query cache, URL), how modules are organized (by feature versus by type), where validation and data access live, and what the dependency direction is between layers. Get these right and a feature is mostly implementation; get them wrong and every feature pays a small, compounding tax for the life of the codebase.
 
-The discipline is less about picking a framework and more about keeping the boundaries consistent as the system grows — a shared layer that only holds truly generic code, a one-way dependency graph between layers, and a convention that survives contact with a deadline. Most architecture debt shows up as friction long before it shows up as a bug.
+The discipline is less about picking a framework and more about keeping the boundaries consistent as the system grows: a shared layer that only holds truly generic code, a one-way dependency graph between layers, and a convention that survives contact with a deadline. Most architecture debt shows up as friction long before it shows up as a bug.

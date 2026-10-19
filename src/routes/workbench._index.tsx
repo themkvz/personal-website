@@ -24,7 +24,7 @@ export function loader({ request }: Route.LoaderArgs) {
 
 export const meta: Route.MetaFunction = () =>
   pageMeta({
-    title: "Workbench — Ihor Mukovoz",
+    title: "Workbench | Ihor Mukovoz",
     description: Workbench.lead,
     path: "/workbench",
   });

@@ -12,7 +12,7 @@ import type { Route } from "./+types/glossary._index";
 
 export const meta: Route.MetaFunction = () =>
   pageMeta({
-    title: "Glossary — Ihor Mukovoz",
+    title: "Glossary | Ihor Mukovoz",
     description: Glossary.lede,
     path: "/glossary",
   });

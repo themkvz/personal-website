@@ -1,4 +1,3 @@
-import { ShieldCheck } from "lucide-react";
 import { CodeChip } from "~/components/atoms/code-chip";
 import { Overline } from "~/components/atoms/overline";
 import { SectionHeader } from "~/components/composites/section-header";
@@ -13,7 +12,7 @@ import type { Route } from "./+types/tools._index";
 
 export const meta: Route.MetaFunction = () =>
   pageMeta({
-    title: "Tools — Ihor Mukovoz",
+    title: "Tools | Ihor Mukovoz",
     description: Tools.lede,
     path: "/tools",
   });
@@ -62,16 +61,6 @@ export default function ToolsIndexRoute() {
                 </ToolCard.Meta>
               </ToolCard.Root>
             ))}
-          </div>
-
-          <div className="flex items-center gap-3">
-            <ShieldCheck
-              aria-hidden="true"
-              className="size-4.5 text-investigating"
-            />
-            <p className="font-mono text-xs tracking-[0.3px] text-muted-foreground">
-              {Tools.valueText}
-            </p>
           </div>
         </div>
       </Container>

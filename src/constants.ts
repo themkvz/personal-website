@@ -72,13 +72,13 @@ export const Nav = {
 } as const;
 
 export const Home = {
-  eyebrow: "IHOR MUKOVOZ — FRONT-END DEVELOPER · LEAD DEVELOPER",
+  eyebrow: "IHOR MUKOVOZ | FRONT-END DEVELOPER · LEAD DEVELOPER",
   displayStatement: "Software, systems,\nexperiments.",
   introduction:
     "I build web software and keep the useful parts of the process here: technical notes, decisions, experiments, and small tools.",
   professionalContext:
     "My work spans TypeScript, React, cross-platform products, frontend architecture, and the careful modernization of long-lived systems.",
-  primaryCta: "Explore the workbench",
+  primaryCta: "Browse technical notes",
   secondaryCta: "About Ihor →",
 
   profileLabel: "PROFILE / UKRAINE",
@@ -96,19 +96,21 @@ export const Home = {
   workbenchHeading: "Useful notes from real software work.",
   workbenchLead:
     "Read the implementation notes, open questions, decisions, and references that remain useful beyond a single project.",
-  workbenchHint: "Four ways into the work: investigate, decide, build, ship.",
+  workbenchHint:
+    "Four lanes: building, investigating, deciding, and keeping references.",
   workbenchCta: "Browse all notes",
   readFeatured: "Read the note →",
 
   toolsEyebrow: "TOOLS",
   toolsHeading: "Small utilities for specific problems.",
-  toolsBlurb: "Useful immediately, focused on one task, without distracting.",
+  toolsBlurb:
+    "Inspect URLs or convert timestamps. Text Formatter is forthcoming.",
   toolsCta: "Browse all tools →",
 
-  integrationsEyebrow: "INTEGRATIONS / THIRD-PARTY",
+  integrationsEyebrow: "HOW THIS SITE WORKS",
   integrationsHeading: "Every moving part, in the open.",
   integrationsLead:
-    "A site this size needs none of this. Running it anyway keeps the integration work visible and the failure modes real. Four services, in the order a page meets them.",
+    "I use this site to try content publishing, feature flags, analytics, and error reporting. Here is how they fit together.",
   integrations: [
     {
       phase: "BEFORE THE REQUEST",
@@ -151,7 +153,8 @@ export const About = {
   emailCta: "Email Ihor →",
 
   practiceLabel: "PRACTICE / 9+ YEARS",
-  practiceHeading: "I work where interface decisions become system decisions.",
+  practiceHeading:
+    "I design frontend structure and lead incremental migrations.",
   practiceCopy:
     "That usually means shaping shared foundations, making state explicit, modernizing incrementally, and keeping delivery moving while the architecture improves.",
   practicePoints: [
@@ -162,29 +165,28 @@ export const About = {
   practiceTopics: ["INVESTIGATE", "ARCHITECTURE", "LEADERSHIP"],
 
   practiceSectionEyebrow: "WORKING PRACTICE",
-  practiceSectionTitle: "Where frontend work becomes system work.",
+  practiceSectionTitle: "How I work",
   practiceIntroduction:
-    "My role usually sits between implementation, product delivery, marketing vision and the technical foundations that let teams keep changing software safely.",
+    "I work with product and marketing teams on implementation, delivery, and frontend architecture.",
   practiceColumns: [
     {
       label: "ARCHITECTURE",
       title: "Frontend architecture",
-      description:
-        "Structures application UI, state, and shared foundations for React-based products.",
+      description: "I organize UI, state, and shared code in React products.",
       topics: ["STATE", "SYSTEMS"],
     },
     {
       label: "MODERNIZATION",
       title: "Legacy modernization",
       description:
-        "Improves long-lived frontend systems incrementally while product development continues.",
+        "I update existing frontends while product development continues.",
       topics: ["LEGACY", "DELIVERY"],
     },
     {
       label: "LEADERSHIP",
       title: "Technical leadership",
       description:
-        "Supports delivery through technical direction, review, coordination, and clear engineering decisions.",
+        "I guide technical decisions, review code, and coordinate delivery.",
       topics: ["DIRECTION", "REVIEW"],
     },
   ] satisfies PracticeColumn[],
@@ -242,12 +244,11 @@ export const Workbench = {
 export const Glossary = {
   eyebrow: "GLOSSARY / TERMS FROM PRACTICE",
   title: "Terms this site\nuses, defined.",
-  lede: "Definitions for the frontend architecture, delivery, and web platform terms the workbench uses, each with its own page, aliases, and links to where it appears.",
+  lede: "Definitions of frontend architecture, delivery, and web platform terms used in these notes.",
 
   indexEyebrow: "TERM INDEX",
   indexTitle: "Every term, one index.",
-  indexCopy:
-    "Alphabetical and complete — every definition is here, not behind a search box.",
+  indexCopy: "Browse all published definitions alphabetically.",
   emptyState: "No terms are published yet.",
 
   backCta: "Back to the glossary",
@@ -258,13 +259,11 @@ export const Glossary = {
 export const Tools = {
   eyebrow: "TOOLS",
   title: "Small utilities.",
-  lede: "Focused browser tools for recurring technical work: later more",
-  collectionEyebrow: "AVAILABLE TOOLS",
+  lede: "Browser tools for inspecting URLs and converting timestamps.",
+  collectionEyebrow: "TOOL COLLECTION",
   collectionTitle: "Pick a task.",
-  valueText:
-    "Local-first where practical · one solution · deps free · no tracking",
   openCta: "Open tool →",
-  runtimeLabel: "LOCAL",
+  runtimeLabel: "AVAILABLE",
   forthcomingLabel: "FORTHCOMING",
 } as const;
 

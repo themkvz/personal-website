@@ -6,6 +6,6 @@ related:
   - react-server-components
 ---
 
-After the server sends fully-formed HTML, the browser still needs to run the same component tree client-side so React can attach the event listeners, refs, and state that make the page respond to input — that process is hydration, and it assumes the client-rendered tree matches the server-rendered markup exactly.
+After the server sends fully-formed HTML, the browser still needs to run the same component tree client-side so React can attach the event listeners, refs, and state that make the page respond to input. That process is hydration, and it assumes the client-rendered tree matches the server-rendered markup exactly.
 
-A mismatch between what the server rendered and what the client would render — often caused by code that behaves differently in a browser than in a server environment, like reading `window` at render time — produces a hydration error, visible in the console and occasionally a flash of re-rendered content as React discards the mismatched DOM and rebuilds it. Until hydration completes, a server-rendered page looks interactive but isn't yet.
+A mismatch between what the server rendered and what the client would render is often caused by code that behaves differently in a browser than in a server environment, such as reading `window` at render time. It produces a hydration error, visible in the console and occasionally a flash of re-rendered content as React discards the mismatched DOM and rebuilds it. Until hydration completes, a server-rendered page looks interactive but isn't yet.
