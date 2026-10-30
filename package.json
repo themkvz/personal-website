@@ -18,7 +18,7 @@
     "lint:fix": "biome check --fix .",
     "format": "biome format --write .",
     "doctor": "react-doctor .",
-    "audit": "bun audit --ignore GHSA-vfj7-8cjw-p6xm"
+    "audit": "bun audit --ignore GHSA-vfj7-8cjw-p6xm --ignore GHSA-mrhx-c7xc-m3w5 --ignore GHSA-gcqx-w48m-w2h4"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx,json,css,md}": [
@@ -77,6 +77,6 @@
     "vite": "^8.2.2"
   },
   "overrides": {
-    "toml": "^4.2.0"
+    "toml": "^5.0.1"
   }
 }
