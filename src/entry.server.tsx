@@ -50,6 +50,8 @@ export default function handleRequest(
     "Content-Security-Policy-Report-Only",
     buildReportOnlyCsp({ nonce, opApiOrigin, glitchtip }),
   );
+  // No `includeSubDomains`: the openpanel and glitchtip subdomains are separate services.
+  responseHeaders.set("Strict-Transport-Security", "max-age=31536000");
   const markdown = acceptsMarkdown(request.headers.get("Accept"));
   responseHeaders.append("Vary", "Accept");
   responseHeaders.set(

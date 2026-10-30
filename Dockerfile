@@ -24,7 +24,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN test -n "$VITE_OP_CLIENT_ID" && test -n "$VITE_OP_API_URL" && test -n "$VITE_GLITCHTIP_DSN"
-RUN bun run build
+# No CI: these checks gate the deploy itself. Lint runs in the pre-commit hook.
+RUN bun run typecheck && bun test && bun run build && bun run verify:bundle
 
 # Production image
 FROM node:24-alpine
