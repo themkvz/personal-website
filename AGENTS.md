@@ -4,7 +4,7 @@ This file guides agentic coding assistants working in this repo.
 Keep changes minimal, match existing patterns, and prefer clarity.
 
 ## Project Snapshot
-- App: Personal workbench site, React Router 7 framework mode (SSR)
+- App: Personal workbench site, React Router 8 framework mode (SSR)
 - Runtime: Bun, TypeScript (strict), React 19
 - Styling: Tailwind CSS 4, shadcn/ui patterns on Base UI, tokens in `DESIGN.md`
 - Content: MDX files under `content/`, no database or CMS

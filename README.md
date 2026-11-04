@@ -1,6 +1,6 @@
 # themkvz.com
 
-A personal workbench — a durable, editorial record of notes, decisions, investigations, references, and small tools. Built with **React Router 7** in framework mode (SSR), **React 19**, and **TypeScript**.
+A personal workbench — a durable, editorial record of notes, decisions, investigations, references, and small tools. Built with **React Router 8** in framework mode (SSR), **React 19**, and **TypeScript**.
 
 ## Features
 
@@ -60,7 +60,7 @@ bun run build
 
 The canonical list of required variables is `.env.example` — copy it to `.env` and fill in the values.
 
-Three client-side variables are inlined into the browser bundle at **build time** and must be passed as `--build-arg`s. Four variables are read by the server at **container start** and must be passed as `-e`/`--env-file` — the process refuses to start if they're missing.
+Three client-side variables are inlined into the browser bundle at **build time** and must be passed as `--build-arg`s. Five variables are read by the server at **container start** and must be passed as `-e`/`--env-file` — the process refuses to start if they're missing. The two GrowthBook variables are optional.
 
 | Variable | Phase | Required |
 | --- | --- | --- |
@@ -68,9 +68,12 @@ Three client-side variables are inlined into the browser bundle at **build time*
 | `VITE_OP_API_URL` | build-time (`--build-arg`) | yes |
 | `VITE_GLITCHTIP_DSN` | build-time (`--build-arg`) | yes |
 | `OP_CLIENT_SECRET` | run-time (`-e`) | yes |
+| `FINGERPRINT_SECRET` | run-time (`-e`) | yes — at least 32 characters |
 | `VITE_OP_CLIENT_ID` | run-time (`-e`) | yes (server also validates it) |
 | `VITE_OP_API_URL` | run-time (`-e`) | yes (server also validates it) |
 | `VITE_GLITCHTIP_DSN` | run-time (`-e`) | yes (server also validates it) |
+| `GROWTHBOOK_API_HOST` | run-time (`-e`) | no — set both or neither |
+| `GROWTHBOOK_CLIENT_KEY` | run-time (`-e`) | no — set both or neither |
 | `PORT` | run-time (`-e`) | no — defaults to `3000` |
 
 ```bash
@@ -100,6 +103,10 @@ The built-in app server is production-ready. Deploy the output of `bun run build
 ## Styling
 
 Tailwind CSS 4, configured from the token set documented in `DESIGN.md`.
+
+## License
+
+[MIT](LICENSE)
 
 ---
 

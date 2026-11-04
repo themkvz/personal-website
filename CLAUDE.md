@@ -72,11 +72,11 @@ Pre-commit hook (Husky + lint-staged) runs Biome on staged files automatically.
 
 ## Architecture
 
-A personal workbench — notes, decisions, investigations, references, and small tools — built with **React Router 7** in framework mode (SSR enabled), **React 19**, and **TypeScript**. See `DESIGN.md` for the design system (tokens, type scale, layout, component inventory).
+A personal workbench — notes, decisions, investigations, references, and small tools — built with **React Router 8** in framework mode (SSR enabled), **React 19**, and **TypeScript**. See `DESIGN.md` for the design system (tokens, type scale, layout, component inventory).
 
 ### Stack
 
-- **Routing:** React Router 7 with file-based routes (`@react-router/fs-routes`)
+- **Routing:** React Router 8 with file-based routes (`@react-router/fs-routes`)
 - **Styling:** Tailwind CSS 4, tokens defined in `src/app.css` and documented in `DESIGN.md`
 - **Components:** shadcn/ui pattern built on Base UI primitives, layered under `src/components/`
 - **Content:** MDX files under `content/`, no database or CMS — see Content Layer below

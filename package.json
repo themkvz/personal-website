@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Personal website",
   "author": "Ihor M.",
+  "license": "MIT",
   "homepage": "https://themkvz.com",
   "private": true,
   "type": "module",
@@ -11,14 +12,14 @@
     "build:sourcemaps": "SOURCEMAPS=1 react-router build",
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
-    "verify:bundle": "D=${BUNDLE_DIR:-build/client}; test -d \"$D\" || { echo \"verify:bundle: $D not found\" >&2; exit 1; }; grep -rlE 'OP_CLIENT_SECRET|env\\.server' \"$D\" && { echo \"verify:bundle: server env identifiers found in client bundle\" >&2; exit 1; }; test $? -eq 1",
+    "verify:bundle": "D=${BUNDLE_DIR:-build/client}; test -d \"$D\" || { echo \"verify:bundle: $D not found\" >&2; exit 1; }; grep -rlE 'OP_CLIENT_SECRET|FINGERPRINT_SECRET|GROWTHBOOK_CLIENT_KEY|env\\.server' \"$D\" && { echo \"verify:bundle: server env identifiers found in client bundle\" >&2; exit 1; }; test $? -eq 1",
     "typecheck": "react-router typegen && tsc",
     "prepare": "husky",
     "lint": "biome check .",
     "lint:fix": "biome check --fix .",
     "format": "biome format --write .",
     "doctor": "react-doctor .",
-    "audit": "bun audit --ignore GHSA-vfj7-8cjw-p6xm --ignore GHSA-mrhx-c7xc-m3w5 --ignore GHSA-gcqx-w48m-w2h4"
+    "audit": "bun audit --ignore GHSA-gcqx-w48m-w2h4 --ignore GHSA-g3hv-75wg-m249"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx,json,css,md}": [
@@ -70,13 +71,14 @@
     "husky": "^9.1.7",
     "lint-staged": "^17.5.0",
     "react-doctor": "^0.9.13",
-    "shadcn": "^4.21.0",
+    "shadcn": "^4.23.0",
     "tailwindcss": "^4.3.3",
     "tw-animate-css": "^1.4.0",
     "typescript": "^7.0.2",
     "vite": "^8.2.2"
   },
   "overrides": {
-    "toml": "^5.0.1"
+    "toml": "^5.0.1",
+    "glob": "^14.0.2"
   }
 }
