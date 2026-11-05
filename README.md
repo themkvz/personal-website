@@ -1,113 +1,127 @@
 # themkvz.com
 
-A personal workbench — a durable, editorial record of notes, decisions, investigations, references, and small tools. Built with **React Router 8** in framework mode (SSR), **React 19**, and **TypeScript**.
+Source code for [themkvz.com](https://themkvz.com), the personal engineering workbench of Ihor Mukovoz: technical notes, decisions, investigations, a glossary, and small tools.
 
-## Features
+**Live:** <https://themkvz.com>
 
-- 🚀 Server-side rendering
-- 📝 MDX content layer — no database, no CMS
-- 🎨 A token-driven design system (`DESIGN.md`)
-- 🔒 TypeScript by default
-- 🎉 Tailwind CSS 4
+The site is open so other developers can read how it is built. It is not a template or a library, but the content layer, SSR setup, and design system may be useful as a reference for a React Router 8 project.
 
-## Getting Started
+![Home page, light theme](docs/screenshots/home-light.png)
 
-### Installation
+<details>
+<summary>More screenshots</summary>
+
+| Dark theme | Workbench | Mobile |
+| --- | --- | --- |
+| ![Home page, dark theme](docs/screenshots/home-dark.png) | ![Workbench index](docs/screenshots/workbench-light.png) | ![Home page on a phone](docs/screenshots/home-mobile.png) |
+
+</details>
+
+## Key features
+
+- **MDX content, no database or CMS.** Every note, glossary term, tool card, and experience entry is an MDX file in [`content/`](content). Adding a file is the only publishing step.
+- **Server-side rendering.** React Router 8 in framework mode. Content bodies are rendered to HTML on the server, so no MDX body ships in the client bundle.
+- **Token-driven design system.** Tailwind CSS 4 with OKLCH tokens, documented in [`DESIGN.md`](DESIGN.md). Light, dark, and system themes, applied before first paint.
+- **Readable by machines.** Pages return Markdown when the request asks for `text/markdown`. The site also serves `llms.txt`, an RSS feed, a sitemap, `security.txt`, and an API catalog.
+
+## Architecture
+
+```mermaid
+flowchart LR
+  MDX["content/*.mdx"] -->|"valibot schema<br/>at module load"| Index["src/content/index.ts<br/>typed collections"]
+  Index --> Loaders["route loaders<br/>src/routes/"]
+  Loaders -->|"MDX → HTML<br/>bodies.server.ts"| SSR["entry.server.tsx<br/>SSR + CSP nonce"]
+  SSR -->|"Accept: text/html"| HTML["HTML page"]
+  SSR -->|"Accept: text/markdown"| MD["Markdown"]
+```
+
+Notable decisions:
+
+- **Content is code.** `import.meta.glob` builds one index per collection, and `valibot` validates every frontmatter block, so a malformed file fails the build instead of the page. Drafts (`draft: true`) are indexed only in development.
+- **File-based routes** with `@react-router/fs-routes`. Loaders read content directly; the site has no forms and no mutating actions.
+- **Layered components** with a one-way dependency direction: `layout → composites → atoms → ui → lib`. `ui/` holds vendored shadcn primitives built on Base UI.
+- **Typed environment.** `@t3-oss/env-core` with `valibot` schemas. The server refuses to start without required variables, and `verify:bundle` checks that no server secret reaches the client bundle.
+- **Security headers.** Each response gets a nonce-based, report-only Content Security Policy. Violation reports go to GlitchTip.
+- **Observability and experiments.** GlitchTip (Sentry SDK) for errors, OpenPanel for analytics, and GrowthBook for experiments. The GrowthBook payload is loaded on the server, so the browser never calls GrowthBook.
+
+Design and planning records live in [`openspec/`](openspec).
+
+## Stack
+
+| Tool | Version | Role |
+| --- | --- | --- |
+| React Router | `8.4.0` | Framework mode, SSR, file-based routes |
+| React | `19.3` | UI |
+| TypeScript | `7.0.2` | Strict type checks |
+| Tailwind CSS | `4.3.3` | Styling with design tokens |
+| Base UI | `1.8` | Accessible primitives under `src/components/ui/` |
+| MDX + valibot | `3.1` / `1.4` | Content and frontmatter validation |
+| Biome | `2.5.14` | Lint and format |
+| Bun | `1.4.4` | Package manager and test runner (`bun.lock`) |
+
+## Getting started
+
+Requires [Bun](https://bun.sh) `1.4.4`+.
 
 ```bash
 bun install
+cp .env.example .env   # fill in the values; see docs/deployment.md
+bun run dev            # http://localhost:5173
 ```
 
-### Development
+The server validates its environment at startup and stops if a required variable is missing.
+
+## Commands
+
+| Script | Behavior |
+| --- | --- |
+| `bun run dev` | Development server |
+| `bun run build` | Production build |
+| `bun start` | Serve the production build |
+| `bun run typecheck` | React Router typegen + `tsc` |
+| `bun run lint` | Biome lint and format check (`lint:fix` applies fixes) |
+| `bun run format` | Format with Biome |
+| `bun test` | Unit tests |
+| `bun run verify:bundle` | Fails if a server-only variable name is in `build/client` |
+| `bun run audit` | Dependency audit with the reviewed ignores |
+| `bun run doctor` | React Doctor diagnostics ([details](docs/diagnostics.md)) |
+
+Git hooks (Husky): **pre-commit** runs Biome on staged files through lint-staged; **pre-push** runs `bun run audit`.
+
+## Testing
 
 ```bash
-bun run dev
+bun test
 ```
 
-Your application will be available at `http://localhost:5173`.
-
-### Adding content
-
-Site content — workbench artifacts, the experience timeline, and tool cards — lives as MDX files under `content/`. Add, edit, or delete a file there and rebuild; no other step is required. See `src/content/schema.ts` for the required frontmatter per collection.
-
-### React diagnostics
+Tests cover related-content ranking, page metadata, and Markdown responses. The HTTP test for Markdown responses needs a running server and is skipped otherwise:
 
 ```bash
-bun run doctor
+MARKDOWN_TEST_ORIGIN=http://localhost:5173 bun test src/lib/markdown.server.test.ts
 ```
 
-[doctor.config.json](doctor.config.json) configures a full-project scan with detailed findings and a nonzero exit when errors are reported. Warnings remain visible. The command uses the installed React Doctor version; CLI flags override configuration values.
+## Adding content
 
-For local diagnostics without the score API, share URL, crash reporting, or dependency supply-chain checks:
+Add, edit, or delete an MDX file under `content/workbench/`, `content/glossary/`, `content/tools/`, or `content/experience/`, then rebuild. Templates are in [`content/templates/`](content/templates), and [`src/content/schema.ts`](src/content/schema.ts) defines the required frontmatter.
 
-```bash
-bun run doctor -- --no-score --no-supply-chain --yes
-```
+## Documentation
 
-This has reduced coverage: it omits the normal command's dependency supply-chain checks as well as scoring.
+- [Deployment](docs/deployment.md): environment variables, Docker, and self-hosting
+- [React diagnostics](docs/diagnostics.md): React Doctor usage and baseline history
+- [Design system](DESIGN.md): tokens, type scale, layout, and components
 
-Baseline on 2026-09-06 with React Doctor 0.9.13: the local diagnostic command scanned 82 files and reported 3 errors and 14 warnings, exiting 1. These findings are unvalidated and deferred for separate investigation; configuration does not suppress them or require a clean score.
+## Contributing
 
-## Building for Production
+This is a personal site, so pull requests with new features are not expected. Bug reports and corrections are welcome as [issues](https://github.com/themkvz/personal-website/issues). For security problems, see [`/.well-known/security.txt`](https://themkvz.com/.well-known/security.txt).
 
-```bash
-bun run build
-```
+## Credits
 
-## Deployment
-
-### Docker Deployment
-
-The canonical list of required variables is `.env.example` — copy it to `.env` and fill in the values.
-
-Three client-side variables are inlined into the browser bundle at **build time** and must be passed as `--build-arg`s. Five variables are read by the server at **container start** and must be passed as `-e`/`--env-file` — the process refuses to start if they're missing. The two GrowthBook variables are optional.
-
-| Variable | Phase | Required |
-| --- | --- | --- |
-| `VITE_OP_CLIENT_ID` | build-time (`--build-arg`) | yes |
-| `VITE_OP_API_URL` | build-time (`--build-arg`) | yes |
-| `VITE_GLITCHTIP_DSN` | build-time (`--build-arg`) | yes |
-| `OP_CLIENT_SECRET` | run-time (`-e`) | yes |
-| `FINGERPRINT_SECRET` | run-time (`-e`) | yes — at least 32 characters |
-| `VITE_OP_CLIENT_ID` | run-time (`-e`) | yes (server also validates it) |
-| `VITE_OP_API_URL` | run-time (`-e`) | yes (server also validates it) |
-| `VITE_GLITCHTIP_DSN` | run-time (`-e`) | yes (server also validates it) |
-| `GROWTHBOOK_API_HOST` | run-time (`-e`) | no — set both or neither |
-| `GROWTHBOOK_CLIENT_KEY` | run-time (`-e`) | no — set both or neither |
-| `PORT` | run-time (`-e`) | no — defaults to `3000` |
-
-```bash
-docker build \
-  --build-arg VITE_OP_CLIENT_ID=<client-id> \
-  --build-arg VITE_OP_API_URL=<api-url> \
-  --build-arg VITE_GLITCHTIP_DSN=<dsn> \
-  -t themkvz .
-
-docker run -p 3000:3000 --env-file .env themkvz
-```
-
-No `.env` file is needed (or read) at build time — `.dockerignore` excludes it from the build context. It's only used above as a convenient way to supply the run-time variables; any equivalent `-e` flags work too.
-
-### DIY Deployment
-
-The built-in app server is production-ready. Deploy the output of `bun run build`:
-
-```
-├── package.json
-├── bun.lock
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-Tailwind CSS 4, configured from the token set documented in `DESIGN.md`.
+- Fonts: [Inter](https://rsms.me/inter/) and [JetBrains Mono](https://www.jetbrains.com/lp/mono/), self-hosted from [Fontsource](https://fontsource.org/) under the SIL Open Font License.
+- Icons: [Lucide](https://lucide.dev/) (ISC) and [Simple Icons](https://simpleicons.org/) (CC0). Brand logos belong to their owners.
+- Design: made in [pen.dev](https://pen.dev/) (`design/*.pen`).
+- AI assistance: the code was written with help from AI coding tools. The writing in `content/` is my own, edited with AI for grammar and structure. The social preview image (`public/dottt.webp`) was generated with AI. The hero shader was made without AI.
 
 ## License
 
-[MIT](LICENSE)
-
----
-
-Built with ❤️ using React Router.
+- Code: [MIT](LICENSE) © Ihor Mukovoz
+- Writing in [`content/`](content): [CC BY 4.0](content/LICENSE.md)
