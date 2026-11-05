@@ -4,7 +4,7 @@ Source code for [themkvz.com](https://themkvz.com), the personal engineering wor
 
 **Live:** <https://themkvz.com>
 
-The site is open so other developers can read how it is built. It is not a template or a library, but the content layer, SSR setup, and design system may be useful as a reference for a React Router 8 project.
+The repository is public as a reference for React Router 8 projects, mainly the content layer, SSR setup, and design system. It is a personal site and is not packaged as a template or a library.
 
 ![Home page, light theme](docs/screenshots/home-light.png)
 
@@ -37,10 +37,10 @@ flowchart LR
 
 Notable decisions:
 
-- **Content is code.** `import.meta.glob` builds one index per collection, and `valibot` validates every frontmatter block, so a malformed file fails the build instead of the page. Drafts (`draft: true`) are indexed only in development.
+- **Validated content at build time.** `import.meta.glob` builds one index per collection, and `valibot` validates every frontmatter block, so a malformed file fails the build instead of the page. Drafts (`draft: true`) are indexed only in development.
 - **File-based routes** with `@react-router/fs-routes`. Loaders read content directly; the site has no forms and no mutating actions.
 - **Layered components** with a one-way dependency direction: `layout → composites → atoms → ui → lib`. `ui/` holds vendored shadcn primitives built on Base UI.
-- **Typed environment.** `@t3-oss/env-core` with `valibot` schemas. The server refuses to start without required variables, and `verify:bundle` checks that no server secret reaches the client bundle.
+- **Typed environment.** `@t3-oss/env-core` with `valibot` schemas. The server does not start without the required variables, and `verify:bundle` checks that no server secret reaches the client bundle.
 - **Security headers.** Each response gets a nonce-based, report-only Content Security Policy. Violation reports go to GlitchTip.
 - **Observability and experiments.** GlitchTip (Sentry SDK) for errors, OpenPanel for analytics, and GrowthBook for experiments. The GrowthBook payload is loaded on the server, so the browser never calls GrowthBook.
 
@@ -112,14 +112,14 @@ Add, edit, or delete an MDX file under `content/workbench/`, `content/glossary/`
 
 ## Contributing
 
-This is a personal site, so pull requests with new features are not expected. Bug reports and corrections are welcome as [issues](https://github.com/themkvz/personal-website/issues). For security problems, see [`/.well-known/security.txt`](https://themkvz.com/.well-known/security.txt).
+This is a personal site, so feature pull requests are out of scope. Please report bugs and corrections as [issues](https://github.com/themkvz/personal-website/issues). For security problems, see [`/.well-known/security.txt`](https://themkvz.com/.well-known/security.txt).
 
 ## Credits
 
 - Fonts: [Inter](https://rsms.me/inter/) and [JetBrains Mono](https://www.jetbrains.com/lp/mono/), self-hosted from [Fontsource](https://fontsource.org/) under the SIL Open Font License.
 - Icons: [Lucide](https://lucide.dev/) (ISC) and [Simple Icons](https://simpleicons.org/) (CC0). Brand logos belong to their owners.
 - Design: made in [pen.dev](https://pen.dev/) (`design/*.pen`).
-- AI assistance: the code was written with help from AI coding tools. The writing in `content/` is my own, edited with AI for grammar and structure. The social preview image (`public/dottt.webp`) was generated with AI. The hero shader was made without AI.
+- AI use: Ihor Mukovoz wrote the code with AI coding assistants. The writing in `content/` is original, with AI used to edit grammar and structure. The social preview image (`public/dottt.webp`) is AI-generated. The hero shader (`design/hero-pixel-signal.glsl`) involved no AI.
 
 ## License
 
