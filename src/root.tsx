@@ -48,7 +48,7 @@ const themeInitScript = `
 
 export const links: Route.LinksFunction = () => [
   { rel: "icon", href: "/favicon.ico" },
-  { rel: "apple-touch-icon", href: "/apple-store.svg" },
+  { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
   { rel: "manifest", href: "/site.webmanifest" },
   { rel: "author", href: "/humans.txt" },
   {
