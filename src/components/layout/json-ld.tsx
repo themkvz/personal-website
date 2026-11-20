@@ -3,7 +3,11 @@ export function JsonLd({ data }: { data: Record<string, unknown> }) {
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{
-        __html: JSON.stringify({ "@context": "https://schema.org", ...data }),
+        // "<" as a JSON escape, so a value cannot close the script element.
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          ...data,
+        }).replace(/</g, "\\u003c"),
       }}
     />
   );
