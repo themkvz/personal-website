@@ -146,6 +146,8 @@ export default function handleRequest(
           // reject and get logged in handleDocumentRequest.
           if (shellRendered) {
             console.error(error);
+            // `handleError` never sees these, so report here, with its guard.
+            if (!request.signal.aborted) Sentry.captureException(error);
           }
         },
       },
