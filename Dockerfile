@@ -28,7 +28,10 @@ RUN test -n "$VITE_OP_CLIENT_ID" && test -n "$VITE_OP_API_URL" && test -n "$VITE
 RUN bun run typecheck && bun test && bun run build && bun run verify:bundle
 
 # Production image
-FROM node:24-alpine
+FROM node:26-alpine
+RUN apk upgrade --no-cache && \
+  rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack /opt/yarn* \
+    /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/yarn /usr/local/bin/yarnpkg /usr/local/bin/corepack
 WORKDIR /app
 COPY --from=prod-deps /app/node_modules ./node_modules
 COPY --from=build /app/build ./build
