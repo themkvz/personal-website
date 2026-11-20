@@ -10,7 +10,8 @@ RUN bun install --frozen-lockfile --ignore-scripts
 FROM oven/bun:1-alpine AS prod-deps
 WORKDIR /app
 COPY bun.lock package.json ./
-RUN bun install --frozen-lockfile --production --ignore-scripts
+RUN bun install --frozen-lockfile --production --ignore-scripts && \
+  rm -rf node_modules/typescript node_modules/@typescript node_modules/.bin/tsc
 
 # Build the application
 FROM base AS build
