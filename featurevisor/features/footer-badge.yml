@@ -14,4 +14,4 @@ variations:
 rules:
   - key: everyone
     conditions: "*"
-    percentage: 0
+    percentage: 100

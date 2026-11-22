@@ -40,9 +40,9 @@ function makeFixtureDatafile(percentage: number): Datafile {
 }
 
 describe("Featurevisor evaluation and OpenPanel exposure bridge", () => {
-  it("returns fallback and no exposure when rollout is 0% in the compiled datafile", () => {
+  it("returns fallback and no exposure when rollout is 0%", () => {
     const sdk = createFeaturevisor({
-      datafile: defaultDatafile as unknown as Datafile,
+      datafile: makeFixtureDatafile(0),
       context: { id: "visitor-a" },
     });
 

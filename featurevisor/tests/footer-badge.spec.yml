@@ -1,9 +1,18 @@
 feature: footer-badge
 
 assertions:
-  - key: rollout-gated
-    description: Everyone is out while the rollout is at 0%
-    at: 99
+  - key: control-band
+    description: Visitors in the first half of traffic get the control footer
+    at: 25
     context:
       id: "visitor-1"
-    expectedToBeEnabled: false
+    expectedToBeEnabled: true
+    expectedVariation: control
+
+  - key: treatment-band
+    description: Visitors in the second half of traffic get the BETA badge
+    at: 75
+    context:
+      id: "visitor-1"
+    expectedToBeEnabled: true
+    expectedVariation: treatment

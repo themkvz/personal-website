@@ -20,10 +20,26 @@
         {
           "key": "everyone",
           "conditions": "*",
-          "percentage": 0
+          "percentage": 100000,
+          "allocation": [
+            {
+              "variation": "control",
+              "range": [
+                0,
+                50000
+              ]
+            },
+            {
+              "variation": "treatment",
+              "range": [
+                50000,
+                100000
+              ]
+            }
+          ]
         }
       ],
-      "hash": "DuNEhFoV1D"
+      "hash": "LxX841Ko0x"
     },
     "hero-primary-cta": {
       "bucketBy": "id",
