@@ -121,10 +121,10 @@ export const Home = {
     },
     {
       phase: "DURING THE RENDER",
-      name: "GrowthBook",
-      role: "Feature flags and experiment assignment, resolved on the server before the document is sent.",
+      name: "Featurevisor",
+      role: "Feature flags and experiment assignment, defined in version control and resolved on the server before the document is sent.",
       consequence:
-        "The first paint is already the assigned variant. Nothing flickers from a default to a treatment once the page wakes up.",
+        "The first paint is already the assigned variant with no external flag service in the request path. Nothing flickers from a default to a treatment once the page wakes up.",
     },
     {
       phase: "AFTER THE CLICK",

@@ -1,0 +1,22 @@
+variable: supportEmail
+
+assertions:
+  - key: nl
+    description: Dutch shoppers reach the local support desk
+    context:
+      country: nl
+    expectedValue: support-nl@example.com
+    expectedEvaluation:
+      reason: variable_override_rule
+      variableOverrideKey: netherlands
+
+  - key: default
+    description: Everyone else gets the default
+    context:
+      country: us
+    expectedValue: support@example.com
+    checks:
+      - key: trusted-domain
+        description: Every support address stays on our domain
+        operator: matches
+        value: "@example\\.com$"

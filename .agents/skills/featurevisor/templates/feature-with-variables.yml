@@ -1,0 +1,66 @@
+description: <Feature with variables (remote config)>
+
+bucketBy: userId
+
+variablesSchema:
+  colour:
+    type: string
+    description: Buy button colour
+    defaultValue: "#111827"
+
+  showBadge:
+    type: boolean
+    defaultValue: false
+
+  maxItems:
+    type: integer
+    defaultValue: 10
+
+  paymentMethods:
+    type: array
+    items:
+      type: string
+    defaultValue:
+      - card
+      - paypal
+
+  hero:
+    type: object
+    properties:
+      title: { type: string }
+      subtitle: { type: string }
+    required: [title, subtitle]
+    defaultValue:
+      title: Welcome
+      subtitle: Welcome to our site
+    # When the feature flag is disabled, choose:
+    # useDefaultWhenDisabled: true        # return defaultValue
+    # disabledValue: { title: '', subtitle: '' }
+
+# Optional: A/B test variations that override variable values
+# variations:
+#   - value: control
+#     weight: 50
+#   - value: treatment
+#     weight: 50
+#     variables:
+#       colour: '#2563eb'
+#       "hero.subtitle": Welcome to the new design   # a mutation key, quoted
+
+# With environments configured, nest this list under each environment key.
+rules:
+  - key: nl
+    conditions: netherlands
+    percentage: 100
+    variables:
+      colour: "#047857"
+      "hero.subtitle": Welkom op onze site # a mutation: only this property, with a quoted key
+    variableOverrides:
+      colour:
+        - key: amsterdam
+          conditions: amsterdam
+          value: "#b91c1c"
+
+  - key: everyone
+    conditions: "*"
+    percentage: 0

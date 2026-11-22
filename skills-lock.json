@@ -1,16 +1,23 @@
 {
-  "version": 1,
+  "version": 2,
   "skills": {
+    "featurevisor": {
+      "source": "featurevisor/featurevisor",
+      "commit": "fcc202c3049f498f4735649436a891fbea44c0be",
+      "sourceType": "github",
+      "skillPath": "skills/featurevisor/SKILL.md",
+      "computedHash": "5cd99685a35a4a682c1455edc7a4c2af26acc2a24d9070fd89cc876da826562a"
+    },
     "open-pencil": {
       "source": "open-pencil/skills",
       "sourceType": "github",
       "skillPath": "skills/open-pencil/SKILL.md",
-      "computedHash": "766bbb63952479cbcccb704a8b9e9c2f1f5b6e55138a3967949cd030e563ee84"
+      "computedHash": ""
     },
     "seo-audit": {
       "source": "coreyhaines31/marketingskills",
       "sourceType": "github",
-      "computedHash": "6bd4cde58bb701b5dc90a0fae2f0ea3efc7c3e6fd2ae754083fa659930e7d39f"
+      "computedHash": "c6d8be9089582f0523695f237ebb5659e2708c1909860364c0283d2d83b20721"
     }
   }
 }

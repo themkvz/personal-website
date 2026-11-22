@@ -1,0 +1,8 @@
+description: Account plan
+
+type: string
+
+enum:
+  - free
+  - paid
+  - enterprise

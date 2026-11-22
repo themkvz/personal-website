@@ -1,0 +1,9 @@
+feature: footer-badge
+
+assertions:
+  - key: rollout-gated
+    description: Everyone is out while the rollout is at 0%
+    at: 99
+    context:
+      id: "visitor-1"
+    expectedToBeEnabled: false

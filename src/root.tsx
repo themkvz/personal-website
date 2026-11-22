@@ -18,8 +18,7 @@ import { NotFound } from "~/components/layout/not-found";
 import { NotFound as NotFoundCopy, Site } from "~/constants";
 import { NonceContext } from "~/context/nonce";
 import { userContext } from "~/context/user";
-import { getFeaturePayload } from "~/lib/growthbook/payload.server";
-import { ExperimentProvider } from "~/lib/growthbook/provider";
+import { ExperimentProvider } from "~/lib/featurevisor/provider";
 import { identifyVisitor } from "~/lib/openpanel/useOpenPanel";
 import { getStoredTheme, resolveTheme } from "~/lib/theme";
 import { useThemeStore } from "~/store/theme";
@@ -62,17 +61,13 @@ export const middleware = [identityMiddleware];
 
 export async function loader({ context }: Route.LoaderArgs) {
   const fingerprint = context.get(userContext).fingerprint;
-  // Only the decrypted, browser-safe SDK payload crosses the wire: the API host
-  // and client key stay in the server module that fetched it.
-  const features = await getFeaturePayload();
-  return data({ fingerprint, features });
+  return data({ fingerprint });
 }
 
 /**
- * Neither the fingerprint nor the feature snapshot changes within a visit, and
- * re-running this loader would hand the provider a new payload object on every
- * navigation — resetting the GrowthBook instance and, with it, the SDK's
- * once-per-experiment tracking. A reload picks up fresh definitions.
+ * The visitor fingerprint does not change within a visit, and re-running this
+ * loader on every navigation is unnecessary while the compiled datafile is
+ * already bundled with the application.
  */
 export const shouldRevalidate = () => false;
 
@@ -113,7 +108,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App({ loaderData }: Route.ComponentProps) {
-  const { fingerprint, features } = loaderData;
+  const { fingerprint } = loaderData;
   useEffect(() => {
     // The SDK skips an identify carrying only a profile id, so the profile row
     // is written only because of this second field.
@@ -121,7 +116,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
   }, [fingerprint]);
 
   return (
-    <ExperimentProvider payload={features} fingerprint={fingerprint}>
+    <ExperimentProvider fingerprint={fingerprint}>
       <NuqsAdapter>
         <div className="flex min-h-screen flex-col">
           <Nav />
@@ -139,16 +134,14 @@ export function ErrorBoundary({ error, loaderData }: Route.ErrorBoundaryProps) {
   const isNotFound = isRouteErrorResponse(error) && error.status === 404;
   // A child route's loader threw (the common case, e.g. an unknown slug) but
   // the root loader still ran, so its data is available here. Only a failure
-  // in the root loader itself leaves this undefined; fall back to the same
-  // empty payload `getFeaturePayload` returns when GrowthBook is unreachable,
-  // so `Footer`'s experiment hook has a provider to read from either way.
-  const { fingerprint, features } = loaderData ?? {
+  // in the root loader itself leaves this undefined; fall back to an empty
+  // fingerprint so `Footer`'s experiment hook still has a provider to read.
+  const { fingerprint } = loaderData ?? {
     fingerprint: "",
-    features: {},
   };
 
   return (
-    <ExperimentProvider payload={features} fingerprint={fingerprint}>
+    <ExperimentProvider fingerprint={fingerprint}>
       <div className="flex min-h-screen flex-col">
         <Nav />
         <main className="flex-1">

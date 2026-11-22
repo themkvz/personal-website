@@ -30,6 +30,8 @@ Keep changes minimal, match existing patterns, and prefer clarity.
 
 ### Tests
 - Run Markdown negotiation and conversion tests: `bun test src/lib/markdown.server.test.ts`.
+- Run Featurevisor evaluation and exposure tests: `bun test src/lib/featurevisor/featurevisor.test.ts`.
+- Run Featurevisor CLI checks: `bun run flags:lint`, `bun run flags:test`, `bun run flags:build`.
 - Include HTTP checks against a running server: `MARKDOWN_TEST_ORIGIN=http://localhost:5173 bun test src/lib/markdown.server.test.ts`.
 - If you add tests, document a per-test command here.
 - Example to add later: `bun run test -- <pattern>` (adjust to runner).
@@ -99,7 +101,8 @@ Keep changes minimal, match existing patterns, and prefer clarity.
 - `src/content/`            Content schemas and the derived index
 - `content/`                MDX content files
 - `src/lib/`                Utilities, analytics, meta helpers
-- `src/lib/growthbook/`     Server feature snapshot and the React provider
+- `src/lib/featurevisor/`   Compiled Featurevisor datafile, React provider, and experiment hooks
+- `featurevisor/`           Declarative Featurevisor attributes, features, targets, and test specs
 
 ## Tooling Rules
 
@@ -118,7 +121,6 @@ Keep changes minimal, match existing patterns, and prefer clarity.
 ### Server env vars (see `src/env.server.ts`)
 - `NODE_ENV`, `OP_CLIENT_SECRET`, `VITE_OP_CLIENT_ID`, `VITE_OP_API_URL` (OpenPanel credentials) are required.
 - `VITE_GLITCHTIP_DSN` (GlitchTip error tracking) is required at build time and run time. The CSP report endpoint is derived from it — do not add a second variable.
-- `GROWTHBOOK_API_HOST` and `GROWTHBOOK_CLIENT_KEY` (GrowthBook SDK connection) are optional — set both or neither. Server-only: the browser evaluates the payload the root loader serializes and never calls GrowthBook. Unset, every `useFeatureValue` / `useFeatureIsOn` returns its fallback.
 - Do not commit secrets; keep `.env` out of git.
 - Use local `.env` or `.env.local` for development only.
 

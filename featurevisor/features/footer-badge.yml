@@ -1,0 +1,17 @@
+description: Show a BETA badge beside the site name in the footer
+
+bucketBy: id
+
+variations:
+  - value: control
+    description: Footer without BETA badge
+    weight: 50
+
+  - value: treatment
+    description: Footer with BETA badge
+    weight: 50
+
+rules:
+  - key: everyone
+    conditions: "*"
+    percentage: 0

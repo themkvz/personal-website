@@ -1,0 +1,43 @@
+# A scenario checks several definitions together. It has root `checks`
+# instead of a feature, segment or variable owner.
+description: Maintenance mode switches off checkout and everything built on it
+
+at: 5
+
+context:
+  userId: test-user-nl
+  country: nl
+
+# Pretend the kill switch is on, without editing variables/maintenanceMode.yml.
+stickyVariables:
+  maintenanceMode: true
+
+checks:
+  - feature: checkout
+    key: checkout-off
+    description: The root gate disables checkout
+    enabled: false
+
+  - variable: checkoutPromoBanner
+    key: no-promo
+    description: The promo banner falls back to its disabledValue
+    operator: equals
+    value: ""
+
+  - variable: checkoutView
+    key: view-reports-off
+    description: The composed view reports checkout as disabled
+    path: enabled
+    operator: equals
+    value: false
+
+children:
+  - description: QA keeps access, because force entries run before the root gate
+    context:
+      userId: u_qa_1
+    stickyVariables:
+      maintenanceMode: true
+    checks:
+      - feature: checkout
+        enabled: true
+        variation: treatment

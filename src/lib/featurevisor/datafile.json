@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "4",
+  "featurevisorVersion": "4.12.0",
+  "revision": "1",
+  "segments": {},
+  "features": {
+    "footer-badge": {
+      "bucketBy": "id",
+      "variations": [
+        {
+          "value": "control",
+          "weight": 50
+        },
+        {
+          "value": "treatment",
+          "weight": 50
+        }
+      ],
+      "traffic": [
+        {
+          "key": "everyone",
+          "conditions": "*",
+          "percentage": 0
+        }
+      ],
+      "hash": "DuNEhFoV1D"
+    }
+  },
+  "variables": {}
+}

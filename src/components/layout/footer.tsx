@@ -4,12 +4,12 @@ import { Container } from "~/components/layout/container";
 import { Nav as NavData, Site } from "~/constants";
 import {
   EXPERIMENTS,
-  useExperimentIsOn,
-} from "~/lib/growthbook/useExperiments";
+  useExperimentValue,
+} from "~/lib/featurevisor/useExperiments";
 import { cn } from "~/lib/utils";
 
 export function Footer() {
-  const hasBadge = useExperimentIsOn(EXPERIMENTS.FOOTER_BADGE);
+  const hasBadge = useExperimentValue(EXPERIMENTS.FOOTER_BADGE);
 
   return (
     <footer className="border-t border-border">

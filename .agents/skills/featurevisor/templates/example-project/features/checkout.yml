@@ -1,0 +1,89 @@
+description: New checkout flow with an A/B test and configurable payment methods
+
+# Signed-in users keep their result across devices through userId.
+# Anonymous visitors fall back to deviceId.
+bucketBy:
+  or:
+    - userId
+    - deviceId
+
+# Root gate. While the maintenanceMode global variable is true, checkout is
+# disabled for everyone with reason conditions_unmet. Force entries are checked
+# before this gate, so QA keeps access during maintenance.
+conditions:
+  - variable: maintenanceMode
+    operator: equals
+    value: false
+
+variablesSchema:
+  paymentMethods:
+    type: array
+    items:
+      type: string
+    defaultValue:
+      - creditCard
+      - paypal
+      - applePay
+      - googlePay
+
+  allowDiscountCode:
+    type: boolean
+    defaultValue: false
+
+  hero:
+    type: object
+    properties:
+      title:
+        type: string
+      subtitle:
+        type: string
+    required:
+      - title
+      - subtitle
+    defaultValue:
+      title: Checkout
+      subtitle: Pay securely
+
+variations:
+  - value: control
+    description: Existing checkout
+    weight: 50
+
+  - value: treatment
+    description: New checkout with a redesigned hero
+    weight: 50
+    variables:
+      # Mutation key: changes one property and keeps the rest of the object.
+      hero.subtitle: Faster, simpler checkout
+
+# QA always sees the treatment, whatever the rollout percentage.
+# With environments configured, nest each force and rules list under its environment key.
+force:
+  - conditions: qa
+    enabled: true
+    variation: treatment
+
+rules:
+  - key: nl
+    description: The Netherlands gets local payment methods
+    conditions: countries.netherlands
+    percentage: 100
+    variables:
+      paymentMethods:
+        - paypal
+        - ideal
+      allowDiscountCode: true
+    # Narrow a value within the rule. The first matching override wins.
+    variableOverrides:
+      allowDiscountCode:
+        - key: free-plan
+          conditions:
+            - attribute: plan
+              operator: equals
+              value: free
+          value: false
+
+  - key: everyone
+    description: General rollout. Raise the percentage over time and keep the key.
+    conditions: "*"
+    percentage: 10

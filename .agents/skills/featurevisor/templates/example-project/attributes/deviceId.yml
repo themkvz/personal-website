@@ -1,0 +1,3 @@
+description: Anonymous device ID, generated and persisted by the client
+
+type: string

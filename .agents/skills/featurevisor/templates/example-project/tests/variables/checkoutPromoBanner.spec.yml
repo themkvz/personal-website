@@ -1,0 +1,22 @@
+variable: checkoutPromoBanner
+
+# Global variables are never bucketed. `at` fixes the bucket only for
+# features read through conditions, here checkout.
+assertions:
+  - key: checkout-on
+    description: Shown while checkout is enabled for this user
+    at: 5
+    context:
+      userId: shopper_1
+      country: us
+    expectedValue: Free returns on every order
+
+  - key: checkout-off
+    description: Falls back to disabledValue when checkout is disabled
+    at: 50
+    context:
+      userId: shopper_1
+      country: us
+    expectedValue: ""
+    expectedEvaluation:
+      reason: conditions_unmet

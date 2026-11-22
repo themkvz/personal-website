@@ -1,0 +1,775 @@
+# Recipes
+
+Patterns for what people most often build with Featurevisor. Each section stands alone: read the one that matches the request, then adapt it to the project's attribute names, segments and environments.
+
+Source guides: [Progressive delivery](https://featurevisor.com/docs/use-cases/progressive-delivery/), [Experiments](https://featurevisor.com/docs/use-cases/experiments/), [Remote configuration](https://featurevisor.com/docs/use-cases/remote-configuration/), [Entitlements](https://featurevisor.com/docs/use-cases/entitlements/), [Dependencies](https://featurevisor.com/docs/use-cases/dependencies/), [Scheduled releases](https://featurevisor.com/docs/use-cases/scheduled-releases/), [Kill switches](https://featurevisor.com/docs/use-cases/kill-switches/) and [Early access](https://featurevisor.com/docs/use-cases/early-access/).
+
+Recipes use the default scaffold: direct lists for `rules`, `force` and `overrides`, and no `environment` in tests. With environments configured, put each list under its environment key.
+
+| Recipe                                                                      | When                                                 |
+| --------------------------------------------------------------------------- | ---------------------------------------------------- |
+| [Gradual rollout](#gradual-rollout)                                         | a flag ramped from 1% to 100%                        |
+| [A/B test](#ab-test)                                                        | control against one treatment                        |
+| [Multivariate test](#multivariate-test)                                     | several variations changing variables                |
+| [Mutually exclusive experiments](#mutually-exclusive-experiments)           | experiments that must not overlap                    |
+| [Feature dependencies](#feature-dependencies)                               | one feature requires another                         |
+| [Remote configuration](#remote-configuration)                               | typed values changed without a release               |
+| [One read for a screen](#one-read-for-a-screen)                             | an object assembled from several flags and values    |
+| [Rename a global variable](#rename-a-global-variable)                       | change a key without breaking consumers              |
+| [Kill switch](#kill-switch)                                                 | switch something off during an incident              |
+| [Testing in production](#testing-in-production)                             | QA sees a feature real users do not                  |
+| [Staged rollout](#staged-rollout)                                           | employees, then beta users, then everyone            |
+| [Early access](#early-access)                                               | customers who opt in get features first              |
+| [Scheduled releases and time windows](#scheduled-releases-and-time-windows) | launch at a time, or for a period                    |
+| [App version gate](#app-version-gate)                                       | only builds that contain the code                    |
+| [Entitlements](#entitlements)                                               | capabilities per plan, with grants                   |
+| [Role based access](#role-based-access)                                     | features for some roles                              |
+| [Backend migration](#backend-migration)                                     | ramp traffic from an old implementation to a new one |
+| [Deprecating a feature](#deprecating-a-feature)                             | wind a flag down safely                              |
+| [Cleaning up stale flags](#cleaning-up-stale-flags)                         | retire flags that finished their job                 |
+| [Trunk based development](#trunk-based-development)                         | merge unfinished work behind 0% flags                |
+| [Microfrontends](#microfrontends)                                           | one datafile per frontend                            |
+| [Establishing ownership](#establishing-ownership)                           | require the right reviewers                          |
+
+---
+
+## Gradual rollout
+
+```yaml
+description: Wishlist on product pages
+
+bucketBy: userId
+
+rules:
+  - key: everyone
+    conditions: '*'
+    percentage: 1
+```
+
+- Raise `percentage` over time and keep the key. Users already in stay in.
+- Lowering it takes users out, so warn before doing so.
+- Suggest agreeing before the first step what to watch at each one, such as errors and completed orders, and what makes the team stop. Each later pull request is then a routine call.
+- To target an audience first, add a rule **above** the catch-all rather than changing it:
+
+```yaml
+rules:
+  - key: nl
+    conditions: netherlands
+    percentage: 100
+
+  - key: everyone
+    conditions: '*'
+    percentage: 1
+```
+
+---
+
+## A/B test
+
+```yaml
+description: Hero copy experiment
+
+bucketBy: userId
+
+variations:
+  - value: control
+    weight: 50
+  - value: treatment
+    weight: 50
+
+rules:
+  - key: everyone
+    conditions: '*'
+    percentage: 100
+```
+
+```js
+const context = {
+  userId: '8f2a',
+}
+
+const variation = f.getVariation('heroCopy', context)
+
+if (variation === 'treatment') {
+  renderNewHero()
+} else {
+  renderHero()
+}
+```
+
+Record exposure with a [tracking module](tracking.md). Do not rename variation values after launch, because analytics joins on them. Test each variation with `at` inside its weight range: `at: 25` for control, `at: 75` for treatment.
+
+Before it starts, help the user write down the outcome it should move and how long it runs, since deciding afterwards makes any difference easy to find and hard to trust. To let the people who wrote the copy see each version in production first, give a test device a `force` entry with `variation: treatment`. Forced results are not counted by the tracking module.
+
+---
+
+## Multivariate test
+
+Variables let one experiment change several things without a code branch per combination:
+
+```yaml
+description: Hero multivariate test
+
+bucketBy: deviceId
+
+variablesSchema:
+  headline:
+    type: string
+    defaultValue: Welcome to our site
+  ctaText:
+    type: string
+    defaultValue: Learn more
+
+variations:
+  - value: control
+    weight: 25
+  - value: newCta
+    weight: 25
+    variables:
+      ctaText: Get started
+  - value: newHeadline
+    weight: 25
+    variables:
+      headline: Hello there
+  - value: both
+    weight: 25
+    variables:
+      headline: Hello there
+      ctaText: Get started
+
+rules:
+  - key: everyone
+    conditions: '*'
+    percentage: 100
+```
+
+The application reads `f.getVariable('hero', 'headline', context)` and `f.getVariable('hero', 'ctaText', context)` without branching on the variation. The copy now lives in the feature, so its owner can change the words in a pull request without an application release. Change them between tests, not during one, or the results mix two versions.
+
+---
+
+## Mutually exclusive experiments
+
+A shared allocation feature at 100% divides users into cohorts, and each experiment requires its cohort in root `conditions`:
+
+```yaml
+conditions:
+  - feature: experimentAllocation
+    variation: first
+```
+
+Complete definitions, priority exclusion and tests: [mutual-exclusion.md](mutual-exclusion.md).
+
+---
+
+## Feature dependencies
+
+```yaml
+description: File upload inside chat
+
+bucketBy: userId
+
+conditions:
+  - feature: liveChat
+
+rules:
+  - key: everyone
+    conditions: '*'
+    percentage: 100
+```
+
+`chatFileUpload` is disabled whenever `liveChat` is, with reason `conditions_unmet`, so switching `liveChat` off switches off both in one change. Require a variation with `variation: treatment`, or require a feature to be off with `enabled: false`. Lint rejects cycles. Keep prerequisites exposed. See [conditions.md](conditions.md).
+
+---
+
+## Remote configuration
+
+When a value belongs to no single feature, such as a support address or a retry limit, make it a [global variable](global-variables.md):
+
+```yaml
+description: Maximum items in the cart
+
+type: integer
+
+defaultValue: 50
+
+overrides:
+  - key: paying
+    conditions: payingAccounts
+    value: 200
+```
+
+When the value belongs to a feature, follows its variations, or needs a percentage rollout, use feature variables:
+
+```yaml
+description: Checkout configuration
+
+bucketBy: userId
+
+variablesSchema:
+  paymentMethods:
+    type: array
+    defaultValue: [card, paypal]
+    useDefaultWhenDisabled: true
+  allowDiscountCode:
+    type: boolean
+    defaultValue: false
+    useDefaultWhenDisabled: true
+
+rules:
+  - key: nl
+    conditions: netherlands
+    percentage: 100
+    variables:
+      paymentMethods: [ideal, paypal]
+      allowDiscountCode: true
+
+  - key: everyone
+    conditions: '*'
+    percentage: 100
+```
+
+`useDefaultWhenDisabled` keeps consumers from getting `null` if the feature is ever disabled.
+
+---
+
+## One read for a screen
+
+A screen that reads a flag, a variation and several values can read one composed object instead:
+
+```yaml
+description: Everything the checkout page reads
+
+compose:
+  enabled: { feature: checkout }
+  pricing: { feature: pricing, variation: true }
+  label: { feature: buyButton, variable: label }
+  support: { variable: supportEmail }
+```
+
+```js
+const view = f.getVariableObject('checkoutView', context)
+// { enabled: true, pricing: 'control', label: 'Buy', support: 'support@example.com' }
+```
+
+Every member is evaluated on each read, so reading it exposes the user to every experiment it references. Compose only values the screen always uses. Requires v4 SDKs in every consumer. Details: [global-variables.md](global-variables.md#compose-values).
+
+---
+
+## Rename a global variable
+
+Move the definition to the new key and leave an alias at the old one:
+
+```yaml
+# variables/supportEmail.yml, the old key
+description: Previous key, use contactEmail
+
+compose: contactEmail
+
+deprecated: true
+```
+
+Applications reading `supportEmail` keep working and log deprecation diagnostics. Update them to `contactEmail`, then archive the alias once `npx featurevisor find-usage --variable=supportEmail` and a search of application code find nothing.
+
+Features cannot be renamed this way. A feature rename changes every bucket key and is a new feature for analytics. Create the new feature, migrate callers, then deprecate the old one.
+
+---
+
+## Kill switch
+
+Full guide: <https://featurevisor.com/docs/use-cases/kill-switches/>
+
+Two shapes. A **flag** around a risky path, normally at 100%:
+
+```yaml
+description: Route payments through Provider X. Set the percentage to 0 to fall back.
+
+bucketBy: userId
+
+rules:
+  - key: everyone
+    conditions: '*'
+    percentage: 100
+```
+
+```js
+if (f.isEnabled('paymentsProviderX', context)) {
+  payWithProviderX()
+} else {
+  payWithFallback()
+}
+```
+
+Or a **global variable** that switches off several features at once:
+
+```yaml
+# variables/maintenanceMode.yml
+description: Set to true to switch off checkout and everything built on it
+
+type: boolean
+
+defaultValue: false
+```
+
+```yaml
+# in each affected feature
+conditions:
+  - variable: maintenanceMode
+    operator: equals
+    value: false
+```
+
+Compare with `false` rather than wrapping `true` in `not`. A missing switch then keeps the features off rather than on, and lint refuses to archive the switch while a feature still depends on it. Force entries still apply during maintenance, so QA keeps access. To switch off one market only, give `maintenanceMode` an override such as `conditions: netherlands` with `value: true`. Test it in each feature's spec with `stickyVariables: { maintenanceMode: true }` and `expectedToBeEnabled: false`, or in one scenario that checks every affected feature ([testing.md](testing.md#scenarios)).
+
+- Keep kill switches boring: no variations or variables.
+- Lowering to 0 is fine here. The warnings about moving users protect experiments, and an infrastructure switch has no experience to preserve.
+- Propagation takes merge, CI build and deploy, then the cache in front of the datafiles, then each application's next refresh. If minutes matter, keep the cache short and refresh often or when told by a deployment message ([sdk-javascript.md](sdk-javascript.md#set-and-refresh-the-datafile)). Mobile apps usually fetch when they open or return to the foreground.
+- State the emergency procedure in the `description`.
+- Suggest deciding in advance who can approve a switch out of hours, and rehearsing it in staging while timing how long it takes to land.
+
+---
+
+## Testing in production
+
+QA exercises a feature that is at 0% for everyone else:
+
+```yaml
+# segments/qa.yml
+description: QA team
+
+conditions:
+  or:
+    - attribute: userId
+      operator: in
+      value: [u_qa_1, u_qa_2]
+    - attribute: deviceId
+      operator: in
+      value: [dev_qa_1, dev_qa_2]
+```
+
+```yaml
+force:
+  - conditions: qa
+    enabled: true
+    variation: treatment
+
+rules:
+  - key: everyone
+    conditions: '*'
+    percentage: 0
+```
+
+Once QA signs off, raise the percentage. For one user, use an attribute leaf in the force `conditions` instead of a segment. Anyone who should see a launch before customers do, such as a product manager signing it off or a marketing team preparing its announcement, can use the same test accounts. Use dedicated test accounts, not employees' own, since a browser datafile shows the IDs listed.
+
+---
+
+## Staged rollout
+
+Employees, then opted-in beta users, then everyone. First match wins, so the order expresses the stages:
+
+```yaml
+rules:
+  - key: employees
+    conditions: employees
+    percentage: 100
+
+  - key: beta
+    conditions: betaUsers
+    percentage: 100
+
+  - key: everyone
+    conditions: '*'
+    percentage: 0
+```
+
+```yaml
+# segments/employees.yml
+description: Employees, by email domain
+
+conditions:
+  - attribute: email
+    operator: endsWith
+    value: '@yourcompany.com'
+```
+
+Each stage has its own stable key, so ramping `everyone` never disturbs the earlier stages. `email` and `betaOptIn` must be declared attributes that the application passes. For a customer programme on its own, see [Early access](#early-access).
+
+---
+
+## Early access
+
+Full guide: <https://featurevisor.com/docs/use-cases/early-access/>
+
+Customers who opt in, such as from a setting in their account, get features before everyone else:
+
+```yaml
+# attributes/earlyAccess.yml
+description: The user joined the early access programme
+
+type: boolean
+```
+
+```yaml
+# segments/earlyAdopters.yml
+description: Users in the early access programme
+
+conditions:
+  - attribute: earlyAccess
+    operator: equals
+    value: true
+```
+
+```yaml
+# features/wishlist.yml
+description: Add products to a wishlist
+
+bucketBy: userId
+
+rules:
+  - key: early-adopters
+    conditions: earlyAdopters
+    percentage: 100
+
+  - key: everyone
+    conditions: '*'
+    percentage: 0
+```
+
+- The application sets `earlyAccess` from the signed in user's profile, so members get it on every device.
+- Add the same rule to each feature in the programme. The segment changes in one place for all of them.
+- Grow it into a launch by raising `everyone`. Members keep the feature throughout. Remove the `early-adopters` rule once `everyone` reaches 100%.
+- A member who leaves falls through to `everyone`, and keeps the feature only if their bucket is inside its percentage.
+- Members chose to join, so their numbers are not a fair sample. Run an [A/B test](#ab-test) on users who did not choose to measure what a feature does.
+- A browser datafile shows the rule to anyone who looks, so treat a feature in the programme as announced.
+
+---
+
+## Scheduled releases and time windows
+
+Featurevisor has no clock. The application passes the current time as an attribute. Use a trusted server clock for anything that matters, since browser clocks and context are under the user's control.
+
+```yaml
+# attributes/now.yml
+description: Current time, supplied by the application
+
+type: string
+
+format: date-time
+```
+
+```yaml
+# segments/blackFridayWeekend.yml
+description: Black Friday weekend 2026
+
+conditions:
+  - attribute: now
+    operator: after
+    value: '2026-11-26T23:59:59.999Z'
+  - attribute: now
+    operator: before
+    value: '2026-11-30T00:00:00Z'
+```
+
+Both operators are strict, so the start is one millisecond before launch to include the launch instant, and the end instant is excluded. `Z` means UTC. For midnight in Amsterdam, one hour ahead of UTC in November, write the offset instead: `'2026-11-26T23:59:59.999+01:00'`. Check daylight saving time for the date.
+
+```yaml
+rules:
+  - key: black-friday
+    conditions: blackFridayWeekend
+    percentage: 100
+
+  - key: everyone
+    conditions: '*'
+    percentage: 0
+```
+
+```js
+const context = {
+  userId: '8f2a',
+  now: new Date(),
+}
+
+f.isEnabled('promoBanner', context)
+```
+
+- Pass a fresh time on every evaluation. An old `Date` does not advance.
+- Missing or invalid dates make `before` and `after` false, and `not` can turn that into a match.
+- Test just before, exactly at, and after each boundary with fixed timestamps in the spec context.
+- Deploy the schedule ahead of time. Turning it off after launch means deploying a change, not restoring an older datafile.
+
+---
+
+## App version gate
+
+Ship the code dark in a build, then enable it for builds that contain it:
+
+```yaml
+# attributes/appVersion.yml
+description: Version of the mobile app
+
+type: string
+
+format: semver
+```
+
+```yaml
+# segments/modernApp.yml
+description: App 5.5 or newer
+
+conditions:
+  - attribute: appVersion
+    operator: semverGreaterThanOrEquals
+    value: '5.5.0'
+```
+
+```yaml
+rules:
+  - key: modern-app
+    conditions: modernApp
+    percentage: 100
+
+  - key: everyone
+    conditions: '*'
+    percentage: 0
+```
+
+Quote versions. `5.10.0` is newer than `5.9.0`, and `5.5` equals `5.5.0`. Test with a matrix of versions on both sides of the boundary.
+
+---
+
+## Entitlements
+
+Accumulate capabilities from a plan and individual grants in one global variable:
+
+```yaml
+# variables/entitlements.yml
+description: Activities available to the current user
+
+type: array
+
+items:
+  type: string
+
+defaultValue: []
+
+overrides:
+  - key: paid
+    conditions:
+      attribute: plan
+      operator: in
+      value: [paid, enterprise]
+    continue: true
+    value: [likePosts, commentOnPosts, createPosts]
+
+  - key: free
+    conditions:
+      attribute: plan
+      operator: equals
+      value: free
+    continue: true
+    value: [likePosts, commentOnPosts]
+
+  - key: paid-us
+    conditions:
+      - attribute: plan
+        operator: in
+        value: [paid, enterprise]
+      - attribute: country
+        operator: equals
+        value: us
+    continue: true
+    mutate:
+      ':appendUnique': uploadVideos
+
+  - key: posting-grant
+    conditions:
+      attribute: postingGrant
+      operator: equals
+      value: true
+    mutate:
+      ':appendUnique': createPosts
+```
+
+`continue: true` lets later matches add to the value. A free user with the grant gets `[likePosts, commentOnPosts, createPosts]`. `:appendUnique` prevents duplicates. Accumulation needs SDKs that support override programs ([compatibility](https://featurevisor.com/docs/sdks/compatibility/)).
+
+```yaml
+# tests/variables/entitlements.spec.yml
+variable: entitlements
+
+assertions:
+  - key: free
+    context: { plan: free }
+    expectedValue: [likePosts, commentOnPosts]
+
+  - key: paid-us
+    context: { plan: paid, country: us }
+    expectedValue: [likePosts, commentOnPosts, createPosts, uploadVideos]
+
+  - key: free-with-grant
+    context: { plan: free, postingGrant: true }
+    expectedValue: [likePosts, commentOnPosts, createPosts]
+    expectedEvaluation:
+      variableOverrideKey: posting-grant
+
+  - key: unknown-plan
+    context: { plan: unknown }
+    expectedValue: []
+```
+
+Evaluate entitlements on the server from trusted profile data. A browser evaluation controls presentation only and never authorizes anything.
+
+---
+
+## Role based access
+
+Pass roles as an array attribute and list the roles that grant access:
+
+```yaml
+# attributes/roles.yml
+description: Roles assigned by the trusted backend
+
+type: array
+
+items:
+  type: string
+  enum: [viewer, editor, admin]
+```
+
+```yaml
+description: Bulk export for editors and admins
+
+bucketBy: userId
+
+rules:
+  - key: contributors
+    conditions:
+      - attribute: roles
+        operator: includesAny
+        value: [editor, admin]
+    percentage: 100
+
+  - key: everyone
+    conditions: '*'
+    percentage: 0
+```
+
+List granting roles rather than negating a viewer role: a negated condition also matches visitors without roles. Test missing roles, an empty list, and users with several roles. Enforce protected operations on the server.
+
+---
+
+## Backend migration
+
+Route reads from an old service to a new one behind a flag, evaluated per request with a [child instance](sdk-javascript.md#child-instances-server-side):
+
+```yaml
+description: Read orders from the new orders service
+
+bucketBy: requestId
+
+rules:
+  - key: everyone
+    conditions: '*'
+    percentage: 1
+```
+
+```js
+const child = f.spawn({ requestId: req.id })
+
+const orders = child.isEnabled('ordersFromNewService')
+  ? await newOrders.get(userId)
+  : await legacyOrders.get(userId)
+
+child.close()
+```
+
+Bucket by a request identifier when the migration is invisible to users, so ramping down is safe. Bucket by `userId` when users would notice flapping between implementations. At 100%, remove the old path, then [clean up](#cleaning-up-stale-flags).
+
+---
+
+## Deprecating a feature
+
+1. Set `deprecated: true`. SDKs report `deprecated_feature` diagnostics when it is evaluated.
+2. Agree a grace period with consuming teams.
+3. Consumers remove their calls.
+4. Confirm with `npx featurevisor find-usage --feature=<key>`, a search of application code, and the absence of deprecation diagnostics.
+5. Set `archived: true`, delete its specs, then lint. Keep the archived file, so the key is never reused.
+
+A feature variable is deprecated the same way, with `deprecated: true` in its `variablesSchema` entry.
+
+---
+
+## Cleaning up stale flags
+
+Flags at 100% everywhere with no experiment are debt.
+
+1. **Find candidates.** `npx featurevisor list --features --enabled --without-variations --json --pretty`, or `--enabled-in=production` with environments. Confirm the last rule is `conditions: '*'` at 100 everywhere, and check age in Git.
+   Flags planned for removal carry deadlines in [metadata](metadata.md): `npx featurevisor list --features --deadline=overdue` finds the plans that slipped.
+2. **Check dependents** with `npx featurevisor find-usage --feature=<key>`.
+3. **Deprecate it**, so remaining callers surface.
+4. **Remove the checks from application code**, including the dead branch. This is what pays the debt.
+5. **Archive** the feature and delete its specs, then lint and test.
+6. **Regenerate typed code** if the application uses [code generation](code-generation.md). Archived features drop out, so any call still naming one fails to compile.
+
+When retiring a flag, record the plan as `deprecate` and `remove` deadlines in its metadata, and mark each one done as it happens.
+
+Offer this sweep when you see many long lived 100% flags.
+
+---
+
+## Trunk based development
+
+1. Create the feature on the first day at 0%.
+2. Each pull request adds a slice of code behind `f.isEnabled('<key>')`.
+3. Force it on for a QA segment so the work can be exercised in production.
+4. When ready, ramp the percentage.
+
+---
+
+## Microfrontends
+
+One project, one target datafile per frontend, selected by tag:
+
+```js
+// featurevisor.config.js
+module.exports = {
+  tags: ['products', 'checkout', 'account'],
+}
+```
+
+```yaml
+# targets/checkout.yml
+description: Checkout frontend
+
+tag: checkout
+```
+
+```yaml
+# a feature used by two frontends
+tags:
+  - products
+  - checkout
+```
+
+Each frontend loads its own datafile, and features carrying both tags appear in both. For frontends serving anonymous and signed-in users, use `bucketBy: { or: [userId, deviceId] }`.
+
+---
+
+## Establishing ownership
+
+Use `CODEOWNERS` to require reviews from the right teams:
+
+```
+# .github/CODEOWNERS
+features/checkout/  @yourorg/checkout-team
+segments/qa.yml     @yourorg/qa-team
+attributes/         @yourorg/platform-team
+```
+
+With Sets as release lanes, a different team can own production:
+
+```
+sets/production/    @yourorg/release-owners
+```
+
+Pair it with branch protection that requires code owner review. Owners need not be engineers: a marketing team that writes the checkout notices can own `variables/checkoutNotices.yml` and approve every change to it.
+
+`CODEOWNERS` decides reviews, but nothing in Featurevisor reads it. Record the owner in [metadata](metadata.md) too, `metadata.owner: checkout-team`, so Catalog shows it and `list --owner` finds it. `metadataSchema` with an `enum` of teams, and `requireMetadataIn`, keep owners present and spelt right. Change both in the same pull request.
