@@ -14,7 +14,7 @@
     "start": "react-router-serve ./build/server/index.js",
     "flags:lint": "featurevisor lint --root-directory-path=./featurevisor",
     "flags:test": "featurevisor test --root-directory-path=./featurevisor",
-    "flags:build": "featurevisor build --no-state-files --root-directory-path=./featurevisor && biome format --write src/lib/featurevisor/datafile.json",
+    "flags:build": "featurevisor build --no-state-files --root-directory-path=./featurevisor",
     "verify:bundle": "D=${BUNDLE_DIR:-build/client}; test -d \"$D\" || { echo \"verify:bundle: $D not found\" >&2; exit 1; }; grep -rlE 'OP_CLIENT_SECRET|FINGERPRINT_SECRET|env\\.server' \"$D\" && { echo \"verify:bundle: server env identifiers found in client bundle\" >&2; exit 1; }; test $? -eq 1",
     "typecheck": "react-router typegen && tsc",
     "prepare": "husky",
