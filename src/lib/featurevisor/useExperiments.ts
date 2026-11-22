@@ -1,6 +1,7 @@
 import { useSdk } from "@featurevisor/react";
 import type { createFeaturevisor } from "@featurevisor/sdk";
 import { use, useEffect } from "react";
+import { Home } from "~/constants";
 import { type ExperimentExposure, ExposureContext } from "./provider";
 
 type FeaturevisorInstance = ReturnType<typeof createFeaturevisor>;
@@ -20,6 +21,14 @@ export const EXPERIMENTS = {
     variations: {
       control: { id: 0, value: false },
       treatment: { id: 1, value: true },
+    },
+  },
+  HERO_PRIMARY_CTA: {
+    key: "hero-primary-cta",
+    fallback: Home.primaryCta,
+    variations: {
+      control: { id: 0, value: Home.primaryCta },
+      treatment: { id: 1, value: "Explore the workbench" },
     },
   },
 } as const satisfies Record<string, ExperimentDefinition>;

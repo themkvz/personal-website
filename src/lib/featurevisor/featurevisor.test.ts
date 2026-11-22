@@ -51,6 +51,28 @@ describe("Featurevisor evaluation and OpenPanel exposure bridge", () => {
     expect(result.exposure).toBeNull();
   });
 
+  it("allocates hero-primary-cta 50/50 from the compiled datafile", () => {
+    const seenValues = new Set<string>();
+    const sdk = createFeaturevisor({
+      datafile: defaultDatafile as unknown as Datafile,
+    });
+
+    for (let i = 0; i < 50; i += 1) {
+      sdk.setContext({ id: `hero-visitor-${i}` });
+      const result = resolveExperimentEvaluation(
+        sdk,
+        EXPERIMENTS.HERO_PRIMARY_CTA,
+      );
+      expect(result.exposure).not.toBeNull();
+      expect(result.exposure?.key).toBe("hero-primary-cta");
+      seenValues.add(result.value);
+    }
+
+    expect(seenValues).toEqual(
+      new Set(["Browse technical notes", "Explore the workbench"]),
+    );
+  });
+
   it("buckets deterministically for the same fingerprint and isolates concurrent instances", () => {
     const datafile = makeFixtureDatafile(100_000);
     const sdkA1 = createFeaturevisor({

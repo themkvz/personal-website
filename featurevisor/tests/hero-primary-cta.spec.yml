@@ -1,0 +1,18 @@
+feature: hero-primary-cta
+
+assertions:
+  - key: control-band
+    description: Visitors in the first half of traffic get the control CTA
+    at: 25
+    context:
+      id: "visitor-1"
+    expectedToBeEnabled: true
+    expectedVariation: control
+
+  - key: treatment-band
+    description: Visitors in the second half of traffic get the treatment CTA
+    at: 75
+    context:
+      id: "visitor-1"
+    expectedToBeEnabled: true
+    expectedVariation: treatment

@@ -14,6 +14,10 @@ import { JsonLd } from "~/components/layout/json-ld";
 import { Section } from "~/components/layout/section";
 import { Home, Nav, Site, Tools as ToolsCopy } from "~/constants";
 import { artifacts, tools } from "~/content";
+import {
+  EXPERIMENTS,
+  useExperimentValue,
+} from "~/lib/featurevisor/useExperiments";
 import { LANES } from "~/lib/lanes";
 import { pageMeta } from "~/lib/meta";
 import { TRACK_EVENTS } from "~/lib/openpanel/events";
@@ -65,6 +69,7 @@ function getWorkbenchPreview() {
 export default function HomeRoute() {
   const { featured, secondary } = getWorkbenchPreview();
   const track = useTrack();
+  const primaryCta = useExperimentValue(EXPERIMENTS.HERO_PRIMARY_CTA);
 
   return (
     <>
@@ -109,7 +114,7 @@ export default function HomeRoute() {
                 to="/workbench"
                 onClick={() => track(TRACK_EVENTS.HERO_WORKBENCH_CLICKED)}
               >
-                {Home.primaryCta}
+                {primaryCta}
               </Button>
               <Link
                 to="/about"

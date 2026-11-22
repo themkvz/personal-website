@@ -1,0 +1,17 @@
+description: Test Home hero primary CTA copy to measure Workbench click-through
+
+bucketBy: id
+
+variations:
+  - value: control
+    description: "Browse technical notes"
+    weight: 50
+
+  - value: treatment
+    description: "Explore the workbench"
+    weight: 50
+
+rules:
+  - key: everyone
+    conditions: "*"
+    percentage: 100

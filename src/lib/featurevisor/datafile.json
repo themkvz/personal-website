@@ -24,6 +24,43 @@
         }
       ],
       "hash": "DuNEhFoV1D"
+    },
+    "hero-primary-cta": {
+      "bucketBy": "id",
+      "variations": [
+        {
+          "value": "control",
+          "weight": 50
+        },
+        {
+          "value": "treatment",
+          "weight": 50
+        }
+      ],
+      "traffic": [
+        {
+          "key": "everyone",
+          "conditions": "*",
+          "percentage": 100000,
+          "allocation": [
+            {
+              "variation": "control",
+              "range": [
+                0,
+                50000
+              ]
+            },
+            {
+              "variation": "treatment",
+              "range": [
+                50000,
+                100000
+              ]
+            }
+          ]
+        }
+      ],
+      "hash": "FGokvIcycD"
     }
   },
   "variables": {}
