@@ -59,6 +59,7 @@ export function ExperimentProvider({
           Parameters<typeof createFeaturevisor>[0]
         >["datafile"],
         context: { id: fingerprint },
+        logLevel: import.meta.env.DEV ? "info" : "warn",
       }),
     [fingerprint],
   );
